@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:usecases/utils.dart';
-
+import 'utils.dart';
 import 'api.dart';
 
 final edgeInsetsMap = {

@@ -1,7 +1,7 @@
 import 'package:dax/dax.dart';
 import 'package:dax/lox_callable.dart';
 import 'package:flutter/material.dart';
-import 'package:usecases/utils.dart';
+import 'utils.dart';
 
 class IOffset implements LoxFlutterFunction {
   @override

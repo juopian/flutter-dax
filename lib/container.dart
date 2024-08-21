@@ -1,6 +1,6 @@
 import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
-import 'package:usecases/utils.dart';
+import 'utils.dart';
 
 class IScaffold implements LoxFlutterFunction {
   @override

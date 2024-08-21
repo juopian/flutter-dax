@@ -53,11 +53,9 @@ packages:
   dax:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: e83af64c341b79c85a6817d30774c15bbf9992b6
-      url: "git@i-git.gzuni.com:xiecp/dax.git"
-    source: git
+      path: ".."
+      relative: true
+    source: path
     version: "1.0.0"
   fake_async:
     dependency: transitive

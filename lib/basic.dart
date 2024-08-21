@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:dax/dax.dart';
-import 'package:dax/runtime_error.dart';
-import 'package:dax/token_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:usecases/utils.dart';
+import 'utils.dart';
 
 class IText implements LoxFlutterFunction {
   @override
