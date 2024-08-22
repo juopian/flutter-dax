@@ -1,3 +1,4 @@
+import 'package:dax/runtime_error.dart';
 import 'package:flutter/material.dart';
 import 'package:dax/dax.dart';
 import 'base.dart';
@@ -43,6 +44,52 @@ build();
 final Interpreter interpreter = Interpreter();
 bool isApiRegistered = false;
 
+class LoadingPage extends StatelessWidget {
+  final String msg;
+  const LoadingPage({Key? key, required this.msg}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(msg),
+      ),
+    );
+  }
+}
+
+class ErrorPage extends StatelessWidget {
+  final String errMsg;
+  const ErrorPage({Key? key, required this.errMsg}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    var bgColor = const Color(0xff0278d7);
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        foregroundColor: Colors.white,
+        title: const Text("出错啦!"),
+        elevation: 0,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              ":(",
+              style: TextStyle(fontSize: 60, color: Colors.white),
+            ),
+            Text(
+              errMsg,
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class DaxPage extends StatefulWidget {
   const DaxPage(this.codeSnap, {Key? key}) : super(key: key);
   final String codeSnap;
@@ -52,7 +99,7 @@ class DaxPage extends StatefulWidget {
 }
 
 class _DaxPageState extends State<DaxPage> {
-  late Widget renderedWidget;
+  Widget renderedWidget = const LoadingPage(msg: "Loading...");
 
   @override
   void initState() {
@@ -61,28 +108,30 @@ class _DaxPageState extends State<DaxPage> {
       registerGlobalFunctions();
       isApiRegistered = true;
     }
+    hadError = false;
     interpreter.registerGlobal("context", context);
     Scanner scanner = Scanner(widget.codeSnap);
-
-    List<Token> tokens = scanner.scanTokens();
-    Parser parser = Parser(tokens);
-    List<Stmt> statements = [];
     try {
-      statements = parser.parse();
-    } catch (e) {
-      print("error happend $e");
+      List<Token> tokens = scanner.scanTokens();
+      Parser parser = Parser(tokens);
+      List<Stmt> statements = parser.parse();
+      Resolver resolver = Resolver(interpreter);
+      resolver.resolve(statements);
+      interpreter.interpret(statements);
+      interpreter.invokeFunction('initState');
+      var renderResult = interpreter.getRenderedWidget();
+      if (renderResult != null) {
+        renderedWidget = renderResult as Widget;
+      }
+    } on Exception catch (e) {
+      if (e is ParseError) {
+        renderedWidget = ErrorPage(errMsg: e.msg);
+      } else if (e is RuntimeError) {
+        renderedWidget = ErrorPage(errMsg: e.message);
+      } else {
+        renderedWidget = ErrorPage(errMsg: e.toString());
+      }
     }
-    if (hadError) {
-      return;
-    }
-    Resolver resolver = Resolver(interpreter);
-    resolver.resolve(statements);
-    if (hadError) {
-      return;
-    }
-    interpreter.interpret(statements);
-    interpreter.invokeFunction('initState');
-    renderedWidget = interpreter.getRenderedWidget() as Widget;
   }
 
   void updateUI() {
