@@ -149,7 +149,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Navigator", navigatorMap);
     interpreter.registerGlobal("Radius", radiusMap);
     interpreter.registerGlobal("SnackBarBehavior", snackBarBehaviorMap);
-    interpreter.registerGlobal("StackFix", stackFitMap);
+    interpreter.registerGlobal("StackFit", stackFitMap);
     interpreter.registerGlobal("TabBarIndicatorSize", tabBarIndicatorSizeMap);
     interpreter.registerGlobal("TextAlign", textAlignMap);
     interpreter.registerGlobal("TextInputType", textInputTypeMap);
