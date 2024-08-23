@@ -1,5 +1,6 @@
 import 'package:dax/runtime_error.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:dax/dax.dart';
 import 'base.dart';
 import 'icon.dart';
@@ -11,47 +12,17 @@ import 'layout.dart';
 import 'scroll.dart';
 import 'container.dart';
 
-const codeSnap = '''
-  fun build() {
-  return Scaffold(
-      appBar: AppBar(
-        title: Text("title"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add, color: Colors.cyan),
-            onPressed: (){} 
-          ),
-          IconButton(
-            icon: Icon(Icons.history),
-            onPressed: (){} 
-          )
-        ]
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          mini: true,
-          onPressed: (){
-            print "click";
-          }
-      ),
-      body: Column()
-    );
-  }
 
-build();
-''';
-
-final Interpreter interpreter = Interpreter();
 bool isApiRegistered = false;
-
 class LoadingPage extends StatelessWidget {
   final String msg;
   const LoadingPage({Key? key, required this.msg}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(msg),
+      appBar: AppBar(title: const Text('Loading')),
+      body: const Center(
+        child: CupertinoActivityIndicator(),
       ),
     );
   }
@@ -69,7 +40,6 @@ class ErrorPage extends StatelessWidget {
         backgroundColor: bgColor,
         foregroundColor: Colors.white,
         title: const Text("出错啦!"),
-        elevation: 0,
       ),
       body: Center(
         child: Column(
@@ -99,7 +69,8 @@ class DaxPage extends StatefulWidget {
 }
 
 class _DaxPageState extends State<DaxPage> {
-  Widget renderedWidget = const LoadingPage(msg: "Loading...");
+  Widget renderedWidget = const LoadingPage(msg: 'Loading');
+  Interpreter interpreter = Interpreter();
 
   @override
   void initState() {
@@ -108,8 +79,27 @@ class _DaxPageState extends State<DaxPage> {
       registerGlobalFunctions();
       isApiRegistered = true;
     }
-    hadError = false;
-    interpreter.registerGlobal("context", context);
+    interpreter.registerLocal("context", context);
+    interpreter.registerLocal(
+        "getDeviceWidth",
+        GenericLoxCallable(() => 0, (Interpreter interpreter,
+            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+          return MediaQuery.of(context).size.width;
+        }));
+    interpreter.registerLocal(
+        "showSnackBar",
+        GenericLoxCallable(() => 1, (Interpreter interpreter,
+            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(arguments.first as SnackBar);
+        }));
+    interpreter.registerLocal(
+        "setState",
+        GenericLoxCallable(() => 1, (Interpreter interpreter,
+            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+          (arguments.first as LoxFunction).call(interpreter, [], {});
+          updateUI();
+        }));
     Scanner scanner = Scanner(widget.codeSnap);
     try {
       List<Token> tokens = scanner.scanTokens();
@@ -119,13 +109,13 @@ class _DaxPageState extends State<DaxPage> {
       resolver.resolve(statements);
       interpreter.interpret(statements);
       interpreter.invokeFunction('initState');
-      var renderResult = interpreter.getRenderedWidget();
-      if (renderResult != null) {
-        renderedWidget = renderResult as Widget;
+      var renderedResult = interpreter.getRenderedWidget();
+      if (renderedResult != null) {
+        renderedWidget = renderedResult as Widget;
       }
     } on Exception catch (e) {
       if (e is ParseError) {
-        renderedWidget = ErrorPage(errMsg: e.msg);
+        renderedWidget = ErrorPage(errMsg: e.message);
       } else if (e is RuntimeError) {
         renderedWidget = ErrorPage(errMsg: e.message);
       } else {
@@ -234,28 +224,9 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("TextButton", ITextButton());
     interpreter.registerGlobal("TextField", ITextField());
     interpreter.registerGlobal("TextStyle", ITextStyle());
+    interpreter.registerGlobal("Uri", IUri());
     interpreter.registerGlobal("UnderlineInputBorder", IUnderlineInputBorder());
     interpreter.registerGlobal("Wrap", IWrap());
-    interpreter.registerGlobal(
-        "getDeviceWidth",
-        GenericLoxCallable(() => 0, (Interpreter interpreter,
-            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-          return MediaQuery.of(context).size.width;
-        }));
-    interpreter.registerGlobal(
-        "showSnackBar",
-        GenericLoxCallable(() => 1, (Interpreter interpreter,
-            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(arguments.first as SnackBar);
-        }));
-    interpreter.registerGlobal(
-        "setState",
-        GenericLoxCallable(() => 1, (Interpreter interpreter,
-            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-          (arguments.first as LoxFunction).call(interpreter, [], {});
-          updateUI();
-        }));
   }
 
   @override

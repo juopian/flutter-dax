@@ -167,6 +167,10 @@ final matrix4Map = {
 final navigatorMap = {
   "pop": (Object? context) {
     Navigator.pop(context as BuildContext);
+  },
+  "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
+    Navigator.pushNamed(context as BuildContext, routeName as String,
+        arguments: arguments);
   }
 };
 
@@ -184,5 +188,9 @@ final apiMap = {
       _debug = debug as bool;
     }
     return Api.post(url as String, body, debug: _debug);
-  }
+  },
+  "jwt": () => Api.jwt,
+  "version": () => Api.version,
+  "platform": () => Api.platform,
+  "buildNumber": () => Api.buildNumber
 };

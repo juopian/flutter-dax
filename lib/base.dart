@@ -17,6 +17,58 @@ class IOffset implements LoxFlutterFunction {
   }
 }
 
+
+class IUri implements LoxFlutterFunction  {  
+
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    String? scheme;
+    var schemeParsed = namedArguments[const Symbol('scheme')];
+    if (schemeParsed != null) {
+      scheme = schemeParsed as String;
+    }
+    String? host;
+    var hostParsed = namedArguments[const Symbol('host')];
+    if (hostParsed != null) {
+      host = hostParsed as String;
+    }
+    int? port;
+    var portParsed = namedArguments[const Symbol('port')];
+    if (portParsed != null) {
+      port = portParsed as int;
+    }
+    String? path;
+    var pathParsed = namedArguments[const Symbol('path')];
+    if (pathParsed != null) {
+      path = pathParsed as String;
+    }
+    String? query;
+    var queryParsed = namedArguments[const Symbol('query')];
+    if (queryParsed != null) {
+      query = queryParsed as String;
+    }
+    String? fragment;
+    var fragmentParsed = namedArguments[const Symbol('fragment')];
+    if (fragmentParsed != null) {
+      fragment = fragmentParsed as String;
+    }
+    Map<String, dynamic>? queryParameters;
+    var queryParametersParsed = namedArguments[const Symbol('queryParameters')];
+    if (queryParametersParsed != null) {
+      queryParameters = queryParametersParsed as Map<String, dynamic>;
+    }
+    return Uri(
+        scheme: scheme,
+        host: host,
+        port: port,
+        path: path,
+        query: query,
+        queryParameters: queryParameters,
+        fragment: fragment);
+  }
+}
+
 class ISize implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,

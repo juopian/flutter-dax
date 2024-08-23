@@ -156,11 +156,7 @@ class IAppBar implements LoxFlutterFunction {
     if (foregroundColorParsed != null) {
       foregroundColor = foregroundColorParsed as Color;
     }
-    double? elevation;
-    var elevationParsed = namedArguments[const Symbol('elevation')];
-    if (elevationParsed != null) {
-      elevation = elevationParsed as double;
-    }
+    double? elevation = parseDouble(namedArguments[const Symbol('elevation')]);
     bool? centerTitle;
     var centerTitleParsed = namedArguments[const Symbol('centerTitle')];
     if (centerTitleParsed != null) {
