@@ -44,7 +44,8 @@ class Api {
 
   static Future<dynamic> handleResponse(http.Response response) async {
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      String utf8Body = utf8.decode(response.bodyBytes);
+      return json.decode(utf8Body);
     } else {
       throw Exception('Failed to load data because: ${response.body}');
     }
@@ -59,7 +60,6 @@ class Api {
     var response = await http.get(Uri.parse(url), headers: reqHeaders);
     return handleResponse(response);
   }
-
 
   static Future<dynamic> post(String url, dynamic body,
       {Map<String, String>? headers, bool debug = false}) async {

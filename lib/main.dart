@@ -208,6 +208,7 @@ class _DaxPageState extends State<DaxPage> {
         "RoundedRectangleBorder", IRoundedRectangleBorder());
     interpreter.registerGlobal("Scaffold", IScaffold());
     interpreter.registerGlobal("Size", ISize());
+    interpreter.registerGlobal("SizedBox", ISizedBox());
     interpreter.registerGlobal("SnackBar", ISnackBar());
     interpreter.registerGlobal(
         "SingleChildScrollView", ISingleChildScrollView());

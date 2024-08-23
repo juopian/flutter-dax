@@ -6,6 +6,14 @@ final edgeInsetsMap = {
   "all": (Object value) {
     return EdgeInsets.all(parseDouble(value) ?? 0);
   },
+  "only": ({Object? left, Object? top, Object? right, Object? bottom}) {
+    return EdgeInsets.only(
+        left: parseDouble(left) ?? 0,
+        top: parseDouble(top) ?? 0,
+        right: parseDouble(right) ?? 0,
+        bottom: parseDouble(bottom) ?? 0
+    );
+  },
   "symmetric": ({Object? horizontal, Object? vertical}) {
     return EdgeInsets.symmetric(
         horizontal: parseDouble(horizontal) ?? 0,
@@ -167,6 +175,7 @@ final matrix4Map = {
 final navigatorMap = {
   "pop": (Object? context) {
     Navigator.pop(context as BuildContext);
+    
   },
   "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
     Navigator.pushNamed(context as BuildContext, routeName as String,

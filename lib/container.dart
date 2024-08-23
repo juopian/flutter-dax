@@ -35,7 +35,6 @@ class IScaffold implements LoxFlutterFunction {
       floatingActionButton: floatingActionButton,
     );
   }
-
 }
 
 class IBottomNavigationBar implements LoxFlutterFunction {
@@ -177,7 +176,6 @@ class IAppBar implements LoxFlutterFunction {
       foregroundColor: foregroundColor,
     );
   }
-
 }
 
 class IContainer implements LoxFlutterFunction {
@@ -226,7 +224,6 @@ class IContainer implements LoxFlutterFunction {
         height: height,
         width: width);
   }
-
 }
 
 class IPadding implements LoxFlutterFunction {
@@ -247,7 +244,6 @@ class IPadding implements LoxFlutterFunction {
       child: child,
     );
   }
-
 }
 
 class IClipOval implements LoxFlutterFunction {
@@ -263,7 +259,6 @@ class IClipOval implements LoxFlutterFunction {
       child: child,
     );
   }
-
 }
 
 class IClipRRect implements LoxFlutterFunction {
@@ -285,7 +280,6 @@ class IClipRRect implements LoxFlutterFunction {
       borderRadius: borderRadius,
     );
   }
-
 }
 
 class IClipRect implements LoxFlutterFunction {
@@ -301,7 +295,6 @@ class IClipRect implements LoxFlutterFunction {
       child: child,
     );
   }
-
 }
 
 class IListTile implements LoxFlutterFunction {
@@ -368,7 +361,6 @@ class IListTile implements LoxFlutterFunction {
         onLongPress: onLongPress,
         contentPadding: contentPadding);
   }
-
 }
 
 class IFloatingActionButton implements LoxFlutterFunction {
@@ -417,5 +409,23 @@ class IFloatingActionButton implements LoxFlutterFunction {
       },
     );
   }
+}
 
+class ISizedBox implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double? width = parseDouble(namedArguments[const Symbol('width')]);
+    double? height = parseDouble(namedArguments[const Symbol('height')]);
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    return SizedBox(
+      width: width,
+      height: height,
+      child: child,
+    );
+  }
 }
