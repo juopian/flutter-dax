@@ -12,8 +12,8 @@ import 'layout.dart';
 import 'scroll.dart';
 import 'container.dart';
 
-
 bool isApiRegistered = false;
+
 class LoadingPage extends StatelessWidget {
   final String msg;
   const LoadingPage({Key? key, required this.msg}) : super(key: key);
@@ -39,7 +39,7 @@ class ErrorPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         foregroundColor: Colors.white,
-        title: const Text("出错啦!"),
+        title: const Text("Error happened"),
       ),
       body: Center(
         child: Column(
@@ -69,9 +69,9 @@ class DaxPage extends StatefulWidget {
 }
 
 class _DaxPageState extends State<DaxPage> {
-  Widget renderedWidget = const LoadingPage(msg: 'Loading');
+  Widget? renderedWidget;
   Interpreter interpreter = Interpreter();
-
+  bool hasInitialized = false;
   @override
   void initState() {
     super.initState();
@@ -109,10 +109,10 @@ class _DaxPageState extends State<DaxPage> {
       resolver.resolve(statements);
       interpreter.interpret(statements);
       interpreter.invokeFunction('initState');
-      var renderedResult = interpreter.getRenderedWidget();
-      if (renderedResult != null) {
-        renderedWidget = renderedResult as Widget;
-      }
+      // var renderedResult = interpreter.getRenderedWidget();
+      // if (renderedResult != null) {
+      //   renderedWidget = renderedResult as Widget;
+      // }
     } on Exception catch (e) {
       if (e is ParseError) {
         renderedWidget = ErrorPage(errMsg: e.message);
@@ -134,6 +134,7 @@ class _DaxPageState extends State<DaxPage> {
 
   void registerGlobalFunctions() {
     interpreter.registerGlobal("Api", apiMap);
+    interpreter.registerGlobal("Axis", axisMap);
     interpreter.registerGlobal("AxisDirection", axisDirectionMap);
     interpreter.registerGlobal("Border", borderMap);
     interpreter.registerGlobal("BoxFit", boxFitMap);
@@ -144,6 +145,8 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("EdgeInsets", edgeInsetsMap);
     interpreter.registerGlobal("FontWeight", fontWeightMap);
     interpreter.registerGlobal("Icons", iconMap);
+    interpreter.registerGlobal(
+        "ListTileControlAffinity", listTileControlAffinityMap);
     interpreter.registerGlobal("MainAxisAlignment", mainAxisAlignmentMap);
     interpreter.registerGlobal("Matrix4", matrix4Map);
     interpreter.registerGlobal("Navigator", navigatorMap);
@@ -169,6 +172,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal(
         "BottomNavigationBarItem", IBottomNavigationBarItem());
     interpreter.registerGlobal("BoxDecoration", IBoxDecoration());
+    interpreter.registerGlobal("BoxConstraints", IBoxConstraints());
     interpreter.registerGlobal("BoxShadow", IBoxShadow());
     interpreter.registerGlobal("Checkbox", ICheckbox());
     interpreter.registerGlobal("CircleBorder", ICircleBorder());
@@ -188,6 +192,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Divider", IDivider());
     interpreter.registerGlobal("ElevatedButton", IElevatedButton());
     interpreter.registerGlobal("Expanded", IExpanded());
+    interpreter.registerGlobal("ExpansionTile", IExpansionTile());
     interpreter.registerGlobal("FloatingActionButton", IFloatingActionButton());
     interpreter.registerGlobal("GestureDetector", IGestureDetector());
     interpreter.registerGlobal("Icon", IIcon());
@@ -202,6 +207,10 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("OutlinedButton", IOutlinedButton());
     interpreter.registerGlobal("OutlineInputBorder", IOutlineInputBorder());
     interpreter.registerGlobal("Padding", IPadding());
+    interpreter.registerGlobal("PopupMenuButton", IPopupMenuButton());
+    interpreter.registerGlobal("PopupMenuDivider", IPopupMenuDivider());
+    interpreter.registerGlobal("PopupMenuItem", IPopupMenuItem());
+    interpreter.registerGlobal("PopupMenuWrapView", IPopupMenuWrapView());
     interpreter.registerGlobal("Positioned", IPositioned());
     interpreter.registerGlobal("Row", IRow());
     interpreter.registerGlobal(
@@ -232,6 +241,23 @@ class _DaxPageState extends State<DaxPage> {
 
   @override
   Widget build(BuildContext context) {
-    return renderedWidget;
+    if (!hasInitialized) {
+      hasInitialized = true;
+      if (renderedWidget != null) return renderedWidget!;
+      try {
+        var r = interpreter.invokeFunction('build');
+        if (r != null) return r as Widget;
+        return const ErrorPage(
+          errMsg: "No build function found",
+        );
+      } on RuntimeError catch (e) {
+        return ErrorPage(errMsg: e.message);
+      } catch (e) {
+        return ErrorPage(
+          errMsg: e.toString(),
+        );
+      }
+    }
+    return renderedWidget!;
   }
 }

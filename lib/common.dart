@@ -162,3 +162,14 @@ final snackBarBehaviorMap = {
   "fixed": SnackBarBehavior.fixed,
   "floating": SnackBarBehavior.floating,
 };
+
+final listTileControlAffinityMap = {
+  "leading": ListTileControlAffinity.leading,
+  "trailing": ListTileControlAffinity.trailing,
+  "platform": ListTileControlAffinity.platform,
+};
+
+final axisMap = {
+  "vertical": Axis.vertical,
+  "horizontal": Axis.horizontal,
+};

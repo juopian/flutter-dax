@@ -214,15 +214,42 @@ class IContainer implements LoxFlutterFunction {
     if (transformParsed != null) {
       transform = transformParsed as Matrix4;
     }
+    BoxConstraints? constraints;
+    var constraintsParsed = namedArguments[const Symbol('constraints')];
+    if (constraintsParsed != null) {
+      constraints = constraintsParsed as BoxConstraints;
+    }
     return Container(
         margin: margin,
         padding: padding,
+        constraints: constraints,
         decoration: decoration,
         transform: transform,
         child: child,
         color: color,
         height: height,
         width: width);
+  }
+}
+
+class IBoxConstraints implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double minWidth =
+        parseDouble(namedArguments[const Symbol('minWidth')]) ?? 0;
+    double maxWidth = parseDouble(namedArguments[const Symbol('maxWidth')]) ??
+        double.infinity;
+    double minHeight =
+        parseDouble(namedArguments[const Symbol('minHeight')]) ?? 0;
+    double maxHeight = parseDouble(namedArguments[const Symbol('maxHeight')]) ??
+        double.infinity;
+    return BoxConstraints(
+      minWidth: minWidth,
+      maxWidth: maxWidth,
+      minHeight: minHeight,
+      maxHeight: maxHeight,
+    );
   }
 }
 
@@ -427,5 +454,256 @@ class ISizedBox implements LoxFlutterFunction {
       height: height,
       child: child,
     );
+  }
+}
+
+class IExpansionTile implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var title = namedArguments[const Symbol('title')];
+    if (title == null) {
+      throw "title required in ExpansionTile";
+    }
+    List<Widget> children = [];
+    var childrenParsed = namedArguments[const Symbol('children')];
+    if (childrenParsed != null) {
+      children = (childrenParsed as List).cast<Widget>();
+    }
+    Widget? leading;
+    var leadingParsed = namedArguments[const Symbol('leading')];
+    if (leadingParsed != null) {
+      leading = leadingParsed as Widget;
+    }
+    Widget? trailing;
+    var trailingParsed = namedArguments[const Symbol('trailing')];
+    if (trailingParsed != null) {
+      trailing = trailingParsed as Widget;
+    }
+    bool initiallyExpanded = false;
+    var initiallyExpandedParsed =
+        namedArguments[const Symbol('initiallyExpanded')];
+    if (initiallyExpandedParsed != null) {
+      initiallyExpanded = initiallyExpandedParsed as bool;
+    }
+    EdgeInsetsGeometry? tilePadding;
+    var tilePaddingParsed = namedArguments[const Symbol('titlePadding')];
+    if (tilePaddingParsed != null) {
+      tilePadding = tilePaddingParsed as EdgeInsetsGeometry;
+    }
+    EdgeInsetsGeometry? childrenPadding;
+    var childrenPaddingParsed = namedArguments[const Symbol('childrenPadding')];
+    if (childrenPaddingParsed != null) {
+      childrenPadding = childrenPaddingParsed as EdgeInsetsGeometry;
+    }
+    Color? backgroundColor;
+    var backgroundColorParsed = namedArguments[const Symbol('backgroundColor')];
+    if (backgroundColorParsed != null) {
+      backgroundColor = backgroundColorParsed as Color;
+    }
+    Color? collapsedBackgroundColor;
+    var collapsedBackgroundColorParsed =
+        namedArguments[const Symbol('collapsedBackgroundColor')];
+    if (collapsedBackgroundColorParsed != null) {
+      collapsedBackgroundColor = collapsedBackgroundColorParsed as Color;
+    }
+    Color? textColor;
+    var textColorParsed = namedArguments[const Symbol('textColor')];
+    if (textColorParsed != null) {
+      textColor = textColorParsed as Color;
+    }
+    Color? collapsedTextColor;
+    var collapsedTextColorParsed =
+        namedArguments[const Symbol('collapsedTextColor')];
+    if (collapsedTextColorParsed != null) {
+      collapsedTextColor = collapsedTextColorParsed as Color;
+    }
+    Color? iconColor;
+    var iconColorParsed = namedArguments[const Symbol('iconColor')];
+    if (iconColorParsed != null) {
+      iconColor = iconColorParsed as Color;
+    }
+    Color? collapsedIconColor;
+    var collapsedIconColorParsed =
+        namedArguments[const Symbol('collapsedIconColor')];
+    if (collapsedIconColorParsed != null) {
+      collapsedIconColor = collapsedIconColorParsed as Color;
+    }
+    Function(bool)? onExpansionChanged;
+    var onExpansionChangedParsed =
+        namedArguments[const Symbol('onExpansionChanged')];
+    if (onExpansionChangedParsed != null) {
+      onExpansionChanged = (bool b) {
+        (onExpansionChangedParsed as LoxFunction).call(interpreter, [b], {});
+      };
+    }
+    ListTileControlAffinity? controlAffinity;
+    var controlAffinityParsed = namedArguments[const Symbol('controlAffinity')];
+    if (controlAffinityParsed != null) {
+      controlAffinity = controlAffinityParsed as ListTileControlAffinity;
+    }
+    return ExpansionTile(
+      title: title as Widget,
+      leading: leading,
+      controlAffinity: controlAffinity,
+      trailing: trailing,
+      children: children,
+      onExpansionChanged: onExpansionChanged,
+      tilePadding: tilePadding,
+      childrenPadding: childrenPadding,
+      initiallyExpanded: initiallyExpanded,
+      backgroundColor: backgroundColor,
+      collapsedBackgroundColor: collapsedBackgroundColor,
+      textColor: textColor,
+      collapsedTextColor: collapsedTextColor,
+      iconColor: iconColor,
+      collapsedIconColor: collapsedIconColor,
+    );
+  }
+}
+
+class IPopupMenuButton implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    Widget? icon;
+    var iconParsed = namedArguments[const Symbol('icon')];
+    if (iconParsed != null) {
+      icon = iconParsed as Widget;
+    }
+    var itemBuilder = namedArguments[const Symbol('itemBuilder')];
+    if (itemBuilder == null) {
+      throw "itemBuilder required in ListView.builder";
+    }
+    Function(Object)? onSelected;
+    var onSelectedParsed = namedArguments[const Symbol('onSelected')];
+    if (onSelectedParsed != null) {
+      onSelected = (Object b) {
+        (onSelectedParsed as LoxFunction).call(interpreter, [b], {});
+      };
+    }
+    Color? color;
+    var colorParsed = namedArguments[const Symbol('color')];
+    if (colorParsed != null) {
+      color = colorParsed as Color;
+    }
+    Offset offset = const Offset(0, 0);
+    var offsetParsed = namedArguments[const Symbol('offset')];
+    if (offsetParsed != null) {
+      offset = offsetParsed as Offset;
+    }
+    double? elevation = parseDouble(namedArguments[const Symbol('elevation')]);
+    double? iconSize = parseDouble(namedArguments[const Symbol('iconSize')]);
+    bool enabled = true;
+    var enabledParsed = namedArguments[const Symbol('enabled')];
+    if (enabledParsed != null) {
+      enabled = enabledParsed as bool;
+    }
+    EdgeInsetsGeometry padding = const EdgeInsets.all(8.0);
+    var paddingParsed = namedArguments[const Symbol('padding')];
+    if (paddingParsed != null) {
+      padding = paddingParsed as EdgeInsetsGeometry;
+    }
+    Object? initialValue;
+    var initialValueParsed = namedArguments[const Symbol('initialValue')];
+    if (initialValueParsed != null) {
+      initialValue = initialValueParsed;
+    }
+    return PopupMenuButton(
+        child: child,
+        icon: icon,
+        offset: offset,
+        initialValue: initialValue,
+        padding: padding,
+        enabled: enabled,
+        itemBuilder: (BuildContext context) {
+          return ((itemBuilder as LoxCallable).call(interpreter, [context], {})
+                  as List)
+              .cast<PopupMenuEntry<Object>>();
+        },
+        onSelected: onSelected,
+        color: color,
+        iconSize: iconSize,
+        elevation: elevation);
+  }
+}
+
+class IPopupMenuDivider implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return const PopupMenuDivider();
+  }
+}
+
+class IPopupMenuItem implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var value = namedArguments[const Symbol('value')];
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    Function()? onTap;
+    var onTapParsed = namedArguments[const Symbol('onTap')];
+    if (onTapParsed != null) {
+      onTap = () {
+        (onTapParsed as LoxFunction).call(interpreter, [], {});
+      };
+    }
+    EdgeInsets? padding;
+    var paddingParsed = namedArguments[const Symbol('padding')];
+    if (paddingParsed != null) {
+      padding = paddingParsed as EdgeInsets;
+    }
+    return PopupMenuItem(
+      value: value,
+      child: child,
+      onTap: onTap,
+      padding: padding,
+    );
+  }
+}
+
+class IPopupMenuWrapView implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var child = namedArguments[const Symbol('child')];
+    if (child == null) {
+      throw "child required in PopupMenuWrapView";
+    }
+    return PopupMenuWrapView(child: child as Widget);
+  }
+}
+
+class PopupMenuWrapView extends PopupMenuEntry<Never>{
+  final Widget child;
+  const PopupMenuWrapView({Key? key, required this.child,}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() {
+    return PopupMenuWrapViewState();
+  }
+
+  @override
+  bool represents(void value) {
+    return false;
+  }
+
+  @override
+  double get height => throw UnimplementedError();
+}
+
+class PopupMenuWrapViewState extends State<PopupMenuWrapView> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }

@@ -3,7 +3,16 @@ import 'package:dax/lox_callable.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
-class IOffset implements LoxFlutterFunction {
+class IOffset implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'zero':
+        return Offset.zero;
+    }
+    return null;
+  }
+
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

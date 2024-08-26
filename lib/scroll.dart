@@ -23,7 +23,14 @@ class IListView implements LoxFlutterFunction, LoxGetCallable {
       throw "children required in ListView";
     }
     List<Widget> children = (childrenParsed as List).cast<Widget>();
-    return ListView(children: children);
+    Axis scrollDirection = Axis.vertical;
+    var scrollDirectionParsed = namedArguments[const Symbol('scrollDirection')];
+    if (scrollDirectionParsed != null) {
+      scrollDirection = scrollDirectionParsed as Axis;
+    }
+    return ListView(
+      scrollDirection: scrollDirection,
+      children: children);
   }
 }
 
