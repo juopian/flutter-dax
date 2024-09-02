@@ -1,6 +1,7 @@
 import 'package:dax/dax.dart';
 import 'package:dax/lox_callable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'utils.dart';
 
 class IOffset implements LoxFlutterFunction, LoxGetCallable {
@@ -26,9 +27,7 @@ class IOffset implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-
-class IUri implements LoxFlutterFunction  {  
-
+class IUri implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -210,7 +209,6 @@ class IShowDialog implements LoxFlutterFunction {
   }
 }
 
-
 class IShowModalBottomSheet implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
@@ -265,3 +263,153 @@ class IShowModalBottomSheet implements LoxFlutterFunction {
 //     }
 //   }
 // }
+
+class IDateFormat implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 2) {
+      throw "Argument must be at least 2.";
+    }
+    var formatStr = arguments[0] as String;
+    var dateTime = arguments[1] as DateTime;
+    DateFormat format = DateFormat(formatStr);
+    return format.format(dateTime);
+  }
+}
+
+class IDateTime implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    if (name.lexeme == "now") {
+      return DateTimeNow();
+    } else if (name.lexeme == "utc") {
+      return DateTimeUTC();
+    } else if (name.lexeme == "parse") {
+      return DateTimeParse();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    var year = arguments[0] as int;
+    if (arguments.length == 1) {
+      return DateTime(year);
+    }
+    var month = arguments[1] as int;
+    if (arguments.length == 2) {
+      return DateTime(year, month);
+    }
+    var day = arguments[2] as int;
+    if (arguments.length == 3) {
+      return DateTime(year, month, day);
+    }
+    var hour = arguments[3] as int;
+    if (arguments.length == 4) {
+      return DateTime(year, month, day, hour);
+    }
+    var minute = arguments[4] as int;
+    if (arguments.length == 5) {
+      return DateTime(year, month, day, hour, minute);
+    }
+    var second = arguments[5] as int;
+    if (arguments.length == 6) {
+      return DateTime(year, month, day, hour, minute, second);
+    }
+    var millisecond = arguments[6] as int;
+    if (arguments.length == 7) {
+      return DateTime(year, month, day, hour, minute, second, millisecond);
+    }
+  }
+}
+
+class DateTimeNow implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return DateTime.now();
+  }
+}
+
+class DateTimeUTC implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    var year = arguments[0] as int;
+    if (arguments.length == 1) {
+      return DateTime.utc(year);
+    }
+    var month = arguments[1] as int;
+    if (arguments.length == 2) {
+      return DateTime.utc(year, month);
+    }
+    var day = arguments[2] as int;
+    if (arguments.length == 3) {
+      return DateTime.utc(year, month, day);
+    }
+    var hour = arguments[3] as int;
+    if (arguments.length == 4) {
+      return DateTime.utc(year, month, day, hour);
+    }
+    var minute = arguments[4] as int;
+    if (arguments.length == 5) {
+      return DateTime.utc(year, month, day, hour, minute);
+    }
+    var second = arguments[5] as int;
+    if (arguments.length == 6) {
+      return DateTime.utc(year, month, day, hour, minute, second);
+    }
+    var millisecond = arguments[6] as int;
+    if (arguments.length == 7) {
+      return DateTime.utc(year, month, day, hour, minute, second, millisecond);
+    }
+  }
+}
+
+class DateTimeParse implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    var dateTimeStr = arguments[0] as String;
+    return DateTime.parse(dateTimeStr);
+  }
+}
+
+class IRegExp implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    var pattern = arguments[0] as String;
+    bool unicode = false;
+    var unicodeParsed = namedArguments[const Symbol('unicode')];
+    if (unicodeParsed != null) {
+      unicode = unicodeParsed as bool;
+    }
+    bool multiLine = false;
+    var multiLineParsed = namedArguments[const Symbol('multiLine')];
+    if (multiLineParsed != null) {
+      multiLine = multiLineParsed as bool;
+    }
+    bool caseSensitive = true;
+    var caseSensitiveParsed = namedArguments[const Symbol('caseSensitive')];
+    if (caseSensitiveParsed != null) {
+      caseSensitive = caseSensitiveParsed as bool;
+    }
+    return RegExp(pattern,
+        multiLine: multiLine, unicode: unicode, caseSensitive: caseSensitive);
+  }
+}

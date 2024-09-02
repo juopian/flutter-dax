@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'utils.dart';
 import 'api.dart';
 
@@ -20,6 +21,7 @@ final edgeInsetsMap = {
         vertical: parseDouble(vertical) ?? 0);
   }
 };
+
 
 final borderMap = {
   "all": ({Object? width, Object? color}) {
@@ -202,4 +204,48 @@ final apiMap = {
   "version": () => Api.version,
   "platform": () => Api.platform,
   "buildNumber": () => Api.buildNumber
+};
+final mathMap = {
+  "randomInt": (Object x) {
+    return Random().nextInt(x as int);
+  },
+  "randomDouble": () {
+    return Random().nextDouble();
+  },
+  "randomBool": () {
+    return Random().nextBool();
+  },
+  "sin": (Object x) {
+    return asin(x as num);
+  },
+  "asin": (Object x) {
+    return asin(x as num);
+  },
+  "cos": (Object x) {
+    return acos(x as num);
+  },
+  "acos": (Object x) {
+    return acos(x as num);
+  },
+  "tan": (Object x) {
+    return atan(x as num);
+  },
+  "atan": (Object x) {
+    return atan(x as num);
+  },
+  "atan2": (Object a, Object b) {
+    return atan2(a as num, b as num);
+  },
+  "sqrt": (Object x) {
+    return sqrt(x as num);
+  },
+  "exp": (Object x) {
+    return exp(x as num);
+  },
+  "log": (Object x) {
+    return log(x as num);
+  },
+  "pow": (Object a, Object b) {
+    return pow(a as num, b as num);
+  }
 };

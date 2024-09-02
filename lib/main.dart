@@ -148,6 +148,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal(
         "ListTileControlAffinity", listTileControlAffinityMap);
     interpreter.registerGlobal("MainAxisAlignment", mainAxisAlignmentMap);
+    interpreter.registerGlobal("Math", mathMap);
     interpreter.registerGlobal("Matrix4", matrix4Map);
     interpreter.registerGlobal("Navigator", navigatorMap);
     interpreter.registerGlobal("Radius", radiusMap);
@@ -188,6 +189,9 @@ class _DaxPageState extends State<DaxPage> {
         "ContinuousRectangleBorder", IContinuousRectangleBorder());
     interpreter.registerGlobal(
         "CupertinoActivityIndicator", ICupertinoActivityIndicator());
+    interpreter.registerGlobal("DateFormat", IDateFormat());
+    interpreter.registerGlobal("DateTime", IDateTime());
+    interpreter.registerGlobal("DatePicker", IDatePicker());
     interpreter.registerGlobal("DefaultTabController", IDefaultTabController());
     interpreter.registerGlobal("Divider", IDivider());
     interpreter.registerGlobal("ElevatedButton", IElevatedButton());
@@ -212,9 +216,11 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("PopupMenuItem", IPopupMenuItem());
     interpreter.registerGlobal("PopupMenuWrapView", IPopupMenuWrapView());
     interpreter.registerGlobal("Positioned", IPositioned());
+    interpreter.registerGlobal("RegExp", IRegExp());
     interpreter.registerGlobal("Row", IRow());
     interpreter.registerGlobal(
         "RoundedRectangleBorder", IRoundedRectangleBorder());
+    interpreter.registerGlobal("SafeArea", ISafeArea());
     interpreter.registerGlobal("Scaffold", IScaffold());
     interpreter.registerGlobal("Size", ISize());
     interpreter.registerGlobal("SizedBox", ISizedBox());

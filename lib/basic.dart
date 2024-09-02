@@ -2,6 +2,7 @@ import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'utils.dart';
+import 'datepicker.dart';
 
 class IText implements LoxFlutterFunction {
   @override
@@ -689,6 +690,85 @@ class IGestureDetector implements LoxFlutterFunction {
       onTap: onTap,
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
+    );
+  }
+}
+
+
+class IDatePicker implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var date = namedArguments[const Symbol('date')];
+    if (date == null) {
+      throw "date required in DatePicker";
+    }
+    var onDateChange = namedArguments[const Symbol('onDateChange')];
+    if (onDateChange == null) {
+      throw "onDateChange required in DatePicker";
+    }
+    bool autoHide = true;
+    var autoHideParsed = namedArguments[const Symbol('autoHide')];
+    if (autoHideParsed != null) {
+      autoHide = autoHideParsed as bool;
+    }
+    String prefix = "";
+    var prefixParsed = namedArguments[const Symbol('prefix')];
+    if (prefixParsed != null) {
+      prefix = prefixParsed as String;
+    }
+    return DatePicker(
+      date: date as String,
+      autoHide: autoHide,
+      prefix: prefix,
+      onDateChange: (s) {
+        (onDateChange as LoxFunction).call(interpreter, [s], {});
+      },
+    );
+  }
+}
+
+class ISafeArea implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var child = namedArguments[const Symbol('child')];
+    if (child == null) {
+      throw "child required in SafeArea";
+    }
+    bool left = true;
+    var leftParsed = namedArguments[const Symbol('left')];
+    if (leftParsed != null) {
+      left = leftParsed as bool;
+    }
+    bool top = true;
+    var topParsed = namedArguments[const Symbol('top')];
+    if (topParsed != null) {
+      top = topParsed as bool;
+    }
+    bool right = true;
+    var rightParsed = namedArguments[const Symbol('right')];
+    if (rightParsed != null) {
+      right = rightParsed as bool;
+    }
+    bool bottom = true;
+    var bottomParsed = namedArguments[const Symbol('bottom')];
+    if (bottomParsed != null) {
+      bottom = bottomParsed as bool;
+    }
+    bool maintainBottomViewPadding = false;
+    var maintainBottomViewPaddingParsed =
+        namedArguments[const Symbol('maintainBottomViewPadding')];
+    if (maintainBottomViewPaddingParsed != null) {
+      maintainBottomViewPadding = maintainBottomViewPaddingParsed as bool;
+    }
+    return SafeArea(
+      child: child as Widget,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      maintainBottomViewPadding: maintainBottomViewPadding,
     );
   }
 }
