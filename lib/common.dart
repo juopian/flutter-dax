@@ -72,6 +72,7 @@ final fontWeightMap = {
 
 final mainAxisAlignmentMap = {
   "start": MainAxisAlignment.start, 
+  "center": MainAxisAlignment.center,
   "end": MainAxisAlignment.end, 
   "spaceAround": MainAxisAlignment.spaceAround, 
   "spaceBetween": MainAxisAlignment.spaceBetween, 

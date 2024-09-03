@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:convert';
 import 'utils.dart';
 import 'api.dart';
 
@@ -12,8 +13,7 @@ final edgeInsetsMap = {
         left: parseDouble(left) ?? 0,
         top: parseDouble(top) ?? 0,
         right: parseDouble(right) ?? 0,
-        bottom: parseDouble(bottom) ?? 0
-    );
+        bottom: parseDouble(bottom) ?? 0);
   },
   "symmetric": ({Object? horizontal, Object? vertical}) {
     return EdgeInsets.symmetric(
@@ -21,7 +21,6 @@ final edgeInsetsMap = {
         vertical: parseDouble(vertical) ?? 0);
   }
 };
-
 
 final borderMap = {
   "all": ({Object? width, Object? color}) {
@@ -177,7 +176,6 @@ final matrix4Map = {
 final navigatorMap = {
   "pop": (Object? context) {
     Navigator.pop(context as BuildContext);
-    
   },
   "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
     Navigator.pushNamed(context as BuildContext, routeName as String,
@@ -247,5 +245,14 @@ final mathMap = {
   },
   "pow": (Object a, Object b) {
     return pow(a as num, b as num);
+  }
+};
+
+final jsonMap = {
+  "encode": (Object value) {
+    return json.encode(value);
+  },
+  "decode": (Object value) {
+    return json.decode(value as String);
   }
 };

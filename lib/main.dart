@@ -145,6 +145,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("EdgeInsets", edgeInsetsMap);
     interpreter.registerGlobal("FontWeight", fontWeightMap);
     interpreter.registerGlobal("Icons", iconMap);
+    interpreter.registerGlobal("json", jsonMap);
     interpreter.registerGlobal(
         "ListTileControlAffinity", listTileControlAffinityMap);
     interpreter.registerGlobal("MainAxisAlignment", mainAxisAlignmentMap);
