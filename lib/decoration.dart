@@ -311,7 +311,6 @@ class IStadiumBorder implements LoxFlutterFunction {
   }
 }
 
-
 class IContinuousRectangleBorder implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
@@ -430,5 +429,29 @@ class IBorderSide implements LoxFlutterFunction {
       style = styleParsed as BorderStyle;
     }
     return BorderSide(color: color, width: width, style: style);
+  }
+}
+
+class IDefaultTextStyle implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    TextAlign? textAlign;
+    var textAlignParse = namedArguments[const Symbol('textAlign')];
+    if (textAlignParse != null) {
+      textAlign = textAlignParse as TextAlign;
+    }
+    var style = namedArguments[const Symbol('style')];
+    if (style == null) {
+      throw "DefaultTextStyle must have a style";
+    }
+    var child = namedArguments[const Symbol('child')];
+    if (child == null) {
+      throw "DefaultTextStyle must have a child";
+    }
+    return DefaultTextStyle(
+        textAlign: textAlign,
+        style: style as TextStyle,
+        child: child as Widget);
   }
 }

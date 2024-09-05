@@ -177,6 +177,9 @@ final navigatorMap = {
   "pop": (Object? context) {
     Navigator.pop(context as BuildContext);
   },
+  "push": (Object? context, Object? route) {
+    Navigator.push(context as BuildContext, route as Route);
+  },
   "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
     Navigator.pushNamed(context as BuildContext, routeName as String,
         arguments: arguments);

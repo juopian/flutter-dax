@@ -13,8 +13,14 @@ class IText implements LoxFlutterFunction {
     if (styleParsed != null) {
       style = styleParsed as TextStyle;
     }
+    TextAlign? textAlign;
+    var textAlignParsed = namedArguments[const Symbol('textAlign')];
+    if (textAlignParsed != null) {
+      textAlign = textAlignParsed as TextAlign;
+    }
     return Text(
       arguments.first as String,
+      textAlign: textAlign,
       style: style,
     );
   }
@@ -28,11 +34,6 @@ class ElevatedButtonStyleBuilder implements LoxFlutterFunction {
     var primaryParsed = namedArguments[const Symbol('primary')];
     if (primaryParsed != null) {
       primary = primaryParsed as Color;
-    }
-    Color? backgroundColor;
-    var backgroundColorParsed = namedArguments[const Symbol('backgroundColor')];
-    if (backgroundColorParsed != null) {
-      backgroundColor = backgroundColorParsed as Color;
     }
     Color? shadowColor;
     var shadowColorParsed = namedArguments[const Symbol('shadowColor')];
@@ -76,17 +77,16 @@ class ElevatedButtonStyleBuilder implements LoxFlutterFunction {
       shape = shapeParsed as OutlinedBorder;
     }
     return ElevatedButton.styleFrom(
-      primary: primary,
-      shadowColor: shadowColor,
-      elevation: elevation,
-      textStyle: textStyle,
-      side: side,
-      shape: shape,
-      minimumSize: minimumSize,
-      maximumSize: maximumSize,
-      fixedSize: fixedSize,
-      padding: padding
-    );
+        primary: primary,
+        shadowColor: shadowColor,
+        elevation: elevation,
+        textStyle: textStyle,
+        side: side,
+        shape: shape,
+        minimumSize: minimumSize,
+        maximumSize: maximumSize,
+        fixedSize: fixedSize,
+        padding: padding);
   }
 }
 
@@ -96,9 +96,10 @@ class IElevatedButton implements LoxFlutterFunction, LoxGetCallable {
   Object? get(Token name) {
     if (name.lexeme == "styleFrom") {
       return builder;
-    } 
+    }
     throw "Unknown property: ${name.lexeme}";
   }
+
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -117,7 +118,6 @@ class IElevatedButton implements LoxFlutterFunction, LoxGetCallable {
         });
   }
 }
-
 
 class OutlinedButtonStyleBuilder implements LoxFlutterFunction {
   @override
@@ -175,21 +175,19 @@ class OutlinedButtonStyleBuilder implements LoxFlutterFunction {
       shape = shapeParsed as OutlinedBorder;
     }
     return OutlinedButton.styleFrom(
-      primary: primary,
-      backgroundColor: backgroundColor,
-      shadowColor: shadowColor,
-      elevation: elevation,
-      textStyle: textStyle,
-      side: side,
-      shape: shape,
-      minimumSize: minimumSize,
-      maximumSize: maximumSize,
-      fixedSize: fixedSize,
-      padding: padding
-    );
+        primary: primary,
+        backgroundColor: backgroundColor,
+        shadowColor: shadowColor,
+        elevation: elevation,
+        textStyle: textStyle,
+        side: side,
+        shape: shape,
+        minimumSize: minimumSize,
+        maximumSize: maximumSize,
+        fixedSize: fixedSize,
+        padding: padding);
   }
 }
-
 
 class IOutlinedButton implements LoxFlutterFunction, LoxGetCallable {
   final builder = OutlinedButtonStyleBuilder();
@@ -197,9 +195,10 @@ class IOutlinedButton implements LoxFlutterFunction, LoxGetCallable {
   Object? get(Token name) {
     if (name.lexeme == "styleFrom") {
       return builder;
-    } 
+    }
     throw "Unknown property: ${name.lexeme}";
   }
+
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -281,18 +280,17 @@ class TextButtonStyleBuilder implements LoxFlutterFunction {
       shape = shapeParsed as OutlinedBorder;
     }
     return TextButton.styleFrom(
-      primary: primary,
-      backgroundColor: backgroundColor,
-      shadowColor: shadowColor,
-      elevation: elevation,
-      textStyle: textStyle,
-      side: side,
-      shape: shape,
-      minimumSize: minimumSize,
-      maximumSize: maximumSize,
-      fixedSize: fixedSize,
-      padding: padding
-    );
+        primary: primary,
+        backgroundColor: backgroundColor,
+        shadowColor: shadowColor,
+        elevation: elevation,
+        textStyle: textStyle,
+        side: side,
+        shape: shape,
+        minimumSize: minimumSize,
+        maximumSize: maximumSize,
+        fixedSize: fixedSize,
+        padding: padding);
   }
 }
 
@@ -302,9 +300,10 @@ class ITextButton implements LoxFlutterFunction, LoxGetCallable {
   Object? get(Token name) {
     if (name.lexeme == "styleFrom") {
       return builder;
-    } 
+    }
     throw "Unknown property: ${name.lexeme}";
   }
+
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -428,6 +427,74 @@ class ICircularProgressIndicator implements LoxFlutterFunction {
   }
 }
 
+class ISwitch implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var value = namedArguments[const Symbol('value')];
+    if (value == null) {
+      throw "value required in Switch";
+    }
+    var onChanged = namedArguments[const Symbol('onChanged')];
+    if (onChanged == null) {
+      throw "onChanged required in Switch";
+    }
+    return Switch(
+      value: value as bool,
+      onChanged: (bool? value) {
+        (onChanged as LoxFunction).call(interpreter, [value], {});
+      },
+    );
+  }
+}
+
+class ISlider implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var value = namedArguments[const Symbol('value')];
+    if (value == null) {
+      throw "value required in Slider";
+    }
+    var onChanged = namedArguments[const Symbol('onChanged')];
+    if (onChanged == null) {
+      throw "onChanged required in Slider";
+    }
+    return Slider(
+      value: value as double,
+      onChanged: (value) {
+        (onChanged as LoxFunction).call(interpreter, [value], {});
+      },
+    );
+  }
+}
+
+class IRadio implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var value = namedArguments[const Symbol('value')];
+    if (value == null) {
+      throw "value required in Radio";
+    }
+    var groupValue = namedArguments[const Symbol('groupValue')];
+    if (groupValue == null) {
+      throw "groupValue required in Radio";
+    }
+    var onChanged = namedArguments[const Symbol('onChanged')];
+    if (onChanged == null) {
+      throw "onChanged required in Radio";
+    }
+    return Radio(
+      value: value,
+      groupValue: groupValue,
+      onChanged: (value) {
+        (onChanged as LoxFunction).call(interpreter, [value], {});
+      },
+    );
+  }
+}
+
 class ICheckbox implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
@@ -547,6 +614,60 @@ class IBottomNavigationBarItem implements LoxFlutterFunction {
       activeIcon: activeIcon,
       tooltip: tooltip,
       backgroundColor: backgroundColor,
+    );
+  }
+}
+
+class ISimpleDialog implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    List<Widget>? children;
+    var childrenParsed = namedArguments[const Symbol('children')];
+    if (childrenParsed != null) {
+      children = childrenParsed as List<Widget>;
+    }
+    Widget? title;
+    var titleParsed = namedArguments[const Symbol('title')];
+    if (titleParsed != null) {
+      title = titleParsed as Widget;
+    }
+    TextStyle? titleTextStyle;
+    var titleTextStyleParsed = namedArguments[const Symbol('titleTextStyle')];
+    if (titleTextStyleParsed != null) {
+      titleTextStyle = titleTextStyleParsed as TextStyle;
+    }
+    Color? backgroundColor;
+    var backgroundColorParsed = namedArguments[const Symbol('backgroundColor')];
+    if (backgroundColorParsed != null) {
+      backgroundColor = backgroundColorParsed as Color;
+    }
+    double? elevation = parseDouble(namedArguments[const Symbol('elevation')]);
+    EdgeInsetsGeometry titlePadding =
+        const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0);
+    var titlePaddingParsed = namedArguments[const Symbol('titlePadding')];
+    if (titlePaddingParsed != null) {
+      titlePadding = titlePaddingParsed as EdgeInsetsGeometry;
+    }
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.fromLTRB(0, 12, 0, 16);
+    var contentPaddingParsed = namedArguments[const Symbol('contentPadding')];
+    if (contentPaddingParsed != null) {
+      contentPadding = contentPaddingParsed as EdgeInsetsGeometry;
+    }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    return SimpleDialog(
+      title: title,
+      titlePadding: titlePadding,
+      titleTextStyle: titleTextStyle,
+      backgroundColor: backgroundColor,
+      contentPadding: contentPadding,
+      elevation: elevation,
+      shape: shape,
+      children: children,
     );
   }
 }
@@ -693,7 +814,6 @@ class IGestureDetector implements LoxFlutterFunction {
     );
   }
 }
-
 
 class IDatePicker implements LoxFlutterFunction {
   @override

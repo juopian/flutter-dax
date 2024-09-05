@@ -174,3 +174,15 @@ final axisMap = {
   "vertical": Axis.vertical,
   "horizontal": Axis.horizontal,
 };
+
+final alignmentDirectionalMap = {
+  "bottomCenter": AlignmentDirectional.bottomCenter,
+  "bottomEnd": AlignmentDirectional.bottomEnd,
+  "bottomStart": AlignmentDirectional.bottomStart,
+  "center": AlignmentDirectional.center,
+  "centerEnd": AlignmentDirectional.centerEnd,
+  "centerStart": AlignmentDirectional.centerStart,
+  "topCenter": AlignmentDirectional.topCenter,
+  "topEnd": AlignmentDirectional.topEnd,
+  "topStart": AlignmentDirectional.topStart,
+};

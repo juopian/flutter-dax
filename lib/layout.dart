@@ -20,7 +20,6 @@ class IExpanded implements LoxFlutterFunction {
       child: child as Widget,
     );
   }
-
 }
 
 class IRow implements LoxFlutterFunction {
@@ -49,7 +48,6 @@ class IRow implements LoxFlutterFunction {
         mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: crossAxisAlignment);
   }
-
 }
 
 class IColumn implements LoxFlutterFunction {
@@ -79,7 +77,6 @@ class IColumn implements LoxFlutterFunction {
       crossAxisAlignment: crossAxisAlignment,
     );
   }
-
 }
 
 class ICenter implements LoxFlutterFunction {
@@ -100,7 +97,6 @@ class ICenter implements LoxFlutterFunction {
       widthFactor: widthFactor,
     );
   }
-
 }
 
 class IWrap implements LoxFlutterFunction {
@@ -133,7 +129,6 @@ class IWrap implements LoxFlutterFunction {
       runAlignment: runAlignment,
     );
   }
-
 }
 
 class IAlign implements LoxFlutterFunction {
@@ -161,9 +156,7 @@ class IAlign implements LoxFlutterFunction {
       widthFactor: widthFactor,
     );
   }
-
 }
-
 
 class IStack implements LoxFlutterFunction {
   @override
@@ -190,7 +183,6 @@ class IStack implements LoxFlutterFunction {
       fit: fit,
     );
   }
-
 }
 
 class IPositioned implements LoxFlutterFunction {
@@ -217,5 +209,24 @@ class IPositioned implements LoxFlutterFunction {
       child: child as Widget,
     );
   }
+}
 
+class IConstrainedBox implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Widget? child;
+    var childParse = namedArguments[const Symbol('child')];
+    if (childParse != null) {
+      child = childParse as Widget;
+    }
+    var constraints = namedArguments[const Symbol('constraints')];
+    if (constraints == null) {
+      throw "constraints is required";
+    }
+    return ConstrainedBox(
+      child: child,
+      constraints: constraints as BoxConstraints,
+    );
+  }
 }

@@ -232,7 +232,51 @@ class IContainer implements LoxFlutterFunction {
   }
 }
 
-class IBoxConstraints implements LoxFlutterFunction {
+class BoxConstraintsLoose implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var size = arguments[0] as Size;
+    return BoxConstraints.loose(size);
+  }
+}
+
+class BoxConstraintsTight implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var size = arguments[0] as Size;
+    return BoxConstraints.tight(size);
+  }
+}
+
+class BoxConstraintsExpand implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double? width = parseDouble(namedArguments[const Symbol('width')]);
+    double? height = parseDouble(namedArguments[const Symbol('height')]);
+    return BoxConstraints.expand(
+      width: width,
+      height: height,
+    );
+  }
+}
+
+class IBoxConstraints implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'loose':
+        return BoxConstraintsLoose();
+      case 'tight':
+        return BoxConstraintsTight();
+      case 'expanded':
+        return BoxConstraintsExpand();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -672,7 +716,7 @@ class IPopupMenuItem implements LoxFlutterFunction {
   }
 }
 
-class IPopupMenuWrapView implements LoxFlutterFunction {
+class IPopupMenuWrap implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -684,9 +728,12 @@ class IPopupMenuWrapView implements LoxFlutterFunction {
   }
 }
 
-class PopupMenuWrapView extends PopupMenuEntry<Never>{
+class PopupMenuWrapView extends PopupMenuEntry<Never> {
   final Widget child;
-  const PopupMenuWrapView({Key? key, required this.child,}) : super(key: key);
+  const PopupMenuWrapView({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return PopupMenuWrapViewState();
@@ -705,5 +752,104 @@ class PopupMenuWrapViewState extends State<PopupMenuWrapView> {
   @override
   Widget build(BuildContext context) {
     return widget.child;
+  }
+}
+
+class IDropdownButton implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var items = namedArguments[const Symbol('items')];
+    if (items == null) {
+      throw "items required in DropdownButton";
+    }
+    bool isExpanded = false;
+    var isExpandedParse = namedArguments[const Symbol('isExpanded')];
+    if (isExpandedParse != null) {
+      isExpanded = isExpandedParse as bool;
+    }
+    bool isDense = false;
+    var isDenseParse = namedArguments[const Symbol('isDense')];
+    if (isDenseParse != null) {
+      isDense = isDenseParse as bool;
+    }
+    int elevation = 8;
+    var elevationParse = namedArguments[const Symbol('elevation')];
+    if (elevationParse != null) {
+      elevation = elevationParse as int;
+    }
+    Object? value = namedArguments[const Symbol('value')];
+    Function(Object?)? onChanged;
+    var onChangedParse = namedArguments[const Symbol('onChanged')];
+    if (onChangedParse != null) {
+      onChanged = (Object? b) {
+        (onChangedParse as LoxFunction).call(interpreter, [b], {});
+      };
+    }
+    Widget? icon;
+    var iconParse = namedArguments[const Symbol('icon')];
+    if (iconParse != null) {
+      icon = iconParse as Widget;
+    }
+    TextStyle? style;
+    var styleParse = namedArguments[const Symbol('style')];
+    if (styleParse != null) {
+      style = styleParse as TextStyle;
+    }
+    double? menuMaxHeight =
+        parseDouble(namedArguments[const Symbol('menuMaxHeight')]);
+    Color? dropdownColor;
+    var dropdownColorParse = namedArguments[const Symbol('dropdownColor')];
+    if (dropdownColorParse != null) {
+      dropdownColor = dropdownColorParse as Color;
+    }
+    double iconSize =
+        parseDouble(namedArguments[const Symbol('iconSize')]) ?? 24.0;
+    Widget? underline;
+    var underlineParse = namedArguments[const Symbol('underline')];
+    if (underlineParse != null) {
+      underline = underlineParse as Widget;
+    }
+    AlignmentGeometry alignment = AlignmentDirectional.centerStart;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    return DropdownButton(
+        value: value,
+        icon: icon,
+        alignment: alignment,
+        iconSize: iconSize,
+        underline: underline,
+        isDense: isDense,
+        dropdownColor: dropdownColor,
+        style: style,
+        menuMaxHeight: menuMaxHeight,
+        onChanged: onChanged,
+        isExpanded: isExpanded,
+        elevation: elevation,
+        items: (items as List).cast<DropdownMenuItem<Object>>());
+  }
+}
+
+class IDropdownMenuItem implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var value = namedArguments[const Symbol('value')];
+    var child = namedArguments[const Symbol('child')];
+    if (child == null) {
+      throw "child required in DropdownMenuItem";
+    }
+    bool enabled = true;
+    var enabledParse = namedArguments[const Symbol('enabled')];
+    if (enabledParse != null) {
+      enabled = enabledParse as bool;
+    }
+    return DropdownMenuItem(
+      value: value,
+      child: child as Widget,
+      enabled: enabled,
+    );
   }
 }

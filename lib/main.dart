@@ -11,6 +11,7 @@ import 'edgeinsets.dart';
 import 'layout.dart';
 import 'scroll.dart';
 import 'container.dart';
+import 'popup.dart';
 
 bool isApiRegistered = false;
 
@@ -133,6 +134,7 @@ class _DaxPageState extends State<DaxPage> {
   }
 
   void registerGlobalFunctions() {
+    interpreter.registerGlobal("AlignmentDirectional", alignmentDirectionalMap);
     interpreter.registerGlobal("Api", apiMap);
     interpreter.registerGlobal("Axis", axisMap);
     interpreter.registerGlobal("AxisDirection", axisDirectionMap);
@@ -176,6 +178,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("BoxDecoration", IBoxDecoration());
     interpreter.registerGlobal("BoxConstraints", IBoxConstraints());
     interpreter.registerGlobal("BoxShadow", IBoxShadow());
+    interpreter.registerGlobal("Center", ICenter());
     interpreter.registerGlobal("Checkbox", ICheckbox());
     interpreter.registerGlobal("CircleBorder", ICircleBorder());
     interpreter.registerGlobal(
@@ -185,6 +188,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("ClipRect", IClipRect());
     interpreter.registerGlobal("Color", IColor());
     interpreter.registerGlobal("Column", IColumn());
+    interpreter.registerGlobal("ConstrainedBox", IConstrainedBox());
     interpreter.registerGlobal("Container", IContainer());
     interpreter.registerGlobal(
         "ContinuousRectangleBorder", IContinuousRectangleBorder());
@@ -194,7 +198,11 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("DateTime", IDateTime());
     interpreter.registerGlobal("DatePicker", IDatePicker());
     interpreter.registerGlobal("DefaultTabController", IDefaultTabController());
+    interpreter.registerGlobal("DefaultTextStyle", IDefaultTextStyle());
     interpreter.registerGlobal("Divider", IDivider());
+    interpreter.registerGlobal("DropdownButton", IDropdownButton());
+    interpreter.registerGlobal("DropdownAnimated", IDropdownAnimated());
+    interpreter.registerGlobal("DropdownMenuItem", IDropdownMenuItem());
     interpreter.registerGlobal("ElevatedButton", IElevatedButton());
     interpreter.registerGlobal("Expanded", IExpanded());
     interpreter.registerGlobal("ExpansionTile", IExpansionTile());
@@ -215,16 +223,19 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("PopupMenuButton", IPopupMenuButton());
     interpreter.registerGlobal("PopupMenuDivider", IPopupMenuDivider());
     interpreter.registerGlobal("PopupMenuItem", IPopupMenuItem());
-    interpreter.registerGlobal("PopupMenuWrapView", IPopupMenuWrapView());
+    interpreter.registerGlobal("PopupMenuWrap", IPopupMenuWrap());
     interpreter.registerGlobal("Positioned", IPositioned());
+    interpreter.registerGlobal("Radio", IRadio());
     interpreter.registerGlobal("RegExp", IRegExp());
     interpreter.registerGlobal("Row", IRow());
     interpreter.registerGlobal(
         "RoundedRectangleBorder", IRoundedRectangleBorder());
     interpreter.registerGlobal("SafeArea", ISafeArea());
     interpreter.registerGlobal("Scaffold", IScaffold());
+    interpreter.registerGlobal("SimpleDialog", ISimpleDialog());
     interpreter.registerGlobal("Size", ISize());
     interpreter.registerGlobal("SizedBox", ISizedBox());
+    interpreter.registerGlobal("Slider", ISlider());
     interpreter.registerGlobal("SnackBar", ISnackBar());
     interpreter.registerGlobal(
         "SingleChildScrollView", ISingleChildScrollView());
@@ -232,6 +243,7 @@ class _DaxPageState extends State<DaxPage> {
         "TextEditingController", ITextEditingController());
     interpreter.registerGlobal("Stack", IStack());
     interpreter.registerGlobal("StadiumBorder", IStadiumBorder());
+    interpreter.registerGlobal("Switch", ISwitch());
     interpreter.registerGlobal("showDialog", IShowDialog());
     interpreter.registerGlobal("showModalBottomSheet", IShowModalBottomSheet());
     interpreter.registerGlobal("Tab", ITab());

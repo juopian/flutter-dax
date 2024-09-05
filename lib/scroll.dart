@@ -28,9 +28,7 @@ class IListView implements LoxFlutterFunction, LoxGetCallable {
     if (scrollDirectionParsed != null) {
       scrollDirection = scrollDirectionParsed as Axis;
     }
-    return ListView(
-      scrollDirection: scrollDirection,
-      children: children);
+    return ListView(scrollDirection: scrollDirection, children: children);
   }
 }
 
@@ -325,7 +323,6 @@ class IDefaultTabController implements LoxFlutterFunction {
   }
 }
 
-
 class ITabBarView implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
@@ -345,3 +342,4 @@ class ITabBarView implements LoxFlutterFunction {
     );
   }
 }
+
