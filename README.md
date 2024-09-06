@@ -18,29 +18,29 @@ dax_flutter:
 ```
 import 'package:dax_flutter/main.dart';
 var codeSnap = ```
-	var i = 1;
-	fun build() {
-	  return Scaffold(
-			appBar: AppBar(
-				title: Text("title")
-			),
-			body: Column(
-					children: [
-					Text("count : ${i}"),
-					TextButton(
-						child: Text("click"),
-						onPressed: (){
-							setState((){
-								i = i+1;
-							});
-						}
-					)
-				]
-			)
-		);
-	} ```;
+var i = 1;
+fun build() {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("title")
+    ),
+    body: Column(
+      children: [
+        Text("count : ${i}"),
+        TextButton(
+         child: Text("click"),
+           onPressed: (){
+             setState((){
+              i = i+1;
+             });
+          }
+        )
+      ]
+    )
+  );
+} ```;
 
-Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSnap))) 
+Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSnap)));
 ```
 
 # 基本组件库
@@ -96,10 +96,33 @@ AssetImage(String assetName)
 *  BeveledRectangleBorder
 *  BorderSide
 *  BottomNavigationBar
-*  BottomNavigationBarItem
+###  BottomNavigationBarItem
+```
+BottomNavigationBarItem({
+  required Widget icon,
+  Widget? title,
+  String? label,
+  Widget? activeIcon,
+  Color? backgroundColor,
+  String? tooltip,
+})
+```
 *  BoxDecoration
 *  BoxShadow
-*  Checkbox
+###  Checkbox
+```
+Checkbox({
+  required bool? value,
+  required void Function(bool?)? onChanged,
+  Color? activeColor,
+  Color? checkColor,
+  Color? focusColor,
+  double? splashRadius,
+  bool autofocus = false,
+  OutlinedBorder? shape,
+  BorderSide? side,
+})
+```
 *  CircleBorder
 *  CircularProgressIndicator
 *  ClipOval
@@ -130,7 +153,16 @@ CupertinoActivityIndicator({
 })
 ```
 *  DefaultTabController
-*  Divider
+###  Divider
+```
+Divider({
+  double? height,
+  double? thickness,
+  double? indent,
+  double? endIndent,
+  Color? color,
+})
+```
 ###  ElevatedButton
 ```
 ElevatedButton({
@@ -360,7 +392,36 @@ TextButton.styleFrom({
   AlignmentGeometry? alignment,
 })
 ```
-*  TextField
+###  TextField
+```
+TextField({
+  TextEditingController? controller,
+  InputDecoration? decoration = const InputDecoration(),
+  TextInputType? keyboardType,
+  TextInputAction? textInputAction,
+  TextCapitalization textCapitalization = TextCapitalization.none,
+  TextStyle? style,
+  TextAlign textAlign = TextAlign.start,
+  TextAlignVertical? textAlignVertical,
+  TextDirection? textDirection,
+  bool readOnly = false,
+  bool? showCursor,
+  bool autofocus = false,
+  String obscuringCharacter = '•',
+  bool obscureText = false,
+  bool autocorrect = true,
+  int? maxLines = 1,
+  int? minLines,
+  bool expands = false,
+  int? maxLength,
+  void Function(String)? onChanged,
+  bool? enabled,
+  double cursorWidth = 2.0,
+  double? cursorHeight,
+  Radius? cursorRadius,
+  Color? cursorColor,
+})
+```
 *  TextStyle
 ###  Uri
 ```

@@ -300,3 +300,46 @@ final filterQualityMap = {
   "medium": FilterQuality.medium,
   "high": FilterQuality.high
 };
+
+final textAlignVerticalMap = {
+  "bottom": TextAlignVertical.bottom,
+  "top": TextAlignVertical.top,
+  "center": TextAlignVertical.center 
+};
+
+// final textInputTypeMap = {
+//   "text": TextInputType.text,
+//   "multiline": TextInputType.multiline,
+//   "number": TextInputType.number,
+//   "datetime": TextInputType.datetime,
+//   "phone": TextInputType.phone,
+//   "emailAddress": TextInputType.emailAddress,
+//   "url": TextInputType.url,
+//   "visiblePassword": TextInputType.visiblePassword,
+//   "name": TextInputType.name,
+//   "streetAddress": TextInputType.streetAddress,
+// };
+
+final textInputActionMap = {
+  "none": TextInputAction.none,
+  "unspecified": TextInputAction.unspecified,
+  "done": TextInputAction.done,
+  "go": TextInputAction.go,
+  "next": TextInputAction.next,
+  "previous": TextInputAction.previous,
+  "search": TextInputAction.search,
+  "send": TextInputAction.send
+};
+
+final textCapitalizationMap = {
+  "none": TextCapitalization.none,
+  "words": TextCapitalization.words,
+  "sentences": TextCapitalization.sentences,
+  "characters": TextCapitalization.characters
+};
+
+// final textDirectionMap = {
+//   "ltr": TextDirection.ltr,
+//   "rtl": TextDirection.rtl,
+//   "inherit": TextDirection.ltr
+// };

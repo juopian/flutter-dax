@@ -162,6 +162,9 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("StackFit", stackFitMap);
     interpreter.registerGlobal("TabBarIndicatorSize", tabBarIndicatorSizeMap);
     interpreter.registerGlobal("TextAlign", textAlignMap);
+    interpreter.registerGlobal("TextAlignVertical", textAlignVerticalMap);
+    interpreter.registerGlobal("TextCapitalization", textCapitalizationMap);
+    interpreter.registerGlobal("TextInputAction", textInputActionMap);
     interpreter.registerGlobal("TextInputType", textInputTypeMap);
     interpreter.registerGlobal("TextDirection", textDirectionMap);
     interpreter.registerGlobal("TextOverflow", textOverflowMap);

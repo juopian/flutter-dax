@@ -464,7 +464,7 @@ class IIconButton implements LoxFlutterFunction {
     }
     Color? focusColor;
     var focusColorParse = namedArguments[const Symbol('focusColor')];
-    if(focusColorParse != null){
+    if (focusColorParse != null) {
       focusColor = focusColorParse as Color;
     }
     return IconButton(
@@ -630,7 +630,7 @@ class SwitchAdaptive implements LoxFlutterFunction {
     }
     Color? focusColor;
     var focusColorParse = namedArguments[const Symbol('focusColor')];
-    if(focusColorParse != null){
+    if (focusColorParse != null) {
       focusColor = focusColorParse as Color;
     }
     return Switch.adaptive(
@@ -697,7 +697,7 @@ class ISwitch implements LoxFlutterFunction, LoxGetCallable {
     }
     Color? focusColor;
     var focusColorParse = namedArguments[const Symbol('focusColor')];
-    if(focusColorParse != null){
+    if (focusColorParse != null) {
       focusColor = focusColorParse as Color;
     }
     return Switch(
@@ -730,34 +730,34 @@ class ISlider implements LoxFlutterFunction {
     }
     double min = parseDouble(namedArguments[const Symbol('min')]) ?? 0;
     double max = parseDouble(namedArguments[const Symbol('max')]) ?? 1;
-    int? divisions ;
+    int? divisions;
     var divisionsParse = namedArguments[const Symbol('divisions')];
     if (divisionsParse != null) {
       divisions = divisionsParse as int;
     }
     String? label;
     var labelParse = namedArguments[const Symbol('label')];
-    if(labelParse != null){
+    if (labelParse != null) {
       label = labelParse as String;
     }
     Color? activeColor;
     var activeColorParse = namedArguments[const Symbol('activeColor')];
-    if(activeColorParse != null){
+    if (activeColorParse != null) {
       activeColor = activeColorParse as Color;
     }
     Color? inactiveColor;
     var inactiveColorParse = namedArguments[const Symbol('inactiveColor')];
-    if(inactiveColorParse != null){
+    if (inactiveColorParse != null) {
       inactiveColor = inactiveColorParse as Color;
     }
     Color? thumbColor;
     var thumbColorParse = namedArguments[const Symbol('thumbColor')];
-    if(thumbColorParse != null){
+    if (thumbColorParse != null) {
       thumbColor = thumbColorParse as Color;
     }
     bool autofocus = false;
     var autofocusParse = namedArguments[const Symbol('autofocus')];
-    if(autofocusParse != null){
+    if (autofocusParse != null) {
       autofocus = autofocusParse as bool;
     }
     return Slider(
@@ -795,25 +795,26 @@ class IRadio implements LoxFlutterFunction {
     }
     bool toggleable = false;
     var toggleableParse = namedArguments[const Symbol('toggleable')];
-    if(toggleableParse != null){
+    if (toggleableParse != null) {
       toggleable = toggleableParse as bool;
     }
     Color? activeColor;
     var activeColorParse = namedArguments[const Symbol('activeColor')];
-    if(activeColorParse != null){
+    if (activeColorParse != null) {
       activeColor = activeColorParse as Color;
     }
     Color? focusColor;
     var focusColorParse = namedArguments[const Symbol('focusColor')];
-    if(focusColorParse != null){
+    if (focusColorParse != null) {
       focusColor = focusColorParse as Color;
     }
     bool autofocus = false;
     var autofocusParse = namedArguments[const Symbol('autofocus')];
-    if(autofocusParse != null){
+    if (autofocusParse != null) {
       autofocus = autofocusParse as bool;
     }
-    double? splashRadius = parseDouble(namedArguments[const Symbol('splashRadius')]);
+    double? splashRadius =
+        parseDouble(namedArguments[const Symbol('splashRadius')]);
     return Radio(
       value: value,
       toggleable: toggleable,
@@ -841,8 +842,47 @@ class ICheckbox implements LoxFlutterFunction {
     if (onChanged == null) {
       throw "onChanged required in Checkbox";
     }
+    Color? activeColor;
+    var activeColorParsed = namedArguments[const Symbol('activeColor')];
+    if (activeColorParsed != null) {
+      activeColor = activeColorParsed as Color;
+    }
+    Color? checkColor;
+    var checkColorParsed = namedArguments[const Symbol('checkColor')];
+    if (checkColorParsed != null) {
+      checkColor = checkColorParsed as Color;
+    }
+    Color? focusColor;
+    var focusColorParsed = namedArguments[const Symbol('focusColor')];
+    if (focusColorParsed != null) {
+      focusColor = focusColorParsed as Color;
+    }
+    double? splashRadius =
+        parseDouble(namedArguments[const Symbol('splashRadius')]);
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    OutlinedBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as OutlinedBorder;
+    }
+    BorderSide? side;
+    var sideParsed = namedArguments[const Symbol('side')];
+    if (sideParsed != null) {
+      side = sideParsed as BorderSide;
+    }
     return Checkbox(
       value: value as bool,
+      activeColor: activeColor,
+      checkColor: checkColor,
+      focusColor: focusColor,
+      autofocus: autofocus,
+      shape: shape,
+      side: side,
+      splashRadius: splashRadius,
       onChanged: (bool? value) {
         (onChanged as LoxFunction).call(interpreter, [value], {});
       },
@@ -876,16 +916,130 @@ class ITextField implements LoxFlutterFunction {
     if (maxLinesParsed != null) {
       maxLines = maxLinesParsed as int;
     }
+    int? minLines;
+    var minLinesParsed = namedArguments[const Symbol('minLines')];
+    if (minLinesParsed != null) {
+      minLines = minLinesParsed as int;
+    }
     TextStyle? style;
     var styleParsed = namedArguments[const Symbol('style')];
     if (styleParsed != null) {
       style = styleParsed as TextStyle;
     }
+    TextInputType? keyboardType;
+    var keyboardTypeParsed = namedArguments[const Symbol('keyboardType')];
+    if (keyboardTypeParsed != null) {
+      keyboardType = keyboardTypeParsed as TextInputType;
+    }
+    TextAlign textAlign = TextAlign.start;
+    var textAlignParsed = namedArguments[const Symbol('textAlign')];
+    if (textAlignParsed != null) {
+      textAlign = textAlignParsed as TextAlign;
+    }
+    TextAlignVertical? textAlignVertical;
+    var textAlignVerticalParsed =
+        namedArguments[const Symbol('textAlignVertical')];
+    if (textAlignVerticalParsed != null) {
+      textAlignVertical = textAlignVerticalParsed as TextAlignVertical;
+    }
+    TextDirection? textDirection;
+    var textDirectionParsed = namedArguments[const Symbol('textDirection')];
+    if (textDirectionParsed != null) {
+      textDirection = textDirectionParsed as TextDirection;
+    }
+    TextInputAction? textInputAction;
+    var textInputActionParsed = namedArguments[const Symbol('textInputAction')];
+    if (textInputActionParsed != null) {
+      textInputAction = textInputActionParsed as TextInputAction;
+    }
+    TextCapitalization textCapitalization = TextCapitalization.none;
+    var textCapitalizationParsed =
+        namedArguments[const Symbol('textCapitalization')];
+    if (textCapitalizationParsed != null) {
+      textCapitalization = textCapitalizationParsed as TextCapitalization;
+    }
+    bool readOnly = false;
+    var readOnlyParsed = namedArguments[const Symbol('readOnly')];
+    if (readOnlyParsed != null) {
+      readOnly = readOnlyParsed as bool;
+    }
+    bool? showCursor;
+    var showCursorParsed = namedArguments[const Symbol('showCursor')];
+    if (showCursorParsed != null) {
+      showCursor = showCursorParsed as bool;
+    }
+    double? cursorHeight = parseDouble(namedArguments[const Symbol('cursorHeight')]);
+    Radius? cursorRadius;
+    var cursorRadiusParsed = namedArguments[const Symbol('cursorRadius')];
+    if (cursorRadiusParsed != null) {
+      cursorRadius = cursorRadiusParsed as Radius;
+    }
+    Color? cursorColor;
+    var cursorColorParsed = namedArguments[const Symbol('cursorColor')];
+    if (cursorColorParsed != null) {
+      cursorColor = cursorColorParsed as Color;
+    }
+    bool? enabled;
+    var enabledParsed = namedArguments[const Symbol('enabled')];
+    if (enabledParsed != null) {
+      enabled = enabledParsed as bool;
+    }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    bool autocorrect = true;
+    var autocorrectParsed = namedArguments[const Symbol('autocorrect')];
+    if (autocorrectParsed != null) {
+      autocorrect = autocorrectParsed as bool;
+    }
+    bool obscureText = false;
+    var obscureTextParsed = namedArguments[const Symbol('obscureText')];
+    if (obscureTextParsed != null) {
+      obscureText = obscureTextParsed as bool;
+    }
+    String obscureCharacter = '•';
+    var obscureCharacterParsed = namedArguments[const Symbol('obscureCharacter')];
+    if (obscureCharacterParsed != null) {
+      obscureCharacter = obscureCharacterParsed as String;
+    }
+    bool expands = false;
+    var expandsParsed = namedArguments[const Symbol('expands')];
+    if (expandsParsed != null) {
+      expands = expandsParsed as bool;
+    }
+    int? maxLength;
+    var maxLengthParsed = namedArguments[const Symbol('maxLength')];
+    if (maxLengthParsed != null) {
+      maxLength = maxLengthParsed as int;
+    }
+    double cursorWidth = parseDouble(namedArguments[const Symbol('cursorWidth')]) ?? 2.0;
     return TextField(
+      enabled: enabled,
+      autocorrect: autocorrect,
+      obscuringCharacter: obscureCharacter,
+      autofocus: autofocus,
+      obscureText: obscureText,
       controller: controller,
       decoration: decoration,
+      textAlign: textAlign,
+      expands: expands,
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
+      textAlignVertical: textAlignVertical,
+      textDirection: textDirection,
+      textCapitalization: textCapitalization,
       onChanged: onChanged,
+      readOnly: readOnly,
+      showCursor: showCursor,
       maxLines: maxLines,
+      minLines: minLines,
+      maxLength: maxLength,
+      cursorWidth: cursorWidth,
+      cursorHeight: cursorHeight,
+      cursorRadius: cursorRadius,
+      cursorColor: cursorColor,
       style: style,
     );
   }
