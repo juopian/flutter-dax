@@ -6,7 +6,7 @@ const Duration _kMenuDuration = Duration(milliseconds: 300);
 const double _kMenuScreenPadding = 0.0;
 const double _kMenuVerticalPadding = 8.0;
 
-class IDropdownAnimated implements LoxFlutterFunction {
+class IPopupMenuFilter implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

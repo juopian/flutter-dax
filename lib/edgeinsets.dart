@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'utils.dart';
-import 'api.dart';
+import 'http.dart';
 
 final edgeInsetsMap = {
   "all": (Object value) {
@@ -258,4 +258,45 @@ final jsonMap = {
   "decode": (Object value) {
     return json.decode(value as String);
   }
+};
+
+final textOverflowMap = {
+  "ellipsis": TextOverflow.ellipsis,
+  "clip": TextOverflow.clip,
+  "fade": TextOverflow.fade,
+  "visible": TextOverflow.visible
+};
+
+final blendModeMap = {
+  "clear": BlendMode.clear,
+  "color": BlendMode.color,
+  "colorBurn": BlendMode.colorBurn,
+  "colorDodge": BlendMode.colorDodge,
+  "darken": BlendMode.darken,
+  "difference": BlendMode.difference,
+  "dst": BlendMode.dst,
+  "dstATop": BlendMode.dstATop,
+  "dstIn": BlendMode.dstIn,
+  "dstOut": BlendMode.dstOut,
+  "dstOver": BlendMode.dstOver,
+  "exclusion": BlendMode.exclusion,
+  "hardLight": BlendMode.hardLight,
+  "lighten": BlendMode.lighten,
+  "multiply": BlendMode.multiply,
+  "overlay": BlendMode.overlay,
+  "screen": BlendMode.screen,
+  "softLight": BlendMode.softLight
+};
+
+final imageRepeatMap = {
+  "noRepeat": ImageRepeat.noRepeat,
+  "repeat": ImageRepeat.repeat,
+  "repeatX": ImageRepeat.repeatX,
+  "repeatY": ImageRepeat.repeatY
+};
+
+final filterQualityMap = {
+  "low": FilterQuality.low,
+  "medium": FilterQuality.medium,
+  "high": FilterQuality.high
 };

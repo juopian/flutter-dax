@@ -138,6 +138,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Api", apiMap);
     interpreter.registerGlobal("Axis", axisMap);
     interpreter.registerGlobal("AxisDirection", axisDirectionMap);
+    interpreter.registerGlobal("BlendMode", blendModeMap);
     interpreter.registerGlobal("Border", borderMap);
     interpreter.registerGlobal("BoxFit", boxFitMap);
     interpreter.registerGlobal("BorderRadius", borderRadiusMap);
@@ -145,8 +146,10 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Colors", colorMap);
     interpreter.registerGlobal("CrossAxisAlignment", crossAxisAlignmentMap);
     interpreter.registerGlobal("EdgeInsets", edgeInsetsMap);
+    interpreter.registerGlobal("FilterQuality", filterQualityMap);
     interpreter.registerGlobal("FontWeight", fontWeightMap);
     interpreter.registerGlobal("Icons", iconMap);
+    interpreter.registerGlobal("ImageRepeat", imageRepeatMap);
     interpreter.registerGlobal("json", jsonMap);
     interpreter.registerGlobal(
         "ListTileControlAffinity", listTileControlAffinityMap);
@@ -161,6 +164,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("TextAlign", textAlignMap);
     interpreter.registerGlobal("TextInputType", textInputTypeMap);
     interpreter.registerGlobal("TextDirection", textDirectionMap);
+    interpreter.registerGlobal("TextOverflow", textOverflowMap);
     interpreter.registerGlobal("Transform", transformMap);
     interpreter.registerGlobal("WrapAlignment", wrapAlignmentMap);
 
@@ -201,7 +205,6 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("DefaultTextStyle", IDefaultTextStyle());
     interpreter.registerGlobal("Divider", IDivider());
     interpreter.registerGlobal("DropdownButton", IDropdownButton());
-    interpreter.registerGlobal("DropdownAnimated", IDropdownAnimated());
     interpreter.registerGlobal("DropdownMenuItem", IDropdownMenuItem());
     interpreter.registerGlobal("ElevatedButton", IElevatedButton());
     interpreter.registerGlobal("Expanded", IExpanded());
@@ -221,6 +224,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("OutlineInputBorder", IOutlineInputBorder());
     interpreter.registerGlobal("Padding", IPadding());
     interpreter.registerGlobal("PopupMenuButton", IPopupMenuButton());
+    interpreter.registerGlobal("PopupMenuFilter", IPopupMenuFilter());
     interpreter.registerGlobal("PopupMenuDivider", IPopupMenuDivider());
     interpreter.registerGlobal("PopupMenuItem", IPopupMenuItem());
     interpreter.registerGlobal("PopupMenuWrap", IPopupMenuWrap());

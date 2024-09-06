@@ -18,9 +18,33 @@ class IText implements LoxFlutterFunction {
     if (textAlignParsed != null) {
       textAlign = textAlignParsed as TextAlign;
     }
+    TextDirection? textDirection;
+    var textDirectionParsed = namedArguments[const Symbol('textDirection')];
+    if (textDirectionParsed != null) {
+      textDirection = textDirectionParsed as TextDirection;
+    }
+    bool? softWrap;
+    var softWrapParsed = namedArguments[const Symbol('softWrap')];
+    if (softWrapParsed != null) {
+      softWrap = softWrapParsed as bool;
+    }
+    TextOverflow? overflow;
+    var overflowParsed = namedArguments[const Symbol('overflow')];
+    if (overflowParsed != null) {
+      overflow = overflowParsed as TextOverflow;
+    }
+    int? maxLines;
+    var maxLinesParsed = namedArguments[const Symbol('maxLines')];
+    if (maxLinesParsed != null) {
+      maxLines = maxLinesParsed as int;
+    }
     return Text(
       arguments.first as String,
+      textDirection: textDirection,
       textAlign: textAlign,
+      softWrap: softWrap,
+      overflow: overflow,
+      maxLines: maxLines,
       style: style,
     );
   }
@@ -76,11 +100,17 @@ class ElevatedButtonStyleBuilder implements LoxFlutterFunction {
     if (shapeParsed != null) {
       shape = shapeParsed as OutlinedBorder;
     }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
     return ElevatedButton.styleFrom(
         primary: primary,
         shadowColor: shadowColor,
         elevation: elevation,
         textStyle: textStyle,
+        alignment: alignment,
         side: side,
         shape: shape,
         minimumSize: minimumSize,
@@ -111,8 +141,20 @@ class IElevatedButton implements LoxFlutterFunction, LoxGetCallable {
     if (onPressed == null) {
       throw "onPressed required in ElevatedButton";
     }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    ButtonStyle? style;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as ButtonStyle;
+    }
     return ElevatedButton(
         child: child as Widget,
+        autofocus: autofocus,
+        style: style,
         onPressed: () {
           (onPressed as LoxFunction).call(interpreter, [], {});
         });
@@ -174,6 +216,11 @@ class OutlinedButtonStyleBuilder implements LoxFlutterFunction {
     if (shapeParsed != null) {
       shape = shapeParsed as OutlinedBorder;
     }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
     return OutlinedButton.styleFrom(
         primary: primary,
         backgroundColor: backgroundColor,
@@ -182,6 +229,7 @@ class OutlinedButtonStyleBuilder implements LoxFlutterFunction {
         textStyle: textStyle,
         side: side,
         shape: shape,
+        alignment: alignment,
         minimumSize: minimumSize,
         maximumSize: maximumSize,
         fixedSize: fixedSize,
@@ -215,8 +263,14 @@ class IOutlinedButton implements LoxFlutterFunction, LoxGetCallable {
     if (styleParsed != null) {
       style = styleParsed as ButtonStyle;
     }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
     return OutlinedButton(
         child: child as Widget,
+        autofocus: autofocus,
         style: style,
         onPressed: () {
           (onPressed as LoxFunction).call(interpreter, [], {});
@@ -279,6 +333,11 @@ class TextButtonStyleBuilder implements LoxFlutterFunction {
     if (shapeParsed != null) {
       shape = shapeParsed as OutlinedBorder;
     }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
     return TextButton.styleFrom(
         primary: primary,
         backgroundColor: backgroundColor,
@@ -287,6 +346,7 @@ class TextButtonStyleBuilder implements LoxFlutterFunction {
         textStyle: textStyle,
         side: side,
         shape: shape,
+        alignment: alignment,
         minimumSize: minimumSize,
         maximumSize: maximumSize,
         fixedSize: fixedSize,
@@ -320,9 +380,15 @@ class ITextButton implements LoxFlutterFunction, LoxGetCallable {
     if (styleParsed != null) {
       style = styleParsed as ButtonStyle;
     }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
     return TextButton(
         child: child as Widget,
         style: style,
+        autofocus: autofocus,
         onPressed: () {
           (onPressed as LoxFunction).call(interpreter, [], {});
         });
@@ -337,8 +403,7 @@ class IIcon implements LoxFlutterFunction {
       throw "icon required in Icon";
     }
     var icon = arguments[0];
-    double? size;
-    size = parseDouble(namedArguments[const Symbol('size')]);
+    double? size = parseDouble(namedArguments[const Symbol('size')]);
     Color? color;
     var colorParsed = namedArguments[const Symbol('color')];
     if (colorParsed != null) {
@@ -360,8 +425,59 @@ class IIconButton implements LoxFlutterFunction {
     if (onPressed == null) {
       throw "onPressed required in IconButton";
     }
+    double iconSize =
+        parseDouble(namedArguments[const Symbol('iconSize')]) ?? 24;
+    EdgeInsetsGeometry padding = const EdgeInsets.all(8);
+    var paddingParse = namedArguments[const Symbol('padding')];
+    if (paddingParse != null) {
+      padding = paddingParse as EdgeInsetsGeometry;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    BoxConstraints? constraints;
+    var constraintsParse = namedArguments[const Symbol('constraints')];
+    if (constraintsParse != null) {
+      constraints = constraintsParse as BoxConstraints;
+    }
+    bool autofocus = false;
+    var autofocusParse = namedArguments[const Symbol('autofocus')];
+    if (autofocusParse != null) {
+      autofocus = autofocusParse as bool;
+    }
+    Color? color;
+    var colorParse = namedArguments[const Symbol('color')];
+    if (colorParse != null) {
+      color = colorParse as Color;
+    }
+    Color? disabledColor;
+    var disabledColorParse = namedArguments[const Symbol('disabledColor')];
+    if (disabledColorParse != null) {
+      disabledColor = disabledColorParse as Color;
+    }
+    Color? splashColor;
+    var splashColorParse = namedArguments[const Symbol('splashColor')];
+    if (splashColorParse != null) {
+      splashColor = splashColorParse as Color;
+    }
+    Color? focusColor;
+    var focusColorParse = namedArguments[const Symbol('focusColor')];
+    if(focusColorParse != null){
+      focusColor = focusColorParse as Color;
+    }
     return IconButton(
         icon: icon as Widget,
+        iconSize: iconSize,
+        autofocus: autofocus,
+        constraints: constraints,
+        padding: padding,
+        color: color,
+        disabledColor: disabledColor,
+        focusColor: focusColor,
+        splashColor: splashColor,
+        alignment: alignment,
         onPressed: () {
           (onPressed as LoxFunction).call(interpreter, [], {});
         });
@@ -384,10 +500,53 @@ class IImage implements LoxFlutterFunction {
     if (fitParsed != null) {
       fit = fitParsed as BoxFit;
     }
+    Color? color;
+    var colorParse = namedArguments[const Symbol('color')];
+    if (colorParse != null) {
+      color = colorParse as Color;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    BlendMode? blendMode;
+    var blendModeParse = namedArguments[const Symbol('blendMode')];
+    if (blendModeParse != null) {
+      blendMode = blendModeParse as BlendMode;
+    }
+    ImageRepeat repeat = ImageRepeat.noRepeat;
+    var repeatParse = namedArguments[const Symbol('repeat')];
+    if (repeatParse != null) {
+      repeat = repeatParse as ImageRepeat;
+    }
+    bool matchTextDirection = false;
+    var matchTextDirectionParse =
+        namedArguments[const Symbol('matchTextDirection')];
+    if (matchTextDirectionParse != null) {
+      matchTextDirection = matchTextDirectionParse as bool;
+    }
+    bool isAntiAlias = false;
+    var isAntiAliasParse = namedArguments[const Symbol('isAntiAlias')];
+    if (isAntiAliasParse != null) {
+      isAntiAlias = isAntiAliasParse as bool;
+    }
+    FilterQuality filterQuality = FilterQuality.low;
+    var filterQualityParse = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParse != null) {
+      filterQuality = filterQualityParse as FilterQuality;
+    }
     return Image(
       image: image,
       height: height,
       width: width,
+      repeat: repeat,
+      matchTextDirection: matchTextDirection,
+      filterQuality: filterQuality,
+      isAntiAlias: isAntiAlias,
+      alignment: alignment,
+      colorBlendMode: blendMode,
+      color: color,
       fit: fit,
     );
   }
@@ -397,7 +556,10 @@ class ICupertinoActivityIndicator implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    return const CupertinoActivityIndicator();
+    double radius = parseDouble(namedArguments[const Symbol('radius')]) ?? 10;
+    return CupertinoActivityIndicator(
+      radius: radius,
+    );
   }
 }
 
@@ -405,21 +567,21 @@ class ICircularProgressIndicator implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    double? strokeWidth =
-        parseDouble(namedArguments[const Symbol('strokeWidth')]);
+    double strokeWidth =
+        parseDouble(namedArguments[const Symbol('strokeWidth')]) ?? 4;
     double? value = parseDouble(namedArguments[const Symbol('value')]);
     Color? color;
-    Color? backgroundColor;
     var colorParsed = namedArguments[const Symbol('color')];
     if (colorParsed != null) {
       color = colorParsed as Color;
     }
+    Color? backgroundColor;
     var backgroundColorParsed = namedArguments[const Symbol('backgroundColor')];
     if (backgroundColorParsed != null) {
       backgroundColor = backgroundColorParsed as Color;
     }
     return CircularProgressIndicator(
-      strokeWidth: strokeWidth ?? 4.0,
+      strokeWidth: strokeWidth,
       value: value,
       color: color,
       backgroundColor: backgroundColor,
@@ -427,7 +589,7 @@ class ICircularProgressIndicator implements LoxFlutterFunction {
   }
 }
 
-class ISwitch implements LoxFlutterFunction {
+class SwitchAdaptive implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -439,9 +601,115 @@ class ISwitch implements LoxFlutterFunction {
     if (onChanged == null) {
       throw "onChanged required in Switch";
     }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    double? splashRadius =
+        parseDouble(namedArguments[const Symbol('splashRadius')]);
+    Color? activeColor;
+    var activeColorParsed = namedArguments[const Symbol('activeColor')];
+    if (activeColorParsed != null) {
+      activeColor = activeColorParsed as Color;
+    }
+    Color? activeTrackColor;
+    var activeTrackColorParsed = namedArguments[const Symbol('inactiveColor')];
+    if (activeTrackColorParsed != null) {
+      activeTrackColor = activeTrackColorParsed as Color;
+    }
+    Color? inactiveThumbColor;
+    var inactiveThumbColorParsed = namedArguments[const Symbol('hoverColor')];
+    if (inactiveThumbColorParsed != null) {
+      inactiveThumbColor = inactiveThumbColorParsed as Color;
+    }
+    Color? inactiveTrackColor;
+    var inactiveTrackColorParsed = namedArguments[const Symbol('focusColor')];
+    if (inactiveTrackColorParsed != null) {
+      inactiveTrackColor = inactiveTrackColorParsed as Color;
+    }
+    Color? focusColor;
+    var focusColorParse = namedArguments[const Symbol('focusColor')];
+    if(focusColorParse != null){
+      focusColor = focusColorParse as Color;
+    }
+    return Switch.adaptive(
+        value: value as bool,
+        splashRadius: splashRadius,
+        autofocus: autofocus,
+        focusColor: focusColor,
+        activeColor: activeColor,
+        activeTrackColor: activeTrackColor,
+        inactiveThumbColor: inactiveThumbColor,
+        inactiveTrackColor: inactiveTrackColor,
+        onChanged: (value) {
+          (onChanged as LoxFunction).call(interpreter, [value], {});
+        });
+  }
+}
+
+class ISwitch implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    if (name.lexeme == "adaptive") {
+      return SwitchAdaptive();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var value = namedArguments[const Symbol('value')];
+    if (value == null) {
+      throw "value required in Switch";
+    }
+    var onChanged = namedArguments[const Symbol('onChanged')];
+    if (onChanged == null) {
+      throw "onChanged required in Switch";
+    }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    double? splashRadius =
+        parseDouble(namedArguments[const Symbol('splashRadius')]);
+    Color? activeColor;
+    var activeColorParsed = namedArguments[const Symbol('activeColor')];
+    if (activeColorParsed != null) {
+      activeColor = activeColorParsed as Color;
+    }
+    Color? activeTrackColor;
+    var activeTrackColorParsed = namedArguments[const Symbol('inactiveColor')];
+    if (activeTrackColorParsed != null) {
+      activeTrackColor = activeTrackColorParsed as Color;
+    }
+    Color? inactiveThumbColor;
+    var inactiveThumbColorParsed = namedArguments[const Symbol('hoverColor')];
+    if (inactiveThumbColorParsed != null) {
+      inactiveThumbColor = inactiveThumbColorParsed as Color;
+    }
+    Color? inactiveTrackColor;
+    var inactiveTrackColorParsed = namedArguments[const Symbol('focusColor')];
+    if (inactiveTrackColorParsed != null) {
+      inactiveTrackColor = inactiveTrackColorParsed as Color;
+    }
+    Color? focusColor;
+    var focusColorParse = namedArguments[const Symbol('focusColor')];
+    if(focusColorParse != null){
+      focusColor = focusColorParse as Color;
+    }
     return Switch(
       value: value as bool,
-      onChanged: (bool? value) {
+      splashRadius: splashRadius,
+      autofocus: autofocus,
+      focusColor: focusColor,
+      activeColor: activeColor,
+      activeTrackColor: activeTrackColor,
+      inactiveThumbColor: inactiveThumbColor,
+      inactiveTrackColor: inactiveTrackColor,
+      onChanged: (bool value) {
         (onChanged as LoxFunction).call(interpreter, [value], {});
       },
     );
@@ -460,8 +728,48 @@ class ISlider implements LoxFlutterFunction {
     if (onChanged == null) {
       throw "onChanged required in Slider";
     }
+    double min = parseDouble(namedArguments[const Symbol('min')]) ?? 0;
+    double max = parseDouble(namedArguments[const Symbol('max')]) ?? 1;
+    int? divisions ;
+    var divisionsParse = namedArguments[const Symbol('divisions')];
+    if (divisionsParse != null) {
+      divisions = divisionsParse as int;
+    }
+    String? label;
+    var labelParse = namedArguments[const Symbol('label')];
+    if(labelParse != null){
+      label = labelParse as String;
+    }
+    Color? activeColor;
+    var activeColorParse = namedArguments[const Symbol('activeColor')];
+    if(activeColorParse != null){
+      activeColor = activeColorParse as Color;
+    }
+    Color? inactiveColor;
+    var inactiveColorParse = namedArguments[const Symbol('inactiveColor')];
+    if(inactiveColorParse != null){
+      inactiveColor = inactiveColorParse as Color;
+    }
+    Color? thumbColor;
+    var thumbColorParse = namedArguments[const Symbol('thumbColor')];
+    if(thumbColorParse != null){
+      thumbColor = thumbColorParse as Color;
+    }
+    bool autofocus = false;
+    var autofocusParse = namedArguments[const Symbol('autofocus')];
+    if(autofocusParse != null){
+      autofocus = autofocusParse as bool;
+    }
     return Slider(
       value: value as double,
+      min: min,
+      max: max,
+      divisions: divisions,
+      label: label,
+      activeColor: activeColor,
+      inactiveColor: inactiveColor,
+      thumbColor: thumbColor,
+      autofocus: autofocus,
       onChanged: (value) {
         (onChanged as LoxFunction).call(interpreter, [value], {});
       },
@@ -485,9 +793,35 @@ class IRadio implements LoxFlutterFunction {
     if (onChanged == null) {
       throw "onChanged required in Radio";
     }
+    bool toggleable = false;
+    var toggleableParse = namedArguments[const Symbol('toggleable')];
+    if(toggleableParse != null){
+      toggleable = toggleableParse as bool;
+    }
+    Color? activeColor;
+    var activeColorParse = namedArguments[const Symbol('activeColor')];
+    if(activeColorParse != null){
+      activeColor = activeColorParse as Color;
+    }
+    Color? focusColor;
+    var focusColorParse = namedArguments[const Symbol('focusColor')];
+    if(focusColorParse != null){
+      focusColor = focusColorParse as Color;
+    }
+    bool autofocus = false;
+    var autofocusParse = namedArguments[const Symbol('autofocus')];
+    if(autofocusParse != null){
+      autofocus = autofocusParse as bool;
+    }
+    double? splashRadius = parseDouble(namedArguments[const Symbol('splashRadius')]);
     return Radio(
       value: value,
+      toggleable: toggleable,
+      focusColor: focusColor,
+      activeColor: activeColor,
       groupValue: groupValue,
+      splashRadius: splashRadius,
+      autofocus: autofocus,
       onChanged: (value) {
         (onChanged as LoxFunction).call(interpreter, [value], {});
       },

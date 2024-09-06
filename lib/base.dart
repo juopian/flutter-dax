@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'utils.dart';
 
-
 class IOffset implements LoxFlutterFunction, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
       case 'zero':
         return Offset.zero;
+      case 'infinit':
+        return Offset.infinite;
     }
     return null;
   }
@@ -136,6 +137,9 @@ class IColor implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
     return Color(arguments[0] as int);
   }
 }
@@ -144,6 +148,9 @@ class IAssetImage implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
     return AssetImage(arguments[0] as String);
   }
 }
@@ -152,7 +159,11 @@ class INetworkImage implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    return NetworkImage(arguments[0] as String);
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    double scale = parseDouble(namedArguments[const Symbol('scale')]) ?? 1;
+    return NetworkImage(arguments[0] as String, scale: scale);
   }
 }
 
@@ -160,12 +171,28 @@ class ITextEditingController implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    return TextEditingControllerIns();
+    String? text;
+    if (arguments.isNotEmpty) {
+      text = arguments[0] as String;
+    }
+    return TextEditingControllerIns(text);
   }
 }
 
 class TextEditingControllerIns extends TextEditingController
-    implements LoxSetCallable {
+    implements LoxSetCallable, LoxGetCallable {
+  final String? initText;
+
+  TextEditingControllerIns(this.initText) : super(text: initText);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'clear':
+        return clear;
+    }
+  }
+
   @override
   Object? set(Token name, Object? value) {
     switch (name.lexeme) {
@@ -199,10 +226,23 @@ class IShowDialog implements LoxFlutterFunction {
     if (builder == null) {
       throw "builder required in showDialog";
     }
+    bool useSafeArea = true;
+    var useSafeAreaParsed = namedArguments[const Symbol('useSafeArea')];
+    if (useSafeAreaParsed != null) {
+      useSafeArea = useSafeAreaParsed as bool;
+    }
+    bool useRootNavigator = true;
+    var useRootNavigatorParsed =
+        namedArguments[const Symbol('useRootNavigator')];
+    if (useRootNavigatorParsed != null) {
+      useRootNavigator = useRootNavigatorParsed as bool;
+    }
     return showDialog(
         context: context as BuildContext,
         barrierDismissible: barrierDismissible,
         barrierColor: barrierColor,
+        useSafeArea: useSafeArea,
+        useRootNavigator: useRootNavigator,
         builder: (context) {
           return (builder as LoxFunction).call(interpreter, [context], {})
               as Widget;
@@ -238,12 +278,24 @@ class IShowModalBottomSheet implements LoxFlutterFunction {
     if (isDismissibleParsed != null) {
       isDismissible = isDismissibleParsed as bool;
     }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    BoxConstraints? constraints;
+    var constraintsParsed = namedArguments[const Symbol('constraints')];
+    if (constraintsParsed != null) {
+      constraints = constraintsParsed as BoxConstraints;
+    }
     return showModalBottomSheet(
         context: context as BuildContext,
         backgroundColor: backgroundColor,
         barrierColor: barrierColor,
         isDismissible: isDismissible,
         elevation: elevation,
+        constraints: constraints,
+        shape: shape,
         builder: (context) {
           return (builder as LoxFunction).call(interpreter, [context], {})
               as Widget;
@@ -251,31 +303,30 @@ class IShowModalBottomSheet implements LoxFlutterFunction {
   }
 }
 
-// class TabControllerIns extends TabController implements LoxSetCallable {
-//   TabControllerIns(initialIndex, self)
-//       : super(length: initialIndex, vsync: self);
-
-//   @override
-//   Object? set(Token name, Object? value) {
-//     switch (name.lexeme) {
-//       case 'text':
-//         text = value as String;
-//         break;
-//     }
-//   }
-// }
-
 class IDateFormat implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    if (arguments.length < 2) {
-      throw "Argument must be at least 2.";
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
     }
     var formatStr = arguments[0] as String;
-    var dateTime = arguments[1] as DateTime;
-    DateFormat format = DateFormat(formatStr);
-    return format.format(dateTime);
+    return DateFormatIns(formatStr);
+  }
+}
+
+class DateFormatIns extends DateFormat implements LoxGetCallable {
+  final String formatStr;
+  DateFormatIns(this.formatStr) : super(formatStr);
+
+  @override
+  Object? get(Token name) {
+    if (name.lexeme == "format") {
+      return format;
+    } else if (name.lexeme == "parse") {
+      return parse;
+    }
+    throw "Unknown property: ${name.lexeme}";
   }
 }
 
@@ -410,7 +461,50 @@ class IRegExp implements LoxFlutterFunction {
     if (caseSensitiveParsed != null) {
       caseSensitive = caseSensitiveParsed as bool;
     }
-    return RegExp(pattern,
-        multiLine: multiLine, unicode: unicode, caseSensitive: caseSensitive);
+    bool dotAll = false;
+    var dotAllParsed = namedArguments[const Symbol('dotAll')];
+    if (dotAllParsed != null) {
+      dotAll = dotAllParsed as bool;
+    }
+    return RegExpIns(pattern,
+        multiLine: multiLine,
+        unicode: unicode,
+        caseSensitive: caseSensitive,
+        dotAll: dotAll);
+  }
+}
+
+class RegExpIns implements LoxGetCallable {
+  final RegExp _regExp;
+  final String source;
+  final bool multiLine;
+  final bool unicode;
+  final bool caseSensitive;
+  final bool dotAll;
+
+  RegExpIns(this.source,
+      {this.multiLine = false,
+      this.unicode = false,
+      this.caseSensitive = true,
+      this.dotAll = false})
+      : _regExp = RegExp(source,
+            multiLine: multiLine,
+            unicode: unicode,
+            caseSensitive: caseSensitive,
+            dotAll: dotAll);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'allMatches':
+        return _regExp.allMatches;
+      case 'firstMatch':
+        return _regExp.firstMatch;
+      case 'hasMatch':
+        return _regExp.hasMatch;
+      case 'stringMatch':
+        return _regExp.stringMatch;
+    }
+    throw "Unknown property: ${name.lexeme}";
   }
 }
