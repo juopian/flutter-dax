@@ -6,7 +6,6 @@
 ## 安装
 
 在pubspec.yaml文件添加
-Alignment
 ```
 dax_flutter:  
     git:
@@ -14,46 +13,35 @@ dax_flutter:
       ref: master
 ```
 
-# 使用
-
-
-`import 'package:dax_flutter/main.dart';`
+## 使用
 
 ```
-
-	var codeSnap = 
-	```
+import 'package:dax_flutter/main.dart';
+var codeSnap = ```
 	var i = 1;
 	fun build() {
 	  return Scaffold(
-	      appBar: AppBar(
-	        title: Text("title")
-	      ),
-	      body: Column(
-	      	 children: [
-	      	 	Text("count : ${i}"),
-	      	 	TextButton(
-	      	 		child: Text("click"),
-	      	 		onPressed: (){
-	      	 			setState((){
-	      	 				i = i+1;
-	      	 			});
-	      	 		}
-	      	 	)
-	      	 ]
-	      )
-	    );
-	  }
-	build(); 
-	```
+			appBar: AppBar(
+				title: Text("title")
+			),
+			body: Column(
+					children: [
+					Text("count : ${i}"),
+					TextButton(
+						child: Text("click"),
+						onPressed: (){
+							setState((){
+								i = i+1;
+							});
+						}
+					)
+				]
+			)
+		);
+	} ```;
 
-	Navigator.push(context, MaterialPageRoute(
-        builder: (context) => DaxPage(codeSnap)
-   )
-
+Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSnap))) 
 ```
-
-
 
 # 基本组件库
 目前组件库基于flutter2.5开发，覆盖大部分常用组件和配置，使用方法完全兼容flutter
@@ -128,17 +116,17 @@ Color(int value)
 
 ```
 CircularProgressIndicator({
-	double? value,
-	Color? backgroundColor,
-	Color? color,
-	double strokeWidth = 4.0,
+  double? value,
+  Color? backgroundColor,
+  Color? color,
+  double strokeWidth = 4.0,
 })
 ```
 *  ContinuousRectangleBorder
 ###  CupertinoActivityIndicator
 ```
 CupertinoActivityIndicator({
-	double radius = _kDefaultIndicatorRadius,
+ . double radius = _kDefaultIndicatorRadius,
 })
 ```
 *  DefaultTabController
@@ -146,26 +134,26 @@ CupertinoActivityIndicator({
 ###  ElevatedButton
 ```
 ElevatedButton({
-	required void Function()? onPressed,
-	ButtonStyle? style,
-	bool autofocus = false,
-	required Widget? child,
-	})
+  required void Function()? onPressed,
+  ButtonStyle? style,
+  bool autofocus = false,
+  required Widget? child,
+})
 
 定义按钮样式，如：
 ElevatedButton.styleFrom({
-	Color? primary,
-	Color? onPrimary,
-	Color? shadowColor,
-	double? elevation,
-	TextStyle? textStyle,
-	EdgeInsetsGeometry? padding,
-	Size? minimumSize,
-	Size? fixedSize,
-	Size? maximumSize,
-	BorderSide? side,
-	OutlinedBorder? shape,
-	AlignmentGeometry? alignment,
+  Color? primary,
+  Color? onPrimary,
+  Color? shadowColor,
+  double? elevation,
+  TextStyle? textStyle,
+  EdgeInsetsGeometry? padding,
+  Size? minimumSize,
+  Size? fixedSize,
+  Size? maximumSize,
+  BorderSide? side,
+  OutlinedBorder? shape,
+  AlignmentGeometry? alignment,
 })	
 
 ```
@@ -175,43 +163,43 @@ ElevatedButton.styleFrom({
 ###  Icon
 ```
 Icon(
-	IconData? icon, {
-	double? size,
-	Color? color,
+  IconData? icon, {
+  double? size,
+  Color? color,
 })
 ```
 ###  IconButton
 ```
 IconButton({
-	double iconSize = 24.0,
-	EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
-	AlignmentGeometry alignment = Alignment.center,
-	Color? color,
-	Color? focusColor,
-	Color? hoverColor,
-	Color? highlightColor,
-	Color? splashColor,
-	Color? disabledColor,
-	required void Function()? onPressed,
-	bool autofocus = false,
-	BoxConstraints? constraints,
-	required Widget icon,
+  double iconSize = 24.0,
+  EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
+  AlignmentGeometry alignment = Alignment.center,
+  Color? color,
+  Color? focusColor,
+  Color? hoverColor,
+  Color? highlightColor,
+  Color? splashColor,
+  Color? disabledColor,
+  required void Function()? onPressed,
+  bool autofocus = false,
+  BoxConstraints? constraints,
+  required Widget icon,
 })	
 ```
 ###  Image
 ```
 Image({
-	required ImageProvider<Object> image,
-	double? width,
-	double? height,
-	Color? color,
-	BlendMode? colorBlendMode,
-	BoxFit? fit,
-	AlignmentGeometry alignment = Alignment.center,
-	ImageRepeat repeat = ImageRepeat.noRepeat,
-	bool matchTextDirection = false,
-	bool isAntiAlias = false,
-	FilterQuality filterQuality = FilterQuality.low,
+  required ImageProvider<Object> image,
+  double? width,
+  double? height,
+  Color? color,
+  BlendMode? colorBlendMode,
+  BoxFit? fit,
+  AlignmentGeometry alignment = Alignment.center,
+  ImageRepeat repeat = ImageRepeat.noRepeat,
+  bool matchTextDirection = false,
+  bool isAntiAlias = false,
+  FilterQuality filterQuality = FilterQuality.low,
 })
 ```
 *  InputDecoration
@@ -231,26 +219,26 @@ Offset(double dx, double dy)
 ###  OutlinedButton
 ```
 OutlinedButton({
-	required void Function()? onPressed,
-	ButtonStyle? style,
-	bool autofocus = false,
-	required Widget child,
-	})
+  required void Function()? onPressed,
+  ButtonStyle? style,
+  bool autofocus = false,
+  required Widget child,
+})
 
 定义按钮样式
 OutlinedButton.styleFrom({
-	Color? primary,
-	Color? backgroundColor,
-	Color? shadowColor,
-	double? elevation,
-	TextStyle? textStyle,
-	EdgeInsetsGeometry? padding,
-	Size? minimumSize,
-	Size? fixedSize,
-	Size? maximumSize,
-	BorderSide? side,
-	OutlinedBorder? shape,
-	AlignmentGeometry? alignment,
+  Color? primary,
+  Color? backgroundColor,
+  Color? shadowColor,
+  double? elevation,
+  TextStyle? textStyle,
+  EdgeInsetsGeometry? padding,
+  Size? minimumSize,
+  Size? fixedSize,
+  Size? maximumSize,
+  BorderSide? side,
+  OutlinedBorder? shape,
+  AlignmentGeometry? alignment,
 })
 ```
 *  OutlineInputBorder
@@ -338,38 +326,38 @@ Switch.adaptive({
 ###  Text
 ```
 Text(String data, {
-	TextStyle? style,
-	TextAlign? textAlign,
-	TextDirection? textDirection,
-	bool? softWrap,
-	TextOverflow? overflow,
-	double? textScaleFactor,
-	int? maxLines,
+  TextStyle? style,
+  TextAlign? textAlign,
+  TextDirection? textDirection,
+  bool? softWrap,
+  TextOverflow? overflow,
+  double? textScaleFactor,
+  int? maxLines,
 })
 ```
 ###  TextButton
 ```
 TextButton({
-	required void Function()? onPressed,
-	ButtonStyle? style,
-	bool autofocus = false,
-	required Widget child,
+  required void Function()? onPressed,
+  ButtonStyle? style,
+  bool autofocus = false,
+  required Widget child,
 })
 
 定义按钮样式：
 TextButton.styleFrom({
-	Color? primary,
-	Color? backgroundColor,
-	Color? shadowColor,
-	double? elevation,
-	TextStyle? textStyle,
-	EdgeInsetsGeometry? padding,
-	Size? minimumSize,
-	Size? fixedSize,
-	Size? maximumSize,
-	BorderSide? side,
-	OutlinedBorder? shape,
-	AlignmentGeometry? alignment,
+  Color? primary,
+  Color? backgroundColor,
+  Color? shadowColor,
+  double? elevation,
+  TextStyle? textStyle,
+  EdgeInsetsGeometry? padding,
+  Size? minimumSize,
+  Size? fixedSize,
+  Size? maximumSize,
+  BorderSide? side,
+  OutlinedBorder? shape,
+  AlignmentGeometry? alignment,
 })
 ```
 *  TextField
@@ -377,13 +365,13 @@ TextButton.styleFrom({
 ###  Uri
 ```
 Uri({
-	String? scheme,
-	String? host,
-	String? port,
-	String? path,
-	String? query,
-	String? queryParameters,
-	String? fragment,
+  String? scheme,
+  String? host,
+  String? port,
+  String? path,
+  String? query,
+  String? queryParameters,
+  String? fragment,
 })
 ```
 *  UnderlineInputBorder
@@ -398,26 +386,26 @@ String dateStr = DateFormat("yyyy-MM-dd").format(DateTime.now())
 ### DateTime
 ```
 DateTime(
-	int year, [
-	int month = 1,
-	int day = 1,
-	int hour = 0,
-	int minute = 0,
-	int second = 0,
-	int millisecond = 0,
-	int microsecond = 0,
+  int year, [
+  int month = 1,
+  int day = 1,
+  int hour = 0,
+  int minute = 0,
+  int second = 0,
+  int millisecond = 0,
+  int microsecond = 0,
 ])
 
 DateTime.now();
 DateTime.utc(
-	int year, [
-	int month = 1,
-	int day = 1,
-	int hour = 0,
-	int minute = 0,
-	int second = 0,
-	int millisecond = 0,
-	int microsecond = 0,
+  int year, [
+  int month = 1,
+  int day = 1,
+  int hour = 0,
+  int minute = 0,
+  int second = 0,
+  int millisecond = 0,
+  int microsecond = 0,
 ]);
 DateTime.parse(String formattedString);
 ```
@@ -430,35 +418,35 @@ setState(() {...});
 ### showDialog
 ```
 showDialog({
-	required BuildContext context,
-	required WidgetBuilder builder,
-	bool barrierDismissible = true,
-	Color? barrierColor = Colors.black54,
-	bool useSafeArea = true,
-	bool useRootNavigator = true,
+  required BuildContext context,
+  required WidgetBuilder builder,
+  bool barrierDismissible = true,
+  Color? barrierColor = Colors.black54,
+  bool useSafeArea = true,
+  bool useRootNavigator = true,
 })
 ```
 ### showModalBottomSheet
 ```
 showModalBottomSheet({
-	required BuildContext context,
-	required WidgetBuilder builder,
-	Color? backgroundColor,
-	double? elevation,
-	Color? barrierColor,
-	bool isDismissible = true,
-	ShapeBorder? shape,
-	BoxConstraints? constraints,
+  required BuildContext context,
+  required WidgetBuilder builder,
+  Color? backgroundColor,
+  double? elevation,
+  Color? barrierColor,
+  bool isDismissible = true,
+  ShapeBorder? shape,
+  BoxConstraints? constraints,
 })
 ```
 ### RegExp
 ```
 RegExp(
-	String source, {
-	bool multiLine = false,
-	bool caseSensitive = true,
-	bool unicode = false,
-	bool dotAll = false,
+  String source, {
+  bool multiLine = false,
+  bool caseSensitive = true,
+  bool unicode = false,
+  bool dotAll = false,
 })
 
 var d = RegExp('(\\w+)');
