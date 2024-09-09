@@ -157,8 +157,18 @@ AppBar({
 ```
 AssetImage(String assetName)
 ```
-*  BeveledRectangleBorder
-*  BorderSide
+###  BeveledRectangleBorder
+```
+BeveledRectangleBorder({BorderSide side = BorderSide.none, BorderRadiusGeometry borderRadius = BorderRadius.zero})
+```
+###  BorderSide
+```
+BorderSide({
+  Color color = const Color(0xFF000000),
+  double width = 1.0,
+  BorderStyle style = BorderStyle.solid,
+})
+```
 ###  BottomNavigationBar
 ```
 BottomNavigationBar({
@@ -191,7 +201,19 @@ BottomNavigationBarItem({
   String? tooltip,
 })
 ```
-*  BoxDecoration
+###  BoxDecoration
+```
+BoxDecoration({
+  Color? color,
+  DecorationImage? image,
+  BoxBorder? border,
+  BorderRadiusGeometry? borderRadius,
+  List<BoxShadow>? boxShadow,
+  Gradient? gradient,
+  BlendMode? backgroundBlendMode,
+  BoxShape shape = BoxShape.rectangle,
+})
+```
 ### BoxConstraints
 ```
 BoxConstraints({
@@ -205,7 +227,15 @@ BoxConstraints.loose(Size size)
 BoxConstraints.tight(Size size)
 BoxConstraints.expand({double? width, double? height})
 ```
-*  BoxShadow
+###  BoxShadow
+```
+BoxShadow({
+  Color color = const Color(0xFF000000),
+  Offset offset = Offset.zero,
+  double blurRadius = 0.0,
+  double spreadRadius = 0.0,
+})
+```
 ### Center
 ```
 Center({
@@ -228,7 +258,10 @@ Checkbox({
   BorderSide? side,
 })
 ```
-*  CircleBorder
+###  CircleBorder
+```
+CircleBorder({BorderSide side = BorderSide.none})
+```
 *  CircularProgressIndicator
 ###  ClipOval
 ```
@@ -304,14 +337,21 @@ CircularProgressIndicator({
   double strokeWidth = 4.0,
 })
 ```
-*  ContinuousRectangleBorder
+###  ContinuousRectangleBorder
+```
+ContinuousRectangleBorder ContinuousRectangleBorder({BorderSide side = BorderSide.none, BorderRadiusGeometry borderRadius = BorderRadius.zero})
+```
 ###  CupertinoActivityIndicator
 ```
 CupertinoActivityIndicator({
  . double radius = _kDefaultIndicatorRadius,
 })
 ```
-### DatePicker
+###  DateFormat
+```
+DateFormat(String pattern)
+``` 
+###  DatePicker
 ```
 DatePicker({
   required String date,
@@ -319,11 +359,57 @@ DatePicker({
   bool autoHide = true,
 })
 ```
+###  DateTime
+```
+DateTime.now();
+DateTime(
+  int year, [
+  int month = 1,
+  int day = 1,
+  int hour = 0,
+  int minute = 0,
+  int second = 0,
+  int millisecond = 0,
+  int microsecond = 0,
+]);
+DateTime.utc(
+  int year, [
+  int month = 1,
+  int day = 1,
+  int hour = 0,
+  int minute = 0,
+  int second = 0,
+  int millisecond = 0,
+  int microsecond = 0,
+]);
+DateTime.parse(String formattedString);
+```
+###  DecorationImage
+```
+DecorationImage({
+  required ImageProvider<Object> image,
+  BoxFit? fit,
+  AlignmentGeometry alignment = Alignment.center,
+  ImageRepeat repeat = ImageRepeat.noRepeat,
+  double scale = 1.0,
+})
+```
 ###  DefaultTabController
 ```
 DefaultTabController({
   required int length,
   int initialIndex = 0,
+  required Widget child,
+})
+```
+###   DefaultTextStyle
+```
+DefaultTextStyle({
+  required TextStyle style,
+  TextAlign? textAlign,
+  bool softWrap = true,
+  TextOverflow overflow = TextOverflow.clip,
+  int? maxLines,
   required Widget child,
 })
 ```
@@ -503,7 +589,59 @@ Image({
 })
 ```
 ###  InputDecoration
+```
+InputDecoration({
+  Widget? icon,
+  Widget? label,
+  String? labelText,
+  TextStyle? labelStyle,
+  String? helperText,
+  TextStyle? helperStyle,
+  String? hintText,
+  TextStyle? hintStyle,
+  TextDirection? hintTextDirection,
+  String? errorText,
+  TextStyle? errorStyle,
+  bool isCollapsed = false,
+  bool? isDense,
+  EdgeInsetsGeometry? contentPadding,
+  Widget? prefixIcon,
+  BoxConstraints? prefixIconConstraints,
+  Widget? prefix,
+  String? prefixText,
+  TextStyle? prefixStyle,
+  Widget? suffixIcon,
+  Widget? suffix,
+  String? suffixText,
+  TextStyle? suffixStyle,
+  BoxConstraints? suffixIconConstraints,
+  Widget? counter,
+  String? counterText,
+  TextStyle? counterStyle,
+  bool? filled,
+  Color? fillColor,
+  Color? focusColor,
+  Color? hoverColor,
+  InputBorder? errorBorder,
+  InputBorder? focusedBorder,
+  InputBorder? focusedErrorBorder,
+  InputBorder? disabledBorder,
+  InputBorder? enabledBorder,
+  InputBorder? border,
+  bool enabled = true,
+  BoxConstraints? constraints,
+})
+```
 ###  LinearGradient
+```
+LinearGradient({
+  AlignmentGeometry begin = Alignment.centerLeft,
+  AlignmentGeometry end = Alignment.centerRight,
+  required List<Color> colors,
+  List<double>? stops,
+  TileMode tileMode = TileMode.clamp,
+})
+```
 ###  ListTile
 ```
 ListTile({
@@ -602,7 +740,14 @@ OutlinedButton.styleFrom({
   AlignmentGeometry? alignment,
 })
 ```
-*  OutlineInputBorder
+###  OutlineInputBorder
+```
+OutlineInputBorder({
+  BorderSide borderSide = const BorderSide(),
+  BorderRadius borderRadius = const BorderRadius.all(Radius.circular(4.0)),
+  double gapPadding = 4.0,
+})
+```
 ###  Padding
 ```
 Padding({
@@ -692,7 +837,17 @@ Radio({
   bool autofocus = false,
 })
 ```
-###  Row
+###   RegExp
+```
+RegExp(
+  String source, {
+  bool multiLine = false,
+  bool unicode = false,
+  bool caseSensitive = true,
+  bool dotAll = false,
+})
+```
+###   Row
 ```
 Row({
   MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
@@ -704,7 +859,10 @@ Row({
   List<Widget> children = const <Widget>[],
 })
 ```
-*  RoundedRectangleBorder
+###  RoundedRectangleBorder
+```
+RoundedRectangleBorder({BorderSide side = BorderSide.none, BorderRadiusGeometry borderRadius = BorderRadius.zero})
+```
 ### SafeArea
 ```
 SafeArea({
@@ -733,6 +891,14 @@ Scaffold({
   bool extendBodyBehindAppBar = false,
 })
 ```
+###  Shadow
+```
+Shadow({
+  Color color = const Colors.black,
+  Offset offset = Offset.zero,
+  double blurRadius = 0.0,
+})
+```
 ###  Size
 ```
 ```
@@ -759,8 +925,9 @@ SingleChildScrollView({
   Widget? child,
 })
 ```
-### Size(double dx,double dy)
+### Size
 ```
+Size(double width, double height)
 ```
 ### SizedBox
 ```
@@ -832,7 +999,10 @@ Stack({
   List<Widget> children = const <Widget>[],
 })
 ```
-*  StadiumBorder
+###  StadiumBorder
+```
+StadiumBorder({BorderSide side = BorderSide.none})
+```
 ### Switch
 ```
 Switch({
@@ -932,6 +1102,10 @@ TextButton.styleFrom({
   AlignmentGeometry? alignment,
 })
 ```
+### TextEditingController
+```
+TextEditingController(String? initText)
+```
 ###  TextField
 ```
 TextField({
@@ -962,20 +1136,42 @@ TextField({
   Color? cursorColor,
 })
 ```
-*  TextStyle
+###  TextStyle
+```
+TextStyle({
+  Color? color,
+  Color? backgroundColor,
+  double? fontSize,
+  FontWeight? fontWeight,
+  FontStyle? fontStyle,
+  double? letterSpacing,
+  double? wordSpacing,
+  TextBaseline? textBaseline,
+  double? height,
+  List<Shadow>? shadows,
+  TextDecoration? decoration,
+  Color? decorationColor,
+  TextDecorationStyle? decorationStyle,
+  double? decorationThickness,
+  TextOverflow? overflow,
+})
+```
 ###  Uri
 ```
 Uri({
   String? scheme,
   String? host,
-  String? port,
+  int? port,
   String? path,
   String? query,
-  String? queryParameters,
+  Map<String, dynamic>? queryParameters,
   String? fragment,
 })
 ```
-*  UnderlineInputBorder
+###  UnderlineInputBorder
+```
+UnderlineInputBorder({BorderSide borderSide = const BorderSide(), BorderRadius borderRadius = const BorderRadius.only(topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0))})
+```
 ###  Wrap
 ```
 Wrap({

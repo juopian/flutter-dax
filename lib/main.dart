@@ -140,15 +140,15 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("BlendMode", blendModeMap);
     interpreter.registerGlobal("Border", borderMap);
     interpreter.registerGlobal("BoxFit", boxFitMap);
+    interpreter.registerGlobal("BoxShape", boxShapeMap);
     interpreter.registerGlobal("BorderRadius", borderRadiusMap);
     interpreter.registerGlobal("BorderStyle", borderStyleMap);
     interpreter.registerGlobal("Clip", clipBehaviorMap);
-    interpreter.registerGlobal("Colors", colorMap);
     interpreter.registerGlobal("CrossAxisAlignment", crossAxisAlignmentMap);
     interpreter.registerGlobal("DismissDirection", dismissDirectionMap);
     interpreter.registerGlobal("EdgeInsets", edgeInsetsMap);
     interpreter.registerGlobal("FilterQuality", filterQualityMap);
-    interpreter.registerGlobal("FontWeight", fontWeightMap);
+    interpreter.registerGlobal("FontStyle", fontStyleMap);
     interpreter.registerGlobal("Icons", iconsMap);
     interpreter.registerGlobal("ImageRepeat", imageRepeatMap);
     interpreter.registerGlobal("json", jsonMap);
@@ -163,12 +163,12 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("StackFit", stackFitMap);
     interpreter.registerGlobal("TabBarIndicatorSize", tabBarIndicatorSizeMap);
     interpreter.registerGlobal("TextAlign", textAlignMap);
-    interpreter.registerGlobal("TextAlignVertical", textAlignVerticalMap);
     interpreter.registerGlobal("TextCapitalization", textCapitalizationMap);
+    interpreter.registerGlobal("TextDecorationStyle", textDecorationStyleMap);
     interpreter.registerGlobal("TextInputAction", textInputActionMap);
-    interpreter.registerGlobal("TextInputType", textInputTypeMap);
     interpreter.registerGlobal("TextDirection", textDirectionMap);
     interpreter.registerGlobal("TextOverflow", textOverflowMap);
+    interpreter.registerGlobal("TileMode", tileModeMap);
     interpreter.registerGlobal("Transform", transformMap);
     interpreter.registerGlobal("VerticalDirection", verticalDirectionMap);
     interpreter.registerGlobal("WrapAlignment", wrapAlignmentMap);
@@ -198,6 +198,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("ClipRRect", IClipRRect());
     interpreter.registerGlobal("ClipRect", IClipRect());
     interpreter.registerGlobal("Color", IColor());
+    interpreter.registerGlobal("Colors", IColors());
     interpreter.registerGlobal("Column", IColumn());
     interpreter.registerGlobal("ConstrainedBox", IConstrainedBox());
     interpreter.registerGlobal("Container", IContainer());
@@ -208,6 +209,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("DateFormat", IDateFormat());
     interpreter.registerGlobal("DateTime", IDateTime());
     interpreter.registerGlobal("DatePicker", IDatePicker());
+    interpreter.registerGlobal("DecorationImage", IDecorationImage());
     interpreter.registerGlobal("DefaultTabController", IDefaultTabController());
     interpreter.registerGlobal("DefaultTextStyle", IDefaultTextStyle());
     interpreter.registerGlobal("Divider", IDivider());
@@ -217,6 +219,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Expanded", IExpanded());
     interpreter.registerGlobal("ExpansionTile", IExpansionTile());
     interpreter.registerGlobal("FloatingActionButton", IFloatingActionButton());
+    interpreter.registerGlobal("FontWeight", IFontWeight());
     interpreter.registerGlobal("GestureDetector", IGestureDetector());
     interpreter.registerGlobal("Icon", IIcon());
     interpreter.registerGlobal("IconButton", IIconButton());
@@ -243,6 +246,7 @@ class _DaxPageState extends State<DaxPage> {
         "RoundedRectangleBorder", IRoundedRectangleBorder());
     interpreter.registerGlobal("SafeArea", ISafeArea());
     interpreter.registerGlobal("Scaffold", IScaffold());
+    interpreter.registerGlobal("Shadow", IShadow());
     interpreter.registerGlobal("SimpleDialog", ISimpleDialog());
     interpreter.registerGlobal(
         "SingleChildScrollView", ISingleChildScrollView());
@@ -260,10 +264,12 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("TabBar", ITabBar());
     interpreter.registerGlobal("TabBarView", ITabBarView());
     interpreter.registerGlobal("Text", IText());
+    interpreter.registerGlobal("TextAlignVertical", ITextAlignVertical());
     interpreter.registerGlobal("TextButton", ITextButton());
     interpreter.registerGlobal(
         "TextEditingController", ITextEditingController());
     interpreter.registerGlobal("TextField", ITextField());
+    interpreter.registerGlobal("TextInputType", ITextInputType());
     interpreter.registerGlobal("TextStyle", ITextStyle());
     interpreter.registerGlobal("Uri", IUri());
     interpreter.registerGlobal("UnderlineInputBorder", IUnderlineInputBorder());

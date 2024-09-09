@@ -484,6 +484,39 @@ class IIconButton implements LoxFlutterFunction {
   }
 }
 
+class IDecorationImage implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var image = namedArguments[const Symbol('image')];
+    if (image == null) {
+      throw "image required in DecorationImage";
+    }
+    BoxFit? fit;
+    var fitParsed = namedArguments[const Symbol('fit')];
+    if (fitParsed != null) {
+      fit = fitParsed as BoxFit;
+    }
+    double scale = parseDouble(namedArguments[const Symbol('scale')]) ?? 1.0;
+    ImageRepeat repeat = ImageRepeat.noRepeat;
+    var repeatParsed = namedArguments[const Symbol('repeat')];
+    if (repeatParsed != null) {
+      repeat = repeatParsed as ImageRepeat;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    return DecorationImage(
+        repeat: repeat,
+        alignment: alignment,
+        image: image as ImageProvider,
+        fit: fit,
+        scale: scale);
+  }
+}
+
 class IImage implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
@@ -1449,7 +1482,7 @@ class ISafeArea implements LoxFlutterFunction {
     if (maintainBottomViewPaddingParsed != null) {
       maintainBottomViewPadding = maintainBottomViewPaddingParsed as bool;
     }
-    EdgeInsets minimum =  EdgeInsets.zero;
+    EdgeInsets minimum = EdgeInsets.zero;
     var minimumParsed = namedArguments[const Symbol('minimum')];
     if (minimumParsed != null) {
       minimum = minimumParsed as EdgeInsets;

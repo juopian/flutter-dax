@@ -31,10 +31,29 @@ class IBoxDecoration implements LoxFlutterFunction {
     if (gradientParsed != null) {
       gradient = gradientParsed as Gradient;
     }
+    BlendMode? backgroundBlendMode;
+    var backgroundBlendModeParsed =
+        namedArguments[const Symbol('backgroundBlendMode')];
+    if (backgroundBlendModeParsed != null) {
+      backgroundBlendMode = backgroundBlendModeParsed as BlendMode;
+    }
+    BoxShape shape = BoxShape.rectangle;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as BoxShape;
+    }
+    DecorationImage? image;
+    var imageParsed = namedArguments[const Symbol('image')];
+    if (imageParsed != null) {
+      image = imageParsed as DecorationImage;
+    }
     return BoxDecoration(
         color: color,
         border: border,
         gradient: gradient,
+        image: image,
+        shape: shape,
+        backgroundBlendMode: backgroundBlendMode,
         borderRadius: borderRadius,
         boxShadow: boxShadow);
   }
@@ -59,7 +78,22 @@ class ILinearGradient implements LoxFlutterFunction {
     if (colorsParsed != null) {
       colors = (colorsParsed as List).cast<Color>();
     }
-    return LinearGradient(begin: begin, end: end, colors: colors);
+    List<double>? stops;
+    var stopsParsed = namedArguments[const Symbol('stops')];
+    if (stopsParsed != null) {
+      stops = (stopsParsed as List).cast<double>();
+    }
+    TileMode tileMode = TileMode.clamp;
+    var tileModeParsed = namedArguments[const Symbol('tileMode')];
+    if (tileModeParsed != null) {
+      tileMode = tileModeParsed as TileMode;
+    }
+    return LinearGradient(
+        begin: begin,
+        end: end,
+        colors: colors,
+        stops: stops,
+        tileMode: tileMode);
   }
 }
 
@@ -75,13 +109,92 @@ class ITextStyle implements LoxFlutterFunction {
     if (colorParsed != null) {
       color = colorParsed as Color;
     }
-
+    Color? backgroundColor;
+    var backgroundColorParsed = namedArguments[const Symbol('backgroundColor')];
+    if (backgroundColorParsed != null) {
+      backgroundColor = backgroundColorParsed as Color;
+    }
     FontWeight? fontWeight;
     var fontWeightParsed = namedArguments[const Symbol('fontWeight')];
     if (fontWeightParsed != null) {
       fontWeight = fontWeightParsed as FontWeight;
     }
-    return TextStyle(fontWeight: fontWeight, fontSize: fontSize, color: color);
+    FontStyle? fontStyle;
+    var fontStyleParsed = namedArguments[const Symbol('fontStyle')];
+    if (fontStyleParsed != null) {
+      fontStyle = fontStyleParsed as FontStyle;
+    }
+    double? letterSpacing =
+        parseDouble(namedArguments[const Symbol('letterSpacing')]);
+    double? wordSpacing =
+        parseDouble(namedArguments[const Symbol('wordSpacing')]);
+    double? height = parseDouble(namedArguments[const Symbol('height')]);
+    double? decorationThickness =
+        parseDouble(namedArguments[const Symbol('decorationThickness')]);
+    TextOverflow? overflow;
+    var overflowParsed = namedArguments[const Symbol('overflow')];
+    if (overflowParsed != null) {
+      overflow = overflowParsed as TextOverflow;
+    }
+    TextDecorationStyle? decorationStyle;
+    var decorationStyleParsed = namedArguments[const Symbol('decorationStyle')];
+    if (decorationStyleParsed != null) {
+      decorationStyle = decorationStyleParsed as TextDecorationStyle;
+    }
+    TextDecoration? decoration;
+    var decorationParsed = namedArguments[const Symbol('decoration')];
+    if (decorationParsed != null) {
+      decoration = decorationParsed as TextDecoration;
+    }
+    TextBaseline? textBaseline;
+    var textBaselineParsed = namedArguments[const Symbol('textBaseline')];
+    if (textBaselineParsed != null) {
+      textBaseline = textBaselineParsed as TextBaseline;
+    }
+    List<Shadow>? shadows;
+    var shadowsParsed = namedArguments[const Symbol('shadows')];
+    if (shadowsParsed != null) {
+      shadows = (shadowsParsed as List).cast<Shadow>();
+    }
+    Color? decorationColor;
+    var decorationColorParsed = namedArguments[const Symbol('decorationColor')];
+    if (decorationColorParsed != null) {
+      decorationColor = decorationColorParsed as Color;
+    }
+    return TextStyle(
+        backgroundColor: backgroundColor,
+        fontWeight: fontWeight,
+        fontSize: fontSize,
+        height: height,
+        shadows: shadows,
+        textBaseline: textBaseline,
+        decorationColor: decorationColor,
+        decorationThickness: decorationThickness,
+        letterSpacing: letterSpacing,
+        overflow: overflow,
+        decoration: decoration,
+        decorationStyle: decorationStyle,
+        wordSpacing: wordSpacing,
+        fontStyle: fontStyle,
+        color: color);
+  }
+}
+
+class IShadow implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Color color = Colors.black;
+    if (namedArguments[const Symbol('color')] != null) {
+      color = namedArguments[const Symbol('color')] as Color;
+    }
+    Offset offset = Offset.zero;
+    if (namedArguments[const Symbol('offset')] != null) {
+      offset = namedArguments[const Symbol('offset')] as Offset;
+    }
+    double blurRadius =
+        parseDouble(namedArguments[const Symbol('blurRadius')]) ?? 0.0;
+    return Shadow(color: color, offset: offset, blurRadius: blurRadius);
   }
 }
 
@@ -253,7 +366,29 @@ class IInputDecoration implements LoxFlutterFunction {
     if (prefixParsed != null) {
       prefix = prefixParsed as Widget;
     }
+    Widget? label;
+    var labelParsed = namedArguments[const Symbol('label')];
+    if (labelParsed != null) {
+      label = labelParsed as Widget;
+    }
+    BoxConstraints? prefixIconConstraints;
+    var prefixIconConstraintsParsed =
+        namedArguments[const Symbol('prefixIconConstraints')];
+    if (prefixIconConstraintsParsed != null) {
+      prefixIconConstraints = prefixIconConstraintsParsed as BoxConstraints;
+    }
+    BoxConstraints? suffixIconConstraints;
+    var suffixIconConstraintsParsed = namedArguments[const Symbol('suffixIconConstraints')];
+    if (suffixIconConstraintsParsed != null) {
+      suffixIconConstraints = suffixIconConstraintsParsed as BoxConstraints;
+    }
+    TextDirection? hintTextDirection;
+    var hintTextDirectionParsed = namedArguments[const Symbol('hintTextDirection')];
+    if (hintTextDirectionParsed != null) {
+      hintTextDirection = hintTextDirectionParsed as TextDirection;
+    }
     return InputDecoration(
+        label: label,
         contentPadding: contentPadding,
         isCollapsed: isCollapsed,
         enabled: enabled,
@@ -262,11 +397,14 @@ class IInputDecoration implements LoxFlutterFunction {
         border: border,
         focusedBorder: focusedBorder,
         enabledBorder: enabledBorder,
+        prefixIconConstraints: prefixIconConstraints,
+        suffixIconConstraints: suffixIconConstraints,
         errorBorder: errorBorder,
         fillColor: fillColor,
         hoverColor: hoverColor,
         labelStyle: labelStyle,
         hintStyle: hintStyle,
+        hintTextDirection: hintTextDirection,
         errorStyle: errorStyle,
         helperStyle: helperStyle,
         prefixStyle: prefixStyle,

@@ -1,176 +1,262 @@
 import "package:flutter/material.dart";
+import 'dart:math';
+import 'dart:convert';
+import 'utils.dart';
+import 'http.dart';
 
-
-final colorMap = {
-  'transparent': Colors.transparent,
-  'red': Colors.red,
-  'redAccent': Colors.redAccent,
-  'pink': Colors.pink,
-  'pinkAccent': Colors.pinkAccent,
-  'deepOrange': Colors.deepOrange,
-  'deepOrangeAccent': Colors.deepOrangeAccent,
-  'orange': Colors.orange,
-  'orangeAccent': Colors.orangeAccent,
-  'amber': Colors.amber,
-  'amberAccent': Colors.amberAccent,
-  'yellow': Colors.yellow,
-  'yellowAccent': Colors.yellowAccent,
-  'lime': Colors.lime,
-  'limeAccent': Colors.limeAccent,
-  'lightGreen': Colors.lightGreen,
-  'lightGreenAccent': Colors.lightGreenAccent,
-  'green': Colors.green,
-  'greenAccent': Colors.greenAccent,
-  'teal': Colors.teal,
-  'tealAccent': Colors.tealAccent,
-  'cyan': Colors.cyan,
-  'cyanAccent': Colors.cyanAccent,
-  'lightBlue': Colors.lightBlue,
-  'lightBlueAccent': Colors.lightBlueAccent,
-  'blue': Colors.blue,
-  'blueAccent': Colors.blueAccent,
-  'indigo': Colors.indigo,
-  'indigoAccent': Colors.indigoAccent,
-  'purple': Colors.purple,
-  'purpleAccent': Colors.purpleAccent,
-  'deepPurple': Colors.deepPurple,
-  'deepPurpleAccent': Colors.deepPurpleAccent,
-  'blueGrey': Colors.blueGrey,
-  'brown': Colors.brown,
-  'grey': Colors.grey,
-  'black': Colors.black,
-  'black12': Colors.black12,
-  'black26': Colors.black26,
-  'black38': Colors.black38,
-  'black45': Colors.black45,
-  'black54': Colors.black54,
-  'black87': Colors.black87,
-  'white': Colors.white,
-  'white10': Colors.white10,
-  'white12': Colors.white12,
-  'white24': Colors.white24,
-  'white30': Colors.white30,
-  'white38': Colors.white38,
-  'white54': Colors.white54,
-  'white60': Colors.white60,
-  'white70': Colors.white70,
+final edgeInsetsMap = {
+  "all": (Object value) {
+    return EdgeInsets.all(parseDouble(value) ?? 0);
+  },
+  "only": ({Object? left, Object? top, Object? right, Object? bottom}) {
+    return EdgeInsets.only(
+        left: parseDouble(left) ?? 0,
+        top: parseDouble(top) ?? 0,
+        right: parseDouble(right) ?? 0,
+        bottom: parseDouble(bottom) ?? 0);
+  },
+  "symmetric": ({Object? horizontal, Object? vertical}) {
+    return EdgeInsets.symmetric(
+        horizontal: parseDouble(horizontal) ?? 0,
+        vertical: parseDouble(vertical) ?? 0);
+  }
 };
 
-final fontWeightMap = {
-  "bold": FontWeight.bold,
-  "normal": FontWeight.normal,
-  "w100": FontWeight.w100,
-  "w200": FontWeight.w200,
-  "w300": FontWeight.w300,
-  "w400": FontWeight.w400,
-  "w500": FontWeight.w500,
-  "w600": FontWeight.w600,
-  "w700": FontWeight.w700,
-  "w800": FontWeight.w800,
-  "w900": FontWeight.w900,
+final borderMap = {
+  "all": ({Object? width, Object? color}) {
+    double _width = parseDouble(width) ?? 1.0;
+    Color _color = Colors.black;
+    if (color is Color) {
+      _color = color;
+    }
+    return Border.all(width: _width, color: _color);
+  }
 };
 
-final mainAxisAlignmentMap = {
-  "start": MainAxisAlignment.start, 
-  "center": MainAxisAlignment.center,
-  "end": MainAxisAlignment.end, 
-  "spaceAround": MainAxisAlignment.spaceAround, 
-  "spaceBetween": MainAxisAlignment.spaceBetween, 
-  "spaceEvenly": MainAxisAlignment.spaceEvenly
+final radiusMap = {
+  "circular": (Object value) {
+    return Radius.circular(parseDouble(value) ?? 0);
+  }
 };
 
-final crossAxisAlignmentMap = {
-  "start": CrossAxisAlignment.start,
-  "end": CrossAxisAlignment.end,
-  "center": CrossAxisAlignment.center,
-  "baseline": CrossAxisAlignment.baseline,
-  "stretch": CrossAxisAlignment.stretch,
+final borderRadiusMap = {
+  "circular": (Object value) {
+    return BorderRadius.circular(parseDouble(value) ?? 0);
+  },
+  "all": (Object value) {
+    return BorderRadius.all(value as Radius);
+  },
+  "horizontal": ({Object? left, Object? right}) {
+    Radius _left = Radius.zero;
+    Radius _right = Radius.zero;
+    if (left is Radius) {
+      _left = left;
+    }
+    if (right is Radius) {
+      _right = right;
+    }
+    return BorderRadius.horizontal(
+      left: _left,
+      right: _right,
+    );
+  },
+  "vertical": ({Object? top, Object? bottom}) {
+    Radius _top = Radius.zero;
+    Radius _bottom = Radius.zero;
+    if (top is Radius) {
+      _top = top;
+    }
+    if (bottom is Radius) {
+      _bottom = bottom;
+    }
+    return BorderRadius.vertical(
+      top: _top,
+      bottom: _bottom,
+    );
+  },
+  "only": (
+      {Object? topLeft,
+      Object? topRight,
+      Object? bottomRight,
+      Object? bottomLeft}) {
+    Radius _topLeft = Radius.zero;
+    Radius _topRight = Radius.zero;
+    Radius _bottomRight = Radius.zero;
+    Radius _bottomLeft = Radius.zero;
+    if (topLeft is Radius) {
+      _topLeft = topLeft;
+    }
+    if (topRight is Radius) {
+      _topRight = topRight;
+    }
+    if (bottomRight is Radius) {
+      _bottomRight = bottomRight;
+    }
+    if (bottomLeft is Radius) {
+      _bottomLeft = bottomLeft;
+    }
+
+    return BorderRadius.only(
+      topLeft: _topLeft,
+      topRight: _topRight,
+      bottomRight: _bottomRight,
+      bottomLeft: _bottomLeft,
+    );
+  }
 };
 
-final textAlignMap = {
-  "start": TextAlign.start,
-  "center": TextAlign.center,
-  "end": TextAlign.end,
-  "left": TextAlign.left,
-  "right": TextAlign.right,
-  "jusitfy": TextAlign.justify,
+final transformMap = {
+  "translate": ({Object? offset, Object? child}) {
+    Offset _offset = Offset.zero;
+    if (offset is Offset) {
+      _offset = offset;
+    }
+    Widget? _child;
+    if (child is Widget) {
+      _child = child;
+    }
+    return Transform.translate(
+      offset: _offset,
+      child: _child,
+    );
+  },
+  "rotate": ({Object? angle, Object? child}) {
+    double _angle = parseDouble(angle) ?? 0;
+    Widget? _child;
+    if (child is Widget) {
+      _child = child;
+    }
+    return Transform.rotate(
+      angle: _angle,
+      child: _child,
+    );
+  },
+  "scale": ({Object? scale, Object? child}) {
+    double _scale = parseDouble(scale) ?? 0;
+    Widget? _child;
+    if (child is Widget) {
+      _child = child;
+    }
+    return Transform.scale(
+      scale: _scale,
+      child: _child,
+    );
+  }
 };
 
-final boxFitMap = {
-  "contain": BoxFit.contain,
-  "cover": BoxFit.cover,
-  "fill": BoxFit.fill,
-  "fitHeight": BoxFit.fitHeight,
-  "fitWidth": BoxFit.fitWidth,
-  "scaleDown": BoxFit.scaleDown,
-  "none": BoxFit.none,
+final matrix4Map = {
+  "skew": (Object? x, Object? y) {
+    return Matrix4.skew(parseDouble(x) ?? 0, parseDouble(y) ?? 0);
+  },
+  "skewX": (Object? x) {
+    return Matrix4.skewX(parseDouble(x) ?? 0);
+  },
+  "skewY": (Object? y) {
+    return Matrix4.skewY(parseDouble(y) ?? 0);
+  },
+  "translate": (Object? x, Object? y, Object? z) {
+    return Matrix4.translationValues(
+        parseDouble(x) ?? 0, parseDouble(y) ?? 0, parseDouble(z) ?? 0);
+  },
+  "rotationX": (Object? x) {
+    return Matrix4.rotationX(parseDouble(x) ?? 0);
+  },
+  "rotationY": (Object? y) {
+    return Matrix4.rotationY(parseDouble(y) ?? 0);
+  },
+  "rotationZ": (Object? z) {
+    return Matrix4.rotationZ(parseDouble(z) ?? 0);
+  },
+  "scale": (Object? x, Object? y, Object? z) {
+    return Matrix4.diagonal3Values(
+        parseDouble(x) ?? 1, parseDouble(y) ?? 1, parseDouble(z) ?? 1);
+  },
 };
 
-final textInputTypeMap = {
-  "emailAddress": TextInputType.emailAddress,
-  "datetime": TextInputType.datetime,
-  "multiline": TextInputType.multiline,
-  "name": TextInputType.name,
-  "number": TextInputType.number,
-  "phone": TextInputType.phone,
-  "text": TextInputType.text,
-  "url": TextInputType.url,
-  "values": TextInputType.values,
-  "visiblePassword": TextInputType.visiblePassword,
-  "streetAddress": TextInputType.streetAddress,
-  "none": TextInputType.none,
+final navigatorMap = {
+  "pop": (Object? context) {
+    Navigator.pop(context as BuildContext);
+  },
+  "push": (Object? context, Object? route) {
+    Navigator.push(context as BuildContext, route as Route);
+  },
+  "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
+    Navigator.pushNamed(context as BuildContext, routeName as String,
+        arguments: arguments);
+  }
 };
 
-final borderStyleMap = {
-  "solid": BorderStyle.solid,
-  "none": BorderStyle.none,
+final apiMap = {
+  "get": (Object? url, {Object? debug}) {
+    bool _debug = false;
+    if (debug != null) {
+      _debug = debug as bool;
+    }
+    return Api.get(url as String, debug: _debug);
+  },
+  "post": (Object? url, Object? body, {Object? debug}) {
+    bool _debug = false;
+    if (debug != null) {
+      _debug = debug as bool;
+    }
+    return Api.post(url as String, body, debug: _debug);
+  },
+  "jwt": () => Api.jwt,
+  "version": () => Api.version,
+  "platform": () => Api.platform,
+  "buildNumber": () => Api.buildNumber
+};
+final mathMap = {
+  "randomInt": (Object x) {
+    return Random().nextInt(x as int);
+  },
+  "randomDouble": () {
+    return Random().nextDouble();
+  },
+  "randomBool": () {
+    return Random().nextBool();
+  },
+  "sin": (Object x) {
+    return asin(x as num);
+  },
+  "asin": (Object x) {
+    return asin(x as num);
+  },
+  "cos": (Object x) {
+    return acos(x as num);
+  },
+  "acos": (Object x) {
+    return acos(x as num);
+  },
+  "tan": (Object x) {
+    return atan(x as num);
+  },
+  "atan": (Object x) {
+    return atan(x as num);
+  },
+  "atan2": (Object a, Object b) {
+    return atan2(a as num, b as num);
+  },
+  "sqrt": (Object x) {
+    return sqrt(x as num);
+  },
+  "exp": (Object x) {
+    return exp(x as num);
+  },
+  "log": (Object x) {
+    return log(x as num);
+  },
+  "pow": (Object a, Object b) {
+    return pow(a as num, b as num);
+  }
 };
 
-final axisDirectionMap = {
-  "up": AxisDirection.up,
-  "down": AxisDirection.down,
-  "right": AxisDirection.right,
-  "left": AxisDirection.left,
+final jsonMap = {
+  "encode": (Object value) {
+    return json.encode(value);
+  },
+  "decode": (Object value) {
+    return json.decode(value as String);
+  }
 };
 
-final wrapAlignmentMap = {
-  "start": WrapAlignment.start,
-  "end": WrapAlignment.end,
-  "center": WrapAlignment.center,
-  "spaceBetween": WrapAlignment.spaceBetween,
-  "spaceAround": WrapAlignment.spaceAround,
-  "spaceEvenly": WrapAlignment.spaceEvenly,
-};
-
-final textDirectionMap = {
-  "ltr": TextDirection.ltr,
-  "rtl": TextDirection.rtl,
-};
-
-
-final stackFitMap = {
-  "loose": StackFit.loose,
-  "expand": StackFit.expand,
-  "passthrough": StackFit.passthrough,
-};
-
-final tabBarIndicatorSizeMap = {
-  "tab": TabBarIndicatorSize.tab,
-  "label": TabBarIndicatorSize.label,
-};
-
-final snackBarBehaviorMap = {
-  "fixed": SnackBarBehavior.fixed,
-  "floating": SnackBarBehavior.floating,
-};
-
-final listTileControlAffinityMap = {
-  "leading": ListTileControlAffinity.leading,
-  "trailing": ListTileControlAffinity.trailing,
-  "platform": ListTileControlAffinity.platform,
-};
-
-final axisMap = {
-  "vertical": Axis.vertical,
-  "horizontal": Axis.horizontal,
-};
