@@ -73,8 +73,36 @@ Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSna
 
 ## 2. 组件及其用法
 
-*  AlertDialog
-*  Align
+###  AlertDialog
+```
+AlertDialog({
+  Widget? title,
+  EdgeInsetsGeometry? titlePadding,
+  TextStyle? titleTextStyle,
+  Widget? content,
+  EdgeInsetsGeometry contentPadding = const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+  TextStyle? contentTextStyle,
+  List<Widget>? actions,
+  EdgeInsetsGeometry actionsPadding = EdgeInsets.zero,
+  MainAxisAlignment? actionsAlignment,
+  VerticalDirection? actionsOverflowDirection,
+  double? actionsOverflowButtonSpacing,
+  EdgeInsetsGeometry? buttonPadding,
+  Color? backgroundColor,
+  double? elevation,
+  ShapeBorder? shape,
+  bool scrollable = false,
+})
+```
+###  Align
+```
+Align({
+  AlignmentGeometry alignment = Alignment.center,
+  double? widthFactor,
+  double? heightFactor,
+  Widget? child,
+})
+```
 ###  Alignment
 ```
 Alignment.bottomCenter
@@ -88,14 +116,70 @@ Alignment.topLeft
 Alignment.topRight
 Alignment(double dx, double dy)
 ```
-*  AppBar
+### AlignmentDirectional
+```
+AlignmentDirectional.topStart;
+AlignmentDirectional.topCenter;
+AlignmentDirectional.topEnd;
+AlignmentDirectional.centerStart;
+AlignmentDirectional.center;
+AlignmentDirectional.centerEnd;
+AlignmentDirectional.bottomStart;
+AlignmentDirectional.bottomCenter;
+AlignmentDirectional.bottomEnd;
+AlignmentDirectional(double start, double y);
+```
+### AppBar
+```
+AppBar({
+  Widget? leading,
+  Widget? title,
+  List<Widget>? actions,
+  Widget? flexibleSpace,
+  PreferredSizeWidget? bottom,
+  double? elevation,
+  Color? shadowColor,
+  ShapeBorder? shape,
+  Color? backgroundColor,
+  Color? foregroundColor,
+  bool primary = true,
+  bool? centerTitle,
+  double? titleSpacing,
+  double toolbarOpacity = 1.0,
+  double bottomOpacity = 1.0,
+  double? toolbarHeight,
+  double? leadingWidth,
+  TextStyle? toolbarTextStyle,
+  TextStyle? titleTextStyle,
+})
+```
 ###  AssetImage
 ```
 AssetImage(String assetName)
 ```
 *  BeveledRectangleBorder
 *  BorderSide
-*  BottomNavigationBar
+###  BottomNavigationBar
+```
+BottomNavigationBar({
+  required List<BottomNavigationBarItem> items,
+  void Function(int)? onTap,
+  int currentIndex = 0,
+  double? elevation,
+  BottomNavigationBarType? type,
+  Color? fixedColor,
+  Color? backgroundColor,
+  double iconSize = 24.0,
+  Color? selectedItemColor,
+  Color? unselectedItemColor,
+  double selectedFontSize = 14.0,
+  double unselectedFontSize = 12.0,
+  TextStyle? selectedLabelStyle,
+  TextStyle? unselectedLabelStyle,
+  bool? showSelectedLabels,
+  bool? showUnselectedLabels,
+})
+```
 ###  BottomNavigationBarItem
 ```
 BottomNavigationBarItem({
@@ -108,7 +192,28 @@ BottomNavigationBarItem({
 })
 ```
 *  BoxDecoration
+### BoxConstraints
+```
+BoxConstraints({
+  double minWidth = 0.0,
+  double maxWidth = double.infinity,
+  double minHeight = 0.0,
+  double maxHeight = double.infinity,
+})
+或
+BoxConstraints.loose(Size size)
+BoxConstraints.tight(Size size)
+BoxConstraints.expand({double? width, double? height})
+```
 *  BoxShadow
+### Center
+```
+Center({
+  double? widthFactor,
+  double? heightFactor,
+  Widget? child,
+})
+```
 ###  Checkbox
 ```
 Checkbox({
@@ -125,15 +230,69 @@ Checkbox({
 ```
 *  CircleBorder
 *  CircularProgressIndicator
-*  ClipOval
-*  ClipPRect
-*  ClipRect
+###  ClipOval
+```
+ClipOval({
+  Clip clipBehavior = Clip.antiAlias,
+  Widget? child,
+})
+```
+###  ClipPRect
+```
+ClipRRect({
+  BorderRadius? borderRadius = BorderRadius.zero,
+  Clip clipBehavior = Clip.antiAlias,
+  Widget? child,
+})
+```
+###  ClipRect
+```
+ClipRect({
+  Clip clipBehavior = Clip.hardEdge,
+  Widget? child,
+})
+```
 ###  Color
 ```
 Color(int value) 
 ```
-*  Column
-*  Container
+###  Column
+```
+Column({
+  MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+  MainAxisSize mainAxisSize = MainAxisSize.max,
+  CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+  TextDirection? textDirection,
+  VerticalDirection verticalDirection = VerticalDirection.down,
+  TextBaseline? textBaseline,
+  List<Widget> children = const <Widget>[],
+})
+```
+### ConstrainedBox
+```
+ConstrainedBox({
+  required BoxConstraints constraints,
+  Widget? child,
+})
+```
+###  Container
+```
+Container({
+  AlignmentGeometry? alignment,
+  EdgeInsetsGeometry? padding,
+  Color? color,
+  Decoration? decoration,
+  Decoration? foregroundDecoration,
+  double? width,
+  double? height,
+  BoxConstraints? constraints,
+  EdgeInsetsGeometry? margin,
+  Matrix4? transform,
+  AlignmentGeometry? transformAlignment,
+  Widget? child,
+  Clip clipBehavior = Clip.none,
+})
+```
 
 ###  CircularProgressIndicator
 
@@ -152,7 +311,22 @@ CupertinoActivityIndicator({
  . double radius = _kDefaultIndicatorRadius,
 })
 ```
-*  DefaultTabController
+### DatePicker
+```
+DatePicker({
+  required String date,
+  required dynamic Function(DateTime) onDateChanged,
+  bool autoHide = true,
+})
+```
+###  DefaultTabController
+```
+DefaultTabController({
+  required int length,
+  int initialIndex = 0,
+  required Widget child,
+})
+```
 ###  Divider
 ```
 Divider({
@@ -161,6 +335,42 @@ Divider({
   double? indent,
   double? endIndent,
   Color? color,
+})
+```
+###  DropdownButton
+```
+DropdownButton({
+  required List<DropdownMenuItem<Object>>? items,
+  List<Widget> Function(BuildContext)? selectedItemBuilder,
+  Object? value,
+  void Function(Object?)? onChanged,
+  void Function()? onTap,
+  int elevation = 8,
+  TextStyle? style,
+  Widget? underline,
+  Widget? icon,
+  Color? iconDisabledColor,
+  Color? iconEnabledColor,
+  double iconSize = 24.0,
+  bool isDense = false,
+  bool isExpanded = false,
+  double? itemHeight = kMinInteractiveDimension,
+  Color? focusColor,
+  bool autofocus = false,
+  Color? dropdownColor,
+  double? menuMaxHeight,
+  AlignmentGeometry alignment = AlignmentDirectional.centerStart,
+  BorderRadius? borderRadius,
+})
+```
+###  DropdownMenuItem
+```
+DropdownMenuItem({
+  void Function()? onTap,
+  Object? value,
+  bool enabled = true,
+  AlignmentGeometry alignment = AlignmentDirectional.centerStart,
+  required Widget child,
 })
 ```
 ###  ElevatedButton
@@ -189,9 +399,67 @@ ElevatedButton.styleFrom({
 })	
 
 ```
-*  Expanded
-*  FloatingActionButton
-*  GestureDetector
+###  Expanded
+```
+ Expanded({
+  int flex = 1,
+  required Widget child,
+})
+```
+### ExpansionTile
+```
+ExpansionTile({
+  Widget? leading,
+  required Widget title,
+  Widget? subtitle,
+  void Function(bool)? onExpansionChanged,
+  List<Widget> children = const <Widget>[],
+  Widget? trailing,
+  bool initiallyExpanded = false,
+  EdgeInsetsGeometry? tilePadding,
+  CrossAxisAlignment? expandedCrossAxisAlignment,
+  Alignment? expandedAlignment,
+  EdgeInsetsGeometry? childrenPadding,
+  Color? backgroundColor,
+  Color? collapsedBackgroundColor,
+  Color? textColor,
+  Color? collapsedTextColor,
+  Color? iconColor,
+  Color? collapsedIconColor,
+  ListTileControlAffinity? controlAffinity,
+})
+```
+###  FloatingActionButton
+```
+FloatingActionButton({
+  Widget? child,
+  String? tooltip,
+  Color? foregroundColor,
+  Color? backgroundColor,
+  Color? focusColor,
+  Color? splashColor,
+  double? elevation,
+  double? focusElevation,
+  double? hoverElevation,
+  double? highlightElevation,
+  double? disabledElevation,
+  required void Function()? onPressed,
+  bool mini = false,
+  ShapeBorder? shape,
+  Clip clipBehavior = Clip.none,
+  bool autofocus = false,
+  bool isExtended = false,
+})
+```
+###  GestureDetector
+```
+GestureDetector({
+  Widget? child,
+  void Function()? onTap,
+  void Function()? onDoubleTap,
+  void Function()? onLongPress,
+})
+```
 ###  Icon
 ```
 Icon(
@@ -234,10 +502,71 @@ Image({
   FilterQuality filterQuality = FilterQuality.low,
 })
 ```
-*  InputDecoration
-*  LinearGradient
-*  ListTile
-*  ListView
+###  InputDecoration
+###  LinearGradient
+###  ListTile
+```
+ListTile({
+  Widget? leading,
+  Widget? title,
+  Widget? subtitle,
+  Widget? trailing,
+  bool isThreeLine = false,
+  bool? dense,
+  ShapeBorder? shape,
+  EdgeInsetsGeometry? contentPadding,
+  bool enabled = true,
+  void Function()? onTap,
+  void Function()? onLongPress,
+  bool selected = false,
+  Color? focusColor,
+  bool autofocus = false,
+  Color? tileColor,
+  Color? selectedTileColor,
+  double? horizontalTitleGap,
+  double? minVerticalPadding,
+  double? minLeadingWidth,
+})
+```
+###  ListView
+```
+ListView({
+  Axis scrollDirection = Axis.vertical,
+  bool reverse = false,
+  bool? primary,
+  bool shrinkWrap = false,
+  EdgeInsetsGeometry? padding,
+  double? itemExtent,
+  Widget? prototypeItem,
+  double? cacheExtent,
+  List<Widget> children = const <Widget>[],
+})
+也可以支持按需加载
+ListView.builder({
+  Axis scrollDirection = Axis.vertical,
+  bool reverse = false,
+  bool? primary,
+  bool shrinkWrap = false,
+  EdgeInsetsGeometry? padding,
+  double? itemExtent,
+  Widget? prototypeItem,
+  required Widget Function(BuildContext, int) itemBuilder,
+  int? itemCount,
+  double? cacheExtent,
+})
+或
+ListView.separated({
+  Axis scrollDirection = Axis.vertical,
+  bool reverse = false,
+  bool? primary,
+  bool shrinkWrap = false,
+  EdgeInsetsGeometry? padding,
+  required Widget Function(BuildContext, int) itemBuilder,
+  required Widget Function(BuildContext, int) separatorBuilder,
+  required int itemCount,
+  double? cacheExtent,
+})
+```
 ###  NetworkImage
 ```
 NetworkImage(String url, {double scale})
@@ -274,8 +603,82 @@ OutlinedButton.styleFrom({
 })
 ```
 *  OutlineInputBorder
-*  Padding
-*  Positioned
+###  Padding
+```
+Padding({
+  required EdgeInsetsGeometry padding,
+  Widget? child,
+})
+```
+### PopupMenuButton
+```
+PopupMenuButton({
+  required List<PopupMenuEntry<Object>> Function(BuildContext) itemBuilder,
+  Object? initialValue,
+  void Function(Object)? onSelected,
+  String? tooltip,
+  double? elevation,
+  EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
+  Widget? child,
+  Widget? icon,
+  double? iconSize,
+  Offset offset = Offset.zero,
+  bool enabled = true,
+  ShapeBorder? shape,
+  Color? color,
+})
+```
+## PopupMenuFilter
+```
+PopupMenuFilter({
+  Key? key,
+  Object? initValue,
+  void Function(Object?)? onSelected,
+  double? elevation,
+  EdgeInsetsGeometry padding = const EdgeInsets.all(8),
+  Widget? icon,
+  Offset offset = Offset.zero,
+  bool enabled = true,
+  ShapeBorder? shape,
+  Color? color,
+  double? iconSize,
+  BorderRadiusGeometry? borderRadius,
+  required Widget child,
+  required List<PopupMenuEntry<Object>> Function(BuildContext) itemBuilder,
+})
+```
+### PopupMenuDivider
+```
+PopupMenuDivider({double height = 16.0})
+```
+### PopupMenuItem
+```
+PopupMenuItem({
+  Object? value,
+  void Function()? onTap,
+  bool enabled = true,
+  double height = kMinInteractiveDimension,
+  EdgeInsets? padding,
+  TextStyle? textStyle,
+  required Widget? child,
+})
+```
+### PopupMenuWrap
+```
+PopupMenuWrap({required Widget child})
+```
+###  Positioned
+```
+Positioned({
+  double? left,
+  double? top,
+  double? right,
+  double? bottom,
+  double? width,
+  double? height,
+  required Widget child,
+})
+```
 ### Radio
 ```
 Radio({
@@ -289,12 +692,83 @@ Radio({
   bool autofocus = false,
 })
 ```
-*  Row
+###  Row
+```
+Row({
+  MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+  MainAxisSize mainAxisSize = MainAxisSize.max,
+  CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+  TextDirection? textDirection,
+  VerticalDirection verticalDirection = VerticalDirection.down,
+  TextBaseline? textBaseline,
+  List<Widget> children = const <Widget>[],
+})
+```
 *  RoundedRectangleBorder
-*  Scaffold
+### SafeArea
+```
+SafeArea({
+  bool left = true,
+  bool top = true,
+  bool right = true,
+  bool bottom = true,
+  EdgeInsets minimum = EdgeInsets.zero,
+  bool maintainBottomViewPadding = false,
+  required Widget child,
+})
+```
+###  Scaffold
+```
+Scaffold({
+  PreferredSizeWidget? appBar,
+  Widget? body,
+  Widget? floatingActionButton,
+  FloatingActionButtonLocation? floatingActionButtonLocation,
+  List<Widget>? persistentFooterButtons,
+  Widget? bottomNavigationBar,
+  Widget? bottomSheet,
+  Color? backgroundColor,
+  bool primary = true,
+  bool extendBody = false,
+  bool extendBodyBehindAppBar = false,
+})
+```
 ###  Size
 ```
-Size(double dx,double dy)
+```
+### SimpleDialog
+```
+SimpleDialog({
+  Widget? title,
+  EdgeInsetsGeometry titlePadding = const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+  TextStyle? titleTextStyle,
+  List<Widget>? children,
+  EdgeInsetsGeometry contentPadding = const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0),
+  Color? backgroundColor,
+  double? elevation,
+  ShapeBorder? shape,
+})
+```
+### SingleChildScrollView
+```
+SingleChildScrollView({
+  Axis scrollDirection = Axis.vertical,
+  bool reverse = false,
+  EdgeInsetsGeometry? padding,
+  bool? primary,
+  Widget? child,
+})
+```
+### Size(double dx,double dy)
+```
+```
+### SizedBox
+```
+SizedBox({
+  double? width,
+  double? height,
+  Widget? child,
+})
 ```
 ### Slider
 ```
@@ -311,7 +785,30 @@ Slider({
   bool autofocus = false,
 })
 ```
-*  SnackBar
+###  SnackBar
+```
+SnackBar({
+  required Widget content,
+  Color? backgroundColor,
+  double? elevation,
+  EdgeInsetsGeometry? margin,
+  EdgeInsetsGeometry? padding,
+  double? width,
+  ShapeBorder? shape,
+  SnackBarAction? action,
+  DismissDirection dismissDirection = DismissDirection.down,
+})
+```
+### SnackBarAction
+```
+SnackBarAction({
+  Color? textColor,
+  Color? disabledTextColor,
+  required String label,
+  required void Function() onPressed,
+})
+```
+
 *  SingleChildScrollView
 ###  TextEditingController
 ```
@@ -325,7 +822,16 @@ textEditingController.clear();
 或
 textEditingController.text = "";
 ```
-*  Stack
+###  Stack
+```
+Stack({
+  AlignmentGeometry alignment = AlignmentDirectional.topStart,
+  TextDirection? textDirection,
+  StackFit fit = StackFit.loose,
+  Clip clipBehavior = Clip.hardEdge,
+  List<Widget> children = const <Widget>[],
+})
+```
 *  StadiumBorder
 ### Switch
 ```
@@ -352,9 +858,43 @@ Switch.adaptive({
   bool autofocus = false,
 })
 ```
-*  Tab
-*  TabBar
-*  TabBarView
+###  Tab
+```
+Tab({
+  String? text,
+  Widget? icon,
+  EdgeInsetsGeometry iconMargin = const EdgeInsets.only(bottom: 10.0),
+  double? height,
+  Widget? child,
+})
+```
+###  TabBar
+```
+TabBar({
+  required List<Widget> tabs,
+  bool isScrollable = false,
+  EdgeInsetsGeometry? padding,
+  Color? indicatorColor,
+  bool automaticIndicatorColorAdjustment = true,
+  double indicatorWeight = 2.0,
+  EdgeInsetsGeometry indicatorPadding = EdgeInsets.zero,
+  Decoration? indicator,
+  TabBarIndicatorSize? indicatorSize,
+  Color? labelColor,
+  TextStyle? labelStyle,
+  EdgeInsetsGeometry? labelPadding,
+  Color? unselectedLabelColor,
+  TextStyle? unselectedLabelStyle,
+  void Function(int)? onTap,
+})
+```
+###  TabBarView
+```
+TabBarView({
+  required List<Widget> children,
+  DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+})
+```
 ###  Text
 ```
 Text(String data, {
@@ -436,7 +976,20 @@ Uri({
 })
 ```
 *  UnderlineInputBorder
-*  Wrap
+###  Wrap
+```
+Wrap({
+  Axis direction = Axis.horizontal,
+  WrapAlignment alignment = WrapAlignment.start,
+  double spacing = 0.0,
+  WrapAlignment runAlignment = WrapAlignment.start,
+  double runSpacing = 0.0,
+  WrapCrossAlignment crossAxisAlignment = WrapCrossAlignment.start,
+  TextDirection? textDirection,
+  VerticalDirection verticalDirection = VerticalDirection.down,
+  List<Widget> children = const <Widget>[],
+})
+```
  
 ## 3. 全局函数
 

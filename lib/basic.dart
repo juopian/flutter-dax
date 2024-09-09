@@ -968,7 +968,8 @@ class ITextField implements LoxFlutterFunction {
     if (showCursorParsed != null) {
       showCursor = showCursorParsed as bool;
     }
-    double? cursorHeight = parseDouble(namedArguments[const Symbol('cursorHeight')]);
+    double? cursorHeight =
+        parseDouble(namedArguments[const Symbol('cursorHeight')]);
     Radius? cursorRadius;
     var cursorRadiusParsed = namedArguments[const Symbol('cursorRadius')];
     if (cursorRadiusParsed != null) {
@@ -1000,7 +1001,8 @@ class ITextField implements LoxFlutterFunction {
       obscureText = obscureTextParsed as bool;
     }
     String obscureCharacter = '•';
-    var obscureCharacterParsed = namedArguments[const Symbol('obscureCharacter')];
+    var obscureCharacterParsed =
+        namedArguments[const Symbol('obscureCharacter')];
     if (obscureCharacterParsed != null) {
       obscureCharacter = obscureCharacterParsed as String;
     }
@@ -1014,7 +1016,8 @@ class ITextField implements LoxFlutterFunction {
     if (maxLengthParsed != null) {
       maxLength = maxLengthParsed as int;
     }
-    double cursorWidth = parseDouble(namedArguments[const Symbol('cursorWidth')]) ?? 2.0;
+    double cursorWidth =
+        parseDouble(namedArguments[const Symbol('cursorWidth')]) ?? 2.0;
     return TextField(
       enabled: enabled,
       autocorrect: autocorrect,
@@ -1207,6 +1210,41 @@ class IAlertDialog implements LoxFlutterFunction {
     if (contentPaddingParsed != null) {
       contentPadding = contentPaddingParsed as EdgeInsetsGeometry;
     }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    bool scrollable = false;
+    var scrollableParsed = namedArguments[const Symbol('scrollable')];
+    if (scrollableParsed != null) {
+      scrollable = scrollableParsed as bool;
+    }
+    EdgeInsetsGeometry actionsPadding = EdgeInsets.zero;
+    var actionsPaddingParsed = namedArguments[const Symbol('actionsPadding')];
+    if (actionsPaddingParsed != null) {
+      actionsPadding = actionsPaddingParsed as EdgeInsetsGeometry;
+    }
+    VerticalDirection? actionsOverflowDirection;
+    var actionsOverflowDirectionParsed =
+        namedArguments[const Symbol('actionsOverflowDirection')];
+    if (actionsOverflowDirectionParsed != null) {
+      actionsOverflowDirection =
+          actionsOverflowDirectionParsed as VerticalDirection;
+    }
+    double? actionsOverflowButtonSpacing = parseDouble(
+        namedArguments[const Symbol('actionsOverflowButtonSpacing')]);
+    EdgeInsetsGeometry? buttonPadding;
+    var buttonPaddingParsed = namedArguments[const Symbol('buttonPadding')];
+    if (buttonPaddingParsed != null) {
+      buttonPadding = buttonPaddingParsed as EdgeInsetsGeometry;
+    }
+    MainAxisAlignment? actionsAlignment;
+    var actionsAlignmentParsed =
+        namedArguments[const Symbol('actionsAlignment')];
+    if (actionsAlignmentParsed != null) {
+      actionsAlignment = actionsAlignmentParsed as MainAxisAlignment;
+    }
     return AlertDialog(
       title: title,
       content: content,
@@ -1217,6 +1255,13 @@ class IAlertDialog implements LoxFlutterFunction {
       elevation: elevation,
       titlePadding: titlePadding,
       contentPadding: contentPadding,
+      shape: shape,
+      scrollable: scrollable,
+      actionsAlignment: actionsAlignment,
+      actionsPadding: actionsPadding,
+      actionsOverflowDirection: actionsOverflowDirection,
+      actionsOverflowButtonSpacing: actionsOverflowButtonSpacing,
+      buttonPadding: buttonPadding,
     );
   }
 }
@@ -1251,14 +1296,54 @@ class ISnackBar implements LoxFlutterFunction {
     if (marginParsed != null) {
       margin = marginParsed as EdgeInsetsGeometry;
     }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    SnackBarAction? action;
+    var actionParsed = namedArguments[const Symbol('action')];
+    if (actionParsed != null) {
+      action = actionParsed as SnackBarAction;
+    }
+    DismissDirection dismissDirection = DismissDirection.down;
+    var dismissDirectionParsed =
+        namedArguments[const Symbol('dismissDirection')];
+    if (dismissDirectionParsed != null) {
+      dismissDirection = dismissDirectionParsed as DismissDirection;
+    }
     return SnackBar(
       content: content as Widget,
       elevation: elevation,
       width: width,
+      shape: shape,
       margin: margin,
       padding: padding,
       behavior: snackBarBehavior,
       backgroundColor: backgroundColor,
+      action: action,
+      dismissDirection: dismissDirection,
+    );
+  }
+}
+
+class ISnackBarAction implements LoxFlutterFunction {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var label = namedArguments[const Symbol('label')];
+    if (label == null) {
+      throw "label required in SnackBarAction";
+    }
+    var onPressed = namedArguments[const Symbol('onPressed')];
+    if (onPressed == null) {
+      throw "onPressed required in SnackBarAction";
+    }
+    return SnackBarAction(
+      label: label as String,
+      onPressed: () {
+        (onPressed as LoxFunction).call(interpreter, [], {});
+      },
     );
   }
 }
@@ -1311,8 +1396,8 @@ class IDatePicker implements LoxFlutterFunction {
     if (date == null) {
       throw "date required in DatePicker";
     }
-    var onDateChange = namedArguments[const Symbol('onDateChange')];
-    if (onDateChange == null) {
+    var onDateChanged = namedArguments[const Symbol('onDateChanged')];
+    if (onDateChanged == null) {
       throw "onDateChange required in DatePicker";
     }
     bool autoHide = true;
@@ -1320,17 +1405,11 @@ class IDatePicker implements LoxFlutterFunction {
     if (autoHideParsed != null) {
       autoHide = autoHideParsed as bool;
     }
-    String prefix = "";
-    var prefixParsed = namedArguments[const Symbol('prefix')];
-    if (prefixParsed != null) {
-      prefix = prefixParsed as String;
-    }
     return DatePicker(
       date: date as String,
       autoHide: autoHide,
-      prefix: prefix,
-      onDateChange: (s) {
-        (onDateChange as LoxFunction).call(interpreter, [s], {});
+      onDateChanged: (s) {
+        (onDateChanged as LoxFunction).call(interpreter, [s], {});
       },
     );
   }
@@ -1370,12 +1449,18 @@ class ISafeArea implements LoxFlutterFunction {
     if (maintainBottomViewPaddingParsed != null) {
       maintainBottomViewPadding = maintainBottomViewPaddingParsed as bool;
     }
+    EdgeInsets minimum =  EdgeInsets.zero;
+    var minimumParsed = namedArguments[const Symbol('minimum')];
+    if (minimumParsed != null) {
+      minimum = minimumParsed as EdgeInsets;
+    }
     return SafeArea(
       child: child as Widget,
       left: left,
       top: top,
       right: right,
       bottom: bottom,
+      minimum: minimum,
       maintainBottomViewPadding: maintainBottomViewPadding,
     );
   }

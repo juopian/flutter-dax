@@ -42,9 +42,34 @@ class IRow implements LoxFlutterFunction {
     if (childrenParsed == null) {
       throw "children required in Row";
     }
+    MainAxisSize mainAxisSize = MainAxisSize.max;
+    var mainAxisSizeParsed = namedArguments[const Symbol('mainAxisSize')];
+    if (mainAxisSizeParsed != null) {
+      mainAxisSize = mainAxisSizeParsed as MainAxisSize;
+    }
+    TextDirection? textDirection;
+    var textDirectionParsed = namedArguments[const Symbol('textDirection')];
+    if (textDirectionParsed != null) {
+      textDirection = textDirectionParsed as TextDirection;
+    }
+    VerticalDirection verticalDirection = VerticalDirection.down;
+    var verticalDirectionParsed =
+        namedArguments[const Symbol('verticalDirection')];
+    if (verticalDirectionParsed != null) {
+      verticalDirection = verticalDirectionParsed as VerticalDirection;
+    }
+    TextBaseline? textBaseline;
+    var textBaselineParsed = namedArguments[const Symbol('textBaseline')];
+    if (textBaselineParsed != null) {
+      textBaseline = textBaselineParsed as TextBaseline;
+    }
     List<Widget> children = (childrenParsed as List).cast<Widget>();
     return Row(
         children: children,
+        mainAxisSize: mainAxisSize,
+        textDirection: textDirection,
+        textBaseline: textBaseline,
+        verticalDirection: verticalDirection,
         mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: crossAxisAlignment);
   }
@@ -70,9 +95,34 @@ class IColumn implements LoxFlutterFunction {
     if (childrenParsed == null) {
       throw "children required in Column";
     }
+    MainAxisSize mainAxisSize = MainAxisSize.max;
+    var mainAxisSizeParsed = namedArguments[const Symbol('mainAxisSize')];
+    if (mainAxisSizeParsed != null) {
+      mainAxisSize = mainAxisSizeParsed as MainAxisSize;
+    }
+    TextDirection? textDirection;
+    var textDirectionParsed = namedArguments[const Symbol('textDirection')];
+    if (textDirectionParsed != null) {
+      textDirection = textDirectionParsed as TextDirection;
+    }
+    VerticalDirection verticalDirection = VerticalDirection.down;
+    var verticalDirectionParsed =
+        namedArguments[const Symbol('verticalDirection')];
+    if (verticalDirectionParsed != null) {
+      verticalDirection = verticalDirectionParsed as VerticalDirection;
+    }
+    TextBaseline? textBaseline;
+    var textBaselineParsed = namedArguments[const Symbol('textBaseline')];
+    if (textBaselineParsed != null) {
+      textBaseline = textBaselineParsed as TextBaseline;
+    }
     List<Widget> children = (childrenParsed as List).cast<Widget>();
     return Column(
       children: children,
+      mainAxisSize: mainAxisSize,
+      textDirection: textDirection,
+      textBaseline: textBaseline,
+      verticalDirection: verticalDirection,
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
     );
@@ -121,9 +171,34 @@ class IWrap implements LoxFlutterFunction {
     if (runAlignmentParsed != null) {
       runAlignment = runAlignmentParsed as WrapAlignment;
     }
+    Axis direction = Axis.horizontal;
+    var directionParsed = namedArguments[const Symbol('direction')];
+    if (directionParsed != null) {
+      direction = directionParsed as Axis;
+    }
+    TextDirection? textDirection;
+    var textDirectionParsed = namedArguments[const Symbol('textDirection')];
+    if (textDirectionParsed != null) {
+      textDirection = textDirectionParsed as TextDirection;
+    }
+    VerticalDirection verticalDirection = VerticalDirection.down;
+    var verticalDirectionParsed =
+        namedArguments[const Symbol('verticalDirection')];
+    if (verticalDirectionParsed != null) {
+      verticalDirection = verticalDirectionParsed as VerticalDirection;
+    }
+    WrapCrossAlignment crossAlignment = WrapCrossAlignment.start;
+    var crossAlignmentParsed = namedArguments[const Symbol('crossAlignment')];
+    if (crossAlignmentParsed != null) {
+      crossAlignment = crossAlignmentParsed as WrapCrossAlignment;
+    }
     return Wrap(
+      direction: direction,
       children: children,
       spacing: spacing,
+      textDirection: textDirection,
+      crossAxisAlignment: crossAlignment,
+      verticalDirection: verticalDirection,
       runSpacing: runSpacing,
       alignment: alignment,
       runAlignment: runAlignment,
@@ -177,8 +252,20 @@ class IStack implements LoxFlutterFunction {
     if (fitParsed != null) {
       fit = fitParsed as StackFit;
     }
+    AlignmentGeometry alignment = AlignmentDirectional.topStart;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    Clip clipBehavior = Clip.hardEdge;
+    var clipBehaviorParsed = namedArguments[const Symbol('clipBehavior')];
+    if (clipBehaviorParsed != null) {
+      clipBehavior = clipBehaviorParsed as Clip;
+    }
     return Stack(
       children: children,
+      alignment: alignment,
+      clipBehavior: clipBehavior,
       textDirection: textDirection,
       fit: fit,
     );

@@ -1,4 +1,5 @@
 import 'package:dax/dax.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
@@ -18,17 +19,55 @@ class IListView implements LoxFlutterFunction, LoxGetCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
+    List<Widget> children = [];
     var childrenParsed = namedArguments[const Symbol('children')];
-    if (childrenParsed == null) {
-      throw "children required in ListView";
+    if (childrenParsed != null) {
+      children = (childrenParsed as List).cast<Widget>();
     }
-    List<Widget> children = (childrenParsed as List).cast<Widget>();
     Axis scrollDirection = Axis.vertical;
     var scrollDirectionParsed = namedArguments[const Symbol('scrollDirection')];
     if (scrollDirectionParsed != null) {
       scrollDirection = scrollDirectionParsed as Axis;
     }
-    return ListView(scrollDirection: scrollDirection, children: children);
+    bool reverse = false;
+    var reverseParsed = namedArguments[const Symbol('reverse')];
+    if (reverseParsed != null) {
+      reverse = reverseParsed as bool;
+    }
+    bool? primary;
+    var primaryParsed = namedArguments[const Symbol('primary')];
+    if (primaryParsed != null) {
+      primary = primaryParsed as bool;
+    }
+    bool shrinkWrap = false;
+    var shrinkWrapParsed = namedArguments[const Symbol('shrinkWrap')];
+    if (shrinkWrapParsed != null) {
+      shrinkWrap = shrinkWrapParsed as bool;
+    }
+    EdgeInsetsGeometry? padding;
+    var paddingParsed = namedArguments[const Symbol('padding')];
+    if (paddingParsed != null) {
+      padding = paddingParsed as EdgeInsetsGeometry;
+    }
+    double? itemExtent =
+        parseDouble(namedArguments[const Symbol('itemExtent')]);
+    double? cacheExtent =
+        parseDouble(namedArguments[const Symbol('cacheExtent')]);
+    Widget? prototypeItem;
+    var prototypeItemParsed = namedArguments[const Symbol('prototypeItem')];
+    if (prototypeItemParsed != null) {
+      prototypeItem = prototypeItemParsed as Widget;
+    }
+    return ListView(
+        primary: primary,
+        reverse: reverse,
+        padding: padding,
+        itemExtent: itemExtent,
+        cacheExtent: cacheExtent,
+        shrinkWrap: shrinkWrap,
+        prototypeItem: prototypeItem,
+        scrollDirection: scrollDirection,
+        children: children);
   }
 }
 
@@ -72,11 +111,19 @@ class ListViewBuilder implements LoxFlutterFunction {
     if (itemBuilder == null) {
       throw "itemBuilder required in ListView.builder";
     }
+    Axis scrollDirection = Axis.vertical;
+    var scrollDirectionParsed = namedArguments[const Symbol('scrollDirection')];
+    if (scrollDirectionParsed != null) {
+      scrollDirection = scrollDirectionParsed as Axis;
+    }
+    double? cacheExtent = parseDouble(namedArguments[const Symbol('cacheExtent')]);
     return ListView.builder(
+      scrollDirection: scrollDirection,
       itemExtent: itemExtent,
       prototypeItem: prototypeItem,
       reverse: reverse,
       primary: primary,
+      cacheExtent: cacheExtent,
       shrinkWrap: shrinkWrap,
       itemCount: itemCount,
       padding: padding,
@@ -124,12 +171,20 @@ class ListViewSeparated implements LoxFlutterFunction {
     if (separatorBuilder == null) {
       throw "separatorBuilder required in ListView.separated";
     }
+    Axis scrollDirection = Axis.vertical;
+    var scrollDirectionParsed = namedArguments[const Symbol('scrollDirection')];
+    if (scrollDirectionParsed != null) {
+      scrollDirection = scrollDirectionParsed as Axis;
+    }
+    double? cacheExtent = parseDouble(namedArguments[const Symbol('cacheExtent')]);
     return ListView.separated(
+        scrollDirection: scrollDirection,
         reverse: reverse,
         primary: primary,
         padding: padding,
         shrinkWrap: shrinkWrap,
         itemCount: itemCount as int,
+        cacheExtent: cacheExtent,
         itemBuilder: (BuildContext context, int index) {
           return (itemBuilder as LoxCallable)
               .call(interpreter, [context, index], {}) as Widget;
@@ -160,8 +215,20 @@ class ISingleChildScrollView implements LoxFlutterFunction {
     if (primaryParsed != null) {
       primary = primaryParsed as bool;
     }
+    Axis scrollDirection = Axis.vertical;
+    var scrollDirectionParsed = namedArguments[const Symbol('scrollDirection')];
+    if (scrollDirectionParsed != null) {
+      scrollDirection = scrollDirectionParsed as Axis;
+    }
+    EdgeInsetsGeometry? padding;
+    var paddingParsed = namedArguments[const Symbol('padding')];
+    if (paddingParsed != null) {
+      padding = paddingParsed as EdgeInsetsGeometry;
+    }
     return SingleChildScrollView(
+      scrollDirection: scrollDirection,
       reverse: reverse,
+      padding: padding,
       primary: primary,
       child: child,
     );
@@ -239,21 +306,29 @@ class ITabBar implements LoxFlutterFunction {
         (onTapParsed as LoxFunction).call(interpreter, [i], {});
       };
     }
-    TabController? controller;
-    var controllerParsed = namedArguments[const Symbol('controller')];
-    if (controllerParsed != null) {
-      controller = controllerParsed as TabController;
+    bool automaticIndicatorColorAdjustment = true;
+    var automaticIndicatorColorAdjustmentParsed =
+        namedArguments[const Symbol('automaticIndicatorColorAdjustment')];
+    if (automaticIndicatorColorAdjustmentParsed != null) {
+      automaticIndicatorColorAdjustment =
+          automaticIndicatorColorAdjustmentParsed as bool;
+    }
+    Decoration? indicator;
+    var indicatorParsed = namedArguments[const Symbol('indicator')];
+    if (indicatorParsed != null) {
+      indicator = indicatorParsed as Decoration;
     }
     return TabBar(
-      controller: controller,
       tabs: tabs,
       onTap: onTap,
       padding: padding,
+      indicator: indicator,
       labelPadding: labelPadding,
       labelColor: labelColor,
       labelStyle: labelStyle,
       unselectedLabelColor: unselectedLabelColor,
       unselectedLabelStyle: unselectedLabelStyle,
+      automaticIndicatorColorAdjustment: automaticIndicatorColorAdjustment,
       indicatorColor: indicatorColor,
       indicatorWeight: indicatorWeight,
       indicatorPadding: indicatorPadding,
@@ -331,15 +406,15 @@ class ITabBarView implements LoxFlutterFunction {
     if (children == null) {
       throw "children required in TabBarView";
     }
-    TabController? controller;
-    var controllerParsed = namedArguments[const Symbol('controller')];
-    if (controllerParsed != null) {
-      controller = controllerParsed as TabController;
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start;
+    var dragStartBehaviorParsed =
+        namedArguments[const Symbol('dragStartBehavior')];
+    if (dragStartBehaviorParsed != null) {
+      dragStartBehavior = dragStartBehaviorParsed as DragStartBehavior;
     }
     return TabBarView(
       children: children as List<Widget>,
-      controller: controller,
+      dragStartBehavior: dragStartBehavior,
     );
   }
 }
-

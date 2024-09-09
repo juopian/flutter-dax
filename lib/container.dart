@@ -1,4 +1,5 @@
 import 'package:dax/dax.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
@@ -28,11 +29,58 @@ class IScaffold implements LoxFlutterFunction {
     if (bottomNavigationBarParsed != null) {
       bottomNavigationBar = bottomNavigationBarParsed as Widget;
     }
+    FloatingActionButtonLocation? floatingActionButtonLocation;
+    var floatingActionButtonLocationParsed =
+        namedArguments[const Symbol('floatingActionButtonLocation')];
+    if (floatingActionButtonLocationParsed != null) {
+      floatingActionButtonLocation =
+          floatingActionButtonLocationParsed as FloatingActionButtonLocation;
+    }
+    Widget? bottomSheet;
+    var bottomSheetParsed = namedArguments[const Symbol('bottomSheet')];
+    if (bottomSheetParsed != null) {
+      bottomSheet = bottomSheetParsed as Widget;
+    }
+    Color? backgroundColor;
+    var backgroundColorParsed = namedArguments[const Symbol('backgroundColor')];
+    if (backgroundColorParsed != null) {
+      backgroundColor = backgroundColorParsed as Color;
+    }
+    bool primary = true;
+    var primaryParsed = namedArguments[const Symbol('primary')];
+    if (primaryParsed != null) {
+      primary = primaryParsed as bool;
+    }
+    bool extendBody = true;
+    var extendBodyParsed = namedArguments[const Symbol('extendBody')];
+    if (extendBodyParsed != null) {
+      extendBody = extendBodyParsed as bool;
+    }
+    bool extendBodyBehindAppBar = true;
+    var extendBodyBehindAppBarParsed =
+        namedArguments[const Symbol('extendBodyBehindAppBar')];
+    if (extendBodyBehindAppBarParsed != null) {
+      extendBodyBehindAppBar = extendBodyBehindAppBarParsed as bool;
+    }
+    List<Widget>? persistentFooterButtons;
+    var persistentFooterButtonsParsed =
+        namedArguments[const Symbol('persistentFooterButtons')];
+    if (persistentFooterButtonsParsed != null) {
+      persistentFooterButtons =
+          (persistentFooterButtonsParsed as List).cast<Widget>();
+    }
     return Scaffold(
       appBar: appBar,
       body: body,
+      primary: primary,
       bottomNavigationBar: bottomNavigationBar,
+      bottomSheet: bottomSheet,
+      persistentFooterButtons: persistentFooterButtons,
+      extendBody: extendBody,
+      extendBodyBehindAppBar: extendBodyBehindAppBar,
+      backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
 }
@@ -114,6 +162,7 @@ class IBottomNavigationBar implements LoxFlutterFunction {
     return BottomNavigationBar(
       items: items,
       onTap: onTap,
+      currentIndex: currentIndex,
       iconSize: iconSize,
       elevation: elevation,
       fixedColor: fixedColor,
@@ -126,7 +175,6 @@ class IBottomNavigationBar implements LoxFlutterFunction {
       unselectedLabelStyle: unselectedLabelStyle,
       showSelectedLabels: showSelectedLabels,
       showUnselectedLabels: showUnselectedLabels,
-      currentIndex: currentIndex,
     );
   }
 }
@@ -140,7 +188,7 @@ class IAppBar implements LoxFlutterFunction {
     if (titleParsed != null) {
       title = titleParsed as Widget;
     }
-    List<Widget> actions = [];
+    List<Widget>? actions;
     var actionsParsed = namedArguments[const Symbol('actions')];
     if (actionsParsed != null) {
       actions = (actionsParsed as List).cast<Widget>();
@@ -166,14 +214,79 @@ class IAppBar implements LoxFlutterFunction {
     if (bottomParsed != null) {
       bottom = bottomParsed as PreferredSizeWidget;
     }
+    Widget? leading;
+    var leadingParsed = namedArguments[const Symbol('leading')];
+    if (leadingParsed != null) {
+      leading = leadingParsed as Widget;
+    }
+    Widget? flexibleSpace;
+    var flexibleSpaceParsed = namedArguments[const Symbol('flexibleSpace')];
+    if (flexibleSpaceParsed != null) {
+      flexibleSpace = flexibleSpaceParsed as Widget;
+    }
+    Color? shadowColor;
+    var shadowColorParsed = namedArguments[const Symbol('shadowColor')];
+    if (shadowColorParsed != null) {
+      shadowColor = shadowColorParsed as Color;
+    }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    bool primary = true;
+    var primaryParsed = namedArguments[const Symbol('primary')];
+    if (primaryParsed != null) {
+      primary = primaryParsed as bool;
+    }
+    double? titleSpacing =
+        parseDouble(namedArguments[const Symbol('titleSpacing')]);
+    double toolbarOptionsOpacity = 1.0;
+    var toolbarOptionsOpacityParsed =
+        namedArguments[const Symbol('toolbarOptionsOpacity')];
+    if (toolbarOptionsOpacityParsed != null) {
+      toolbarOptionsOpacity = toolbarOptionsOpacityParsed as double;
+    }
+    double bottomOpacity = 1.0;
+    var bottomOpacityParsed = namedArguments[const Symbol('bottomOpacity')];
+    if (bottomOpacityParsed != null) {
+      bottomOpacity = bottomOpacityParsed as double;
+    }
+    double? toolbarHeight =
+        parseDouble(namedArguments[const Symbol('toolbarHeight')]);
+    double? leadingWidth =
+        parseDouble(namedArguments[const Symbol('leadingWidth')]);
+    TextStyle? titleTextStyle;
+    var titleTextStyleParsed = namedArguments[const Symbol('titleTextStyle')];
+    if (titleTextStyleParsed != null) {
+      titleTextStyle = titleTextStyleParsed as TextStyle;
+    }
+    TextStyle? toolbarTextStyle;
+    var toolbarTextStyleParsed =
+        namedArguments[const Symbol('toolbarTextStyle')];
+    if (toolbarTextStyleParsed != null) {
+      toolbarTextStyle = toolbarTextStyleParsed as TextStyle;
+    }
     return AppBar(
       title: title,
+      leading: leading,
       actions: actions,
+      primary: primary,
+      shadowColor: shadowColor,
+      flexibleSpace: flexibleSpace,
+      titleSpacing: titleSpacing,
+      toolbarOpacity: toolbarOptionsOpacity,
+      bottomOpacity: bottomOpacity,
+      toolbarHeight: toolbarHeight,
+      leadingWidth: leadingWidth,
+      titleTextStyle: titleTextStyle,
+      toolbarTextStyle: toolbarTextStyle,
       bottom: bottom,
-      elevation: elevation,
-      centerTitle: centerTitle,
+      shape: shape,
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
+      elevation: elevation,
+      centerTitle: centerTitle,
     );
   }
 }
@@ -219,14 +332,40 @@ class IContainer implements LoxFlutterFunction {
     if (constraintsParsed != null) {
       constraints = constraintsParsed as BoxConstraints;
     }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
+    Decoration? foregroundDecoration;
+    var foregroundDecorationParsed =
+        namedArguments[const Symbol('foregroundDecoration')];
+    if (foregroundDecorationParsed != null) {
+      foregroundDecoration = foregroundDecorationParsed as Decoration;
+    }
+    Clip clipBehavior = Clip.none;
+    var clipBehaviorParsed = namedArguments[const Symbol('clipBehavior')];
+    if (clipBehaviorParsed != null) {
+      clipBehavior = clipBehaviorParsed as Clip;
+    }
+    AlignmentGeometry? transformAlignment;
+    var transformAlignmentParsed =
+        namedArguments[const Symbol('transformAlignment')];
+    if (transformAlignmentParsed != null) {
+      transformAlignment = transformAlignmentParsed as AlignmentGeometry;
+    }
     return Container(
+        alignment: alignment,
         margin: margin,
+        foregroundDecoration: foregroundDecoration,
         padding: padding,
         constraints: constraints,
         decoration: decoration,
         transform: transform,
+        transformAlignment: transformAlignment,
         child: child,
         color: color,
+        clipBehavior: clipBehavior,
         height: height,
         width: width);
   }
@@ -326,8 +465,14 @@ class IClipOval implements LoxFlutterFunction {
     if (childParsed != null) {
       child = childParsed as Widget;
     }
+    Clip clipBehavior = Clip.antiAlias;
+    var clipBehaviorParsed = namedArguments[const Symbol('clipBehavior')];
+    if (clipBehaviorParsed != null) {
+      clipBehavior = clipBehaviorParsed as Clip;
+    }
     return ClipOval(
       child: child,
+      clipBehavior: clipBehavior,
     );
   }
 }
@@ -341,14 +486,20 @@ class IClipRRect implements LoxFlutterFunction {
     if (childParsed != null) {
       child = childParsed as Widget;
     }
-    BorderRadius? borderRadius;
+    BorderRadius? borderRadius = BorderRadius.zero;
     var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
     if (borderRadiusParsed != null) {
       borderRadius = borderRadiusParsed as BorderRadius;
     }
+    Clip clipBehavior = Clip.antiAlias;
+    var clipBehaviorParsed = namedArguments[const Symbol('clipBehavior')];
+    if (clipBehaviorParsed != null) {
+      clipBehavior = clipBehaviorParsed as Clip;
+    }
     return ClipRRect(
       child: child,
       borderRadius: borderRadius,
+      clipBehavior: clipBehavior,
     );
   }
 }
@@ -362,8 +513,14 @@ class IClipRect implements LoxFlutterFunction {
     if (childParsed != null) {
       child = childParsed as Widget;
     }
+    Clip clipBehavior = Clip.hardEdge;
+    var clipBehaviorParsed = namedArguments[const Symbol('clipBehavior')];
+    if (clipBehaviorParsed != null) {
+      clipBehavior = clipBehaviorParsed as Clip;
+    }
     return ClipRect(
       child: child,
+      clipBehavior: clipBehavior,
     );
   }
 }
@@ -421,14 +578,66 @@ class IListTile implements LoxFlutterFunction {
     if (contentPaddingParsed != null) {
       contentPadding = contentPaddingParsed as EdgeInsetsGeometry;
     }
+    bool isThreeLine = false;
+    var isThreeLineParsed = namedArguments[const Symbol('isThreeLine')];
+    if (isThreeLineParsed != null) {
+      isThreeLine = isThreeLineParsed as bool;
+    }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    bool enabled = true;
+    var enabledParsed = namedArguments[const Symbol('enabled')];
+    if (enabledParsed != null) {
+      enabled = enabledParsed as bool;
+    }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    Color? focusColor;
+    var focusColorParsed = namedArguments[const Symbol('focusColor')];
+    if (focusColorParsed != null) {
+      focusColor = focusColorParsed as Color;
+    }
+    Color? tileColor;
+    var tileColorParsed = namedArguments[const Symbol('tileColor')];
+    if (tileColorParsed != null) {
+      tileColor = tileColorParsed as Color;
+    }
+    Color? selectedTileColor;
+    var selectedTileColorParsed =
+        namedArguments[const Symbol('selectedTileColor')];
+    if (selectedTileColorParsed != null) {
+      selectedTileColor = selectedTileColorParsed as Color;
+    }
+    double? horizontalTitleGap =
+        parseDouble(namedArguments[const Symbol('horizontalTitleGap')]);
+    double? minVerticalPadding =
+        parseDouble(namedArguments[const Symbol('minVerticalPadding')]);
+    double? minLeadingWidth =
+        parseDouble(namedArguments[const Symbol('minLeadingWidth')]);
     return ListTile(
         leading: leading,
         title: title,
         subtitle: subtitle,
         trailing: trailing,
+        isThreeLine: isThreeLine,
+        enabled: enabled,
         dense: dense,
+        shape: shape,
         selected: selected,
         onTap: onTap,
+        tileColor: tileColor,
+        selectedTileColor: selectedTileColor,
+        horizontalTitleGap: horizontalTitleGap,
+        minVerticalPadding: minVerticalPadding,
+        minLeadingWidth: minLeadingWidth,
+        autofocus: autofocus,
+        focusColor: focusColor,
         onLongPress: onLongPress,
         contentPadding: contentPadding);
   }
@@ -457,6 +666,21 @@ class IFloatingActionButton implements LoxFlutterFunction {
     if (forgroundColorParsed != null) {
       forgroundColor = forgroundColorParsed as Color;
     }
+    Color? focusColor;
+    var focusColorParsed = namedArguments[const Symbol('focusColor')];
+    if (focusColorParsed != null) {
+      focusColor = focusColorParsed as Color;
+    }
+    Color? splashColor;
+    var splashColorParsed = namedArguments[const Symbol('splashColor')];
+    if (splashColorParsed != null) {
+      splashColor = splashColorParsed as Color;
+    }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
     bool mini = false;
     var miniParsed = namedArguments[const Symbol('mini')];
     if (miniParsed != null) {
@@ -467,13 +691,43 @@ class IFloatingActionButton implements LoxFlutterFunction {
     if (isExtendedParsed != null) {
       isExtended = isExtendedParsed as bool;
     }
+    String? tooltip;
+    var tooltipParsed = namedArguments[const Symbol('tooltip')];
+    if (tooltipParsed != null) {
+      tooltip = tooltipParsed as String;
+    }
     double? elevation = parseDouble(namedArguments[const Symbol('elevation')]);
+    double? focusElevation =
+        parseDouble(namedArguments[const Symbol('focusElevation')]);
+    double? highlightElevation =
+        parseDouble(namedArguments[const Symbol('highlightElevation')]);
+    double? disabledElevation =
+        parseDouble(namedArguments[const Symbol('disabledElevation')]);
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    Clip clipBehavior = Clip.none;
+    var clipBehaviorParsed = namedArguments[const Symbol('clipBehavior')];
+    if (clipBehaviorParsed != null) {
+      clipBehavior = clipBehaviorParsed as Clip;
+    }
     return FloatingActionButton(
       backgroundColor: backgroundColor,
       foregroundColor: forgroundColor,
+      splashColor: splashColor,
+      focusColor: focusColor,
+      autofocus: autofocus,
       child: child,
       mini: mini,
+      tooltip: tooltip,
       elevation: elevation,
+      shape: shape,
+      clipBehavior: clipBehavior,
+      focusElevation: focusElevation,
+      highlightElevation: highlightElevation,
+      disabledElevation: disabledElevation,
       isExtended: isExtended,
       onPressed: () {
         (onPressed as LoxFunction).call(interpreter, [], {});
@@ -586,12 +840,27 @@ class IExpansionTile implements LoxFlutterFunction {
     if (controlAffinityParsed != null) {
       controlAffinity = controlAffinityParsed as ListTileControlAffinity;
     }
+    Alignment? expandedAlignment;
+    var expandedAlignmentParsed =
+        namedArguments[const Symbol('expandedAlignment')];
+    if (expandedAlignmentParsed != null) {
+      expandedAlignment = expandedAlignmentParsed as Alignment;
+    }
+    CrossAxisAlignment? expandedCrossAxisAlignment;
+    var expandedCrossAxisAlignmentParsed =
+        namedArguments[const Symbol('collapsedAlignment')];
+    if (expandedCrossAxisAlignmentParsed != null) {
+      expandedCrossAxisAlignment =
+          expandedCrossAxisAlignmentParsed as CrossAxisAlignment;
+    }
     return ExpansionTile(
       title: title as Widget,
       leading: leading,
       controlAffinity: controlAffinity,
       trailing: trailing,
       children: children,
+      expandedAlignment: expandedAlignment,
+      expandedCrossAxisAlignment: expandedCrossAxisAlignment,
       onExpansionChanged: onExpansionChanged,
       tilePadding: tilePadding,
       childrenPadding: childrenPadding,
@@ -658,13 +927,25 @@ class IPopupMenuButton implements LoxFlutterFunction {
     if (initialValueParsed != null) {
       initialValue = initialValueParsed;
     }
+    String? tooltip;
+    var tooltipParsed = namedArguments[const Symbol('tooltip')];
+    if (tooltipParsed != null) {
+      tooltip = tooltipParsed as String;
+    }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
     return PopupMenuButton(
         child: child,
         icon: icon,
         offset: offset,
+        enabled: enabled,
         initialValue: initialValue,
         padding: padding,
-        enabled: enabled,
+        shape: shape,
+        tooltip: tooltip,
         itemBuilder: (BuildContext context) {
           return ((itemBuilder as LoxCallable).call(interpreter, [context], {})
                   as List)
@@ -681,7 +962,8 @@ class IPopupMenuDivider implements LoxFlutterFunction {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    return const PopupMenuDivider();
+    double height = parseDouble(namedArguments[const Symbol('height')]) ?? 16.0;
+    return PopupMenuDivider(height: height);
   }
 }
 
@@ -707,10 +989,24 @@ class IPopupMenuItem implements LoxFlutterFunction {
     if (paddingParsed != null) {
       padding = paddingParsed as EdgeInsets;
     }
+    TextStyle? style;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as TextStyle;
+    }
+    bool enabled = true;
+    var enabledParsed = namedArguments[const Symbol('enabled')];
+    if (enabledParsed != null) {
+      enabled = enabledParsed as bool;
+    }
+    double height = parseDouble(namedArguments[const Symbol('height')]) ?? 48.0;
     return PopupMenuItem(
       value: value,
+      enabled: enabled,
+      height: height,
       child: child,
       onTap: onTap,
+      textStyle: style,
       padding: padding,
     );
   }
@@ -724,19 +1020,19 @@ class IPopupMenuWrap implements LoxFlutterFunction {
     if (child == null) {
       throw "child required in PopupMenuWrapView";
     }
-    return PopupMenuWrapView(child: child as Widget);
+    return PopupMenuWrap(child: child as Widget);
   }
 }
 
-class PopupMenuWrapView extends PopupMenuEntry<Never> {
+class PopupMenuWrap extends PopupMenuEntry<Never> {
   final Widget child;
-  const PopupMenuWrapView({
+  const PopupMenuWrap({
     Key? key,
     required this.child,
   }) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return PopupMenuWrapViewState();
+    return PopupMenuWrapState();
   }
 
   @override
@@ -748,7 +1044,7 @@ class PopupMenuWrapView extends PopupMenuEntry<Never> {
   double get height => throw UnimplementedError();
 }
 
-class PopupMenuWrapViewState extends State<PopupMenuWrapView> {
+class PopupMenuWrapState extends State<PopupMenuWrap> {
   @override
   Widget build(BuildContext context) {
     return widget.child;
@@ -786,49 +1082,92 @@ class IDropdownButton implements LoxFlutterFunction {
         (onChangedParse as LoxFunction).call(interpreter, [b], {});
       };
     }
-    Widget? icon;
-    var iconParse = namedArguments[const Symbol('icon')];
-    if (iconParse != null) {
-      icon = iconParse as Widget;
+    Function()? onTap;
+    var onTapParse = namedArguments[const Symbol('onTap')];
+    if (onTapParse != null) {
+      onTap = () {
+        (onTapParse as LoxFunction).call(interpreter, [], {});
+      };
+      Widget? icon;
+      var iconParse = namedArguments[const Symbol('icon')];
+      if (iconParse != null) {
+        icon = iconParse as Widget;
+      }
+      TextStyle? style;
+      var styleParse = namedArguments[const Symbol('style')];
+      if (styleParse != null) {
+        style = styleParse as TextStyle;
+      }
+      double? menuMaxHeight =
+          parseDouble(namedArguments[const Symbol('menuMaxHeight')]);
+      Color? dropdownColor;
+      var dropdownColorParse = namedArguments[const Symbol('dropdownColor')];
+      if (dropdownColorParse != null) {
+        dropdownColor = dropdownColorParse as Color;
+      }
+      double iconSize =
+          parseDouble(namedArguments[const Symbol('iconSize')]) ?? 24.0;
+      Widget? underline;
+      var underlineParse = namedArguments[const Symbol('underline')];
+      if (underlineParse != null) {
+        underline = underlineParse as Widget;
+      }
+      AlignmentGeometry alignment = AlignmentDirectional.centerStart;
+      var alignmentParse = namedArguments[const Symbol('alignment')];
+      if (alignmentParse != null) {
+        alignment = alignmentParse as AlignmentGeometry;
+      }
+      Color? iconDisabledColor;
+      var iconDisabledColorParse =
+          namedArguments[const Symbol('iconDisabledColor')];
+      if (iconDisabledColorParse != null) {
+        iconDisabledColor = iconDisabledColorParse as Color;
+      }
+      Color? iconEnabledColor;
+      var iconEnabledColorParse =
+          namedArguments[const Symbol('iconEnabledColor')];
+      if (iconEnabledColorParse != null) {
+        iconEnabledColor = iconEnabledColorParse as Color;
+      }
+      Color? focusColor;
+      var focusColorParsed = namedArguments[const Symbol('focusColor')];
+      if (focusColorParsed != null) {
+        focusColor = focusColorParsed as Color;
+      }
+      bool autofocus = false;
+      var autofocusParsed = namedArguments[const Symbol('autofocus')];
+      if (autofocusParsed != null) {
+        autofocus = autofocusParsed as bool;
+      }
+      BorderRadius? borderRadius;
+      var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
+      if (borderRadiusParsed != null) {
+        borderRadius = borderRadiusParsed as BorderRadius;
+      }
+      double? itemHeight =
+          parseDouble(namedArguments[const Symbol('itemHeight')]);
+      return DropdownButton(
+          value: value,
+          icon: icon,
+          itemHeight: itemHeight,
+          alignment: alignment,
+          iconSize: iconSize,
+          iconDisabledColor: iconDisabledColor,
+          borderRadius: borderRadius,
+          iconEnabledColor: iconEnabledColor,
+          underline: underline,
+          focusColor: focusColor,
+          autofocus: autofocus,
+          dropdownColor: dropdownColor,
+          style: style,
+          menuMaxHeight: menuMaxHeight,
+          onChanged: onChanged,
+          onTap: onTap,
+          isDense: isDense,
+          isExpanded: isExpanded,
+          elevation: elevation,
+          items: (items as List).cast<DropdownMenuItem<Object>>());
     }
-    TextStyle? style;
-    var styleParse = namedArguments[const Symbol('style')];
-    if (styleParse != null) {
-      style = styleParse as TextStyle;
-    }
-    double? menuMaxHeight =
-        parseDouble(namedArguments[const Symbol('menuMaxHeight')]);
-    Color? dropdownColor;
-    var dropdownColorParse = namedArguments[const Symbol('dropdownColor')];
-    if (dropdownColorParse != null) {
-      dropdownColor = dropdownColorParse as Color;
-    }
-    double iconSize =
-        parseDouble(namedArguments[const Symbol('iconSize')]) ?? 24.0;
-    Widget? underline;
-    var underlineParse = namedArguments[const Symbol('underline')];
-    if (underlineParse != null) {
-      underline = underlineParse as Widget;
-    }
-    AlignmentGeometry alignment = AlignmentDirectional.centerStart;
-    var alignmentParse = namedArguments[const Symbol('alignment')];
-    if (alignmentParse != null) {
-      alignment = alignmentParse as AlignmentGeometry;
-    }
-    return DropdownButton(
-        value: value,
-        icon: icon,
-        alignment: alignment,
-        iconSize: iconSize,
-        underline: underline,
-        isDense: isDense,
-        dropdownColor: dropdownColor,
-        style: style,
-        menuMaxHeight: menuMaxHeight,
-        onChanged: onChanged,
-        isExpanded: isExpanded,
-        elevation: elevation,
-        items: (items as List).cast<DropdownMenuItem<Object>>());
   }
 }
 
@@ -846,10 +1185,24 @@ class IDropdownMenuItem implements LoxFlutterFunction {
     if (enabledParse != null) {
       enabled = enabledParse as bool;
     }
+    AlignmentGeometry alignment = AlignmentDirectional.centerStart;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    Function()? onTap;
+    var onTapParse = namedArguments[const Symbol('onTap')];
+    if (onTapParse != null) {
+      onTap = () {
+        (onTapParse as LoxFunction).call(interpreter, [], {});
+      };
+    }
     return DropdownMenuItem(
       value: value,
       child: child as Widget,
       enabled: enabled,
+      onTap: onTap,
+      alignment: alignment,
     );
   }
 }

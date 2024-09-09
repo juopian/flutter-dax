@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
 
-const iconMap = {
+const iconsMap = {
   'ten_k': Icons.ten_k,
   'ten_mp': Icons.ten_mp,
   'eleven_mp': Icons.eleven_mp,

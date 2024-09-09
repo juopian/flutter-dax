@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:convert';
@@ -336,6 +337,64 @@ final textCapitalizationMap = {
   "words": TextCapitalization.words,
   "sentences": TextCapitalization.sentences,
   "characters": TextCapitalization.characters
+};
+
+final verticalDirectionMap = {
+  "down": VerticalDirection.down,
+  "up": VerticalDirection.up
+};
+
+
+final dismissDirectionMap= {
+  "vertical":DismissDirection.vertical,
+  "horizontal":DismissDirection.horizontal,
+  "up":DismissDirection.up,
+  "down":DismissDirection.down,
+  "none":DismissDirection.none
+};
+
+final dragStartBehaviorMap = {
+  "down":DragStartBehavior.down,
+  "start":DragStartBehavior.start,
+};
+
+final mainAxisSizeMap = {
+  "min": MainAxisSize.min,
+  "max": MainAxisSize.max
+};
+
+final textBaselineMap = {
+  "alphabetic": TextBaseline.alphabetic,
+  "ideographic": TextBaseline.ideographic
+};
+
+final wrapCrossAlignmentMap = {
+  "start": WrapCrossAlignment.start,
+  "end": WrapCrossAlignment.end,
+  "center": WrapCrossAlignment.center,
+};
+
+final clipBehaviorMap = {
+  "none": Clip.none,
+  "antiAlias": Clip.antiAlias,
+  "antiAliasWithSaveLayer": Clip.antiAliasWithSaveLayer,
+  "hardEdge": Clip.hardEdge,
+};
+
+final floatingActionButtonLocationMap ={
+  "startTop": FloatingActionButtonLocation.startTop,
+  "endTop": FloatingActionButtonLocation.endTop,
+  "startFloat": FloatingActionButtonLocation.startFloat,
+  "endFloat": FloatingActionButtonLocation.endFloat,
+  "centerFloat": FloatingActionButtonLocation.centerFloat,
+  "centerDocked": FloatingActionButtonLocation.centerDocked,
+  "centerTop": FloatingActionButtonLocation.centerTop,
+  "miniCenterDocked": FloatingActionButtonLocation.miniCenterDocked,
+  "miniCenterTop": FloatingActionButtonLocation.miniCenterTop,
+  "miniStartTop": FloatingActionButtonLocation.miniStartTop,
+  "miniEndTop": FloatingActionButtonLocation.miniEndTop,
+  "miniStartFloat": FloatingActionButtonLocation.miniStartFloat,
+  "miniEndFloat": FloatingActionButtonLocation.miniEndFloat,
 };
 
 // final textDirectionMap = {

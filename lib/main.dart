@@ -7,7 +7,7 @@ import 'icon.dart';
 import 'common.dart';
 import 'basic.dart';
 import 'decoration.dart';
-import 'edgeinsets.dart';
+import 'enum.dart';
 import 'layout.dart';
 import 'scroll.dart';
 import 'container.dart';
@@ -134,7 +134,6 @@ class _DaxPageState extends State<DaxPage> {
   }
 
   void registerGlobalFunctions() {
-    interpreter.registerGlobal("AlignmentDirectional", alignmentDirectionalMap);
     interpreter.registerGlobal("Api", apiMap);
     interpreter.registerGlobal("Axis", axisMap);
     interpreter.registerGlobal("AxisDirection", axisDirectionMap);
@@ -143,12 +142,14 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("BoxFit", boxFitMap);
     interpreter.registerGlobal("BorderRadius", borderRadiusMap);
     interpreter.registerGlobal("BorderStyle", borderStyleMap);
+    interpreter.registerGlobal("Clip", clipBehaviorMap);
     interpreter.registerGlobal("Colors", colorMap);
     interpreter.registerGlobal("CrossAxisAlignment", crossAxisAlignmentMap);
+    interpreter.registerGlobal("DismissDirection", dismissDirectionMap);
     interpreter.registerGlobal("EdgeInsets", edgeInsetsMap);
     interpreter.registerGlobal("FilterQuality", filterQualityMap);
     interpreter.registerGlobal("FontWeight", fontWeightMap);
-    interpreter.registerGlobal("Icons", iconMap);
+    interpreter.registerGlobal("Icons", iconsMap);
     interpreter.registerGlobal("ImageRepeat", imageRepeatMap);
     interpreter.registerGlobal("json", jsonMap);
     interpreter.registerGlobal(
@@ -169,11 +170,14 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("TextDirection", textDirectionMap);
     interpreter.registerGlobal("TextOverflow", textOverflowMap);
     interpreter.registerGlobal("Transform", transformMap);
+    interpreter.registerGlobal("VerticalDirection", verticalDirectionMap);
     interpreter.registerGlobal("WrapAlignment", wrapAlignmentMap);
+    interpreter.registerGlobal("WrapCrossAlignment", wrapCrossAlignmentMap);
 
     interpreter.registerGlobal("AlertDialog", IAlertDialog());
     interpreter.registerGlobal("Align", IAlign());
     interpreter.registerGlobal("Alignment", IAlignment());
+    interpreter.registerGlobal("AlignmentDirectional", IAlignmentDirectional());
     interpreter.registerGlobal("AppBar", IAppBar());
     interpreter.registerGlobal("AssetImage", IAssetImage());
     interpreter.registerGlobal(
@@ -240,14 +244,13 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("SafeArea", ISafeArea());
     interpreter.registerGlobal("Scaffold", IScaffold());
     interpreter.registerGlobal("SimpleDialog", ISimpleDialog());
+    interpreter.registerGlobal(
+        "SingleChildScrollView", ISingleChildScrollView());
     interpreter.registerGlobal("Size", ISize());
     interpreter.registerGlobal("SizedBox", ISizedBox());
     interpreter.registerGlobal("Slider", ISlider());
     interpreter.registerGlobal("SnackBar", ISnackBar());
-    interpreter.registerGlobal(
-        "SingleChildScrollView", ISingleChildScrollView());
-    interpreter.registerGlobal(
-        "TextEditingController", ITextEditingController());
+    interpreter.registerGlobal("SnackBarAction", ISnackBarAction());
     interpreter.registerGlobal("Stack", IStack());
     interpreter.registerGlobal("StadiumBorder", IStadiumBorder());
     interpreter.registerGlobal("Switch", ISwitch());
@@ -258,6 +261,8 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("TabBarView", ITabBarView());
     interpreter.registerGlobal("Text", IText());
     interpreter.registerGlobal("TextButton", ITextButton());
+    interpreter.registerGlobal(
+        "TextEditingController", ITextEditingController());
     interpreter.registerGlobal("TextField", ITextField());
     interpreter.registerGlobal("TextStyle", ITextStyle());
     interpreter.registerGlobal("Uri", IUri());

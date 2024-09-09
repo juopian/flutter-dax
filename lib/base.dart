@@ -93,6 +93,43 @@ class ISize implements LoxFlutterFunction {
   }
 }
 
+class IAlignmentDirectional implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'topStart':
+        return AlignmentDirectional.topStart;
+      case 'topCenter':
+        return AlignmentDirectional.topCenter;
+      case 'topEnd':
+        return AlignmentDirectional.topEnd;
+      case 'centerStart':
+        return AlignmentDirectional.centerStart;
+      case 'center':
+        return AlignmentDirectional.center;
+      case 'centerEnd':
+        return AlignmentDirectional.centerEnd;
+      case 'bottomStart':
+        return AlignmentDirectional.bottomStart;
+      case 'bottomCenter':
+        return AlignmentDirectional.bottomCenter;
+      case 'bottomEnd':
+        return AlignmentDirectional.bottomEnd;
+    }
+  }
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double start = 0;
+    double end = 0;
+    if (arguments.length == 2) {
+      start = parseDouble(arguments[0]) ?? 0;
+      end = parseDouble(arguments[1]) ?? 0;
+    }
+    return AlignmentDirectional(start, end);
+  }
+}
+
 class IAlignment implements LoxFlutterFunction, LoxGetCallable {
   @override
   Object? get(Token name) {

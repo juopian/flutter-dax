@@ -91,13 +91,13 @@ class Cal {
 
 class DatePicker extends StatefulWidget {
   final String date;
-  final Function onDateChange;
+  final Function(DateTime) onDateChanged;
   final String prefix;
   final bool autoHide;
   const DatePicker({
     Key? key,
     required this.date,
-    required this.onDateChange,
+    required this.onDateChanged,
     this.autoHide = true,
     this.prefix = '',
   }) : super(key: key);
@@ -137,8 +137,8 @@ class DatePickerState extends State<DatePicker> {
       setState(() {
         date = dateNew;
       });
-      if (widget.onDateChange is Function) {
-        widget.onDateChange(dateNew);
+      if (widget.onDateChanged is Function) {
+        widget.onDateChanged(dateNew);
       }
     }
     if (collapse && widget.autoHide) {
