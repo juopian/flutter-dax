@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 class IColors implements LoxGetCallable {
   @override
   Object? get(Token name) {
-    return colorMap[name.lexeme];
+    return _colorMap[name.lexeme];
   }
 }
 
-final colorMap = {
+final _colorMap = {
   'transparent': Colors.transparent,
   'red': Colors.red,
   'redAccent': Colors.redAccent,
@@ -68,11 +68,11 @@ final colorMap = {
 class IFontWeight implements LoxGetCallable {
   @override
   Object? get(Token name) {
-    return fontWeightMap[name.lexeme];
+    return _fontWeightMap[name.lexeme];
   }
 }
 
-final fontWeightMap = {
+final _fontWeightMap = {
   "bold": FontWeight.bold,
   "normal": FontWeight.normal,
   "w100": FontWeight.w100,
@@ -241,7 +241,7 @@ final filterQualityMap = {
 class ITextAlignVertical implements LoxGetCallable, LoxFlutterFunction {
   @override
   Object? get(Token name) {
-    return textAlignVerticalMap[name.lexeme];
+    return _textAlignVerticalMap[name.lexeme];
   }
 
   @override
@@ -252,7 +252,7 @@ class ITextAlignVertical implements LoxGetCallable, LoxFlutterFunction {
   }
 }
 
-final textAlignVerticalMap = {
+final _textAlignVerticalMap = {
   "bottom": TextAlignVertical.bottom,
   "top": TextAlignVertical.top,
   "center": TextAlignVertical.center
@@ -314,7 +314,14 @@ final clipBehaviorMap = {
   "hardEdge": Clip.hardEdge,
 };
 
-final floatingActionButtonLocationMap = {
+class IFloatingActionButtonLocation implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    return _floatingActionButtonLocationMap[name.lexeme];
+  }
+}
+
+final _floatingActionButtonLocationMap = {
   "startTop": FloatingActionButtonLocation.startTop,
   "endTop": FloatingActionButtonLocation.endTop,
   "startFloat": FloatingActionButtonLocation.startFloat,

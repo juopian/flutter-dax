@@ -50,7 +50,6 @@ Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSna
 
 * Api
 * AxisDirection
-* Border
 * BoxFit
 * BorderRadius
 * BorderStyle
@@ -161,6 +160,23 @@ AssetImage(String assetName)
 ```
 BeveledRectangleBorder({BorderSide side = BorderSide.none, BorderRadiusGeometry borderRadius = BorderRadius.zero})
 ```
+###  Border
+```
+Border({
+  BorderSide top = BorderSide.none,
+  BorderSide right = BorderSide.none,
+  BorderSide bottom = BorderSide.none,
+  BorderSide left = BorderSide.none,
+})
+或
+Border.all({
+  Color color = const Color(0xFF000000),
+  double width = 1.0,
+  BorderStyle style = BorderStyle.solid,
+});
+Border.fromBorderSide(BorderSide side);
+Boder.symmetric({BorderSide vertical = BorderSide.none, BorderSide horizontal = BorderSide.none});
+```
 ###  BorderSide
 ```
 BorderSide({
@@ -262,7 +278,15 @@ Checkbox({
 ```
 CircleBorder({BorderSide side = BorderSide.none})
 ```
-*  CircularProgressIndicator
+###  CircularProgressIndicator
+```
+CircularProgressIndicator({
+  double? value,
+  Color? backgroundColor,
+  Color? color,
+  double strokeWidth = 4.0,
+})
+```
 ###  ClipOval
 ```
 ClipOval({
@@ -288,6 +312,13 @@ ClipRect({
 ###  Color
 ```
 Color(int value) 
+```
+###  Colors
+```
+Colors.black
+Colors.white
+Colors.red
+...
 ```
 ###  Column
 ```
@@ -324,17 +355,6 @@ Container({
   AlignmentGeometry? transformAlignment,
   Widget? child,
   Clip clipBehavior = Clip.none,
-})
-```
-
-###  CircularProgressIndicator
-
-```
-CircularProgressIndicator({
-  double? value,
-  Color? backgroundColor,
-  Color? color,
-  double strokeWidth = 4.0,
 })
 ```
 ###  ContinuousRectangleBorder
@@ -537,6 +557,11 @@ FloatingActionButton({
   bool isExtended = false,
 })
 ```
+###  FontWeight
+```
+FontWeight.bold
+...
+```
 ###  GestureDetector
 ```
 GestureDetector({
@@ -705,6 +730,44 @@ ListView.separated({
   double? cacheExtent,
 })
 ```
+###  Matrix4
+```
+Matrix4(
+  double arg0,
+  double arg1,
+  double arg2,
+  double arg3,
+  double arg4,
+  double arg5,
+  double arg6,
+  double arg7,
+  double arg8,
+  double arg9,
+  double arg10,
+  double arg11,
+  double arg12,
+  double arg13,
+  double arg14,
+  double arg15,
+)
+或
+Matrix4.skew(double alpha, double beta);
+Matrix4.skewX(double alpha);
+Matrix4.skewY(double beta);
+Matrix4.translationValues(
+  double x,
+  double y,
+  double z,
+);
+Matrix4.rotationX(double radians);
+Matrix4.rotationY(double radians);
+Matrix4.rotationZ(double radians);
+Matrix4.diagonal3Values(
+  double x,
+  double y,
+  double z,
+);
+```
 ###  NetworkImage
 ```
 NetworkImage(String url, {double scale})
@@ -846,6 +909,16 @@ RegExp(
   bool caseSensitive = true,
   bool dotAll = false,
 })
+例如:
+var d = RegExp('(\\w+)');
+print d.hasMatch('aaa');
+var e = d.firstMatch('aaa');
+print e[0];
+var str = 'Parse my string';
+var f = d.allMatches(str);
+f.forEach((i){
+	print i[0];
+});
 ```
 ###   Row
 ```
@@ -899,9 +972,6 @@ Shadow({
   double blurRadius = 0.0,
 })
 ```
-###  Size
-```
-```
 ### SimpleDialog
 ```
 SimpleDialog({
@@ -928,6 +998,11 @@ SingleChildScrollView({
 ### Size
 ```
 Size(double width, double height)
+或
+Size.fromHeight(double height);
+Size.fromWidth(double width);
+Size.fromRadius(double radius);
+Size.square(double dimension);
 ```
 ### SizedBox
 ```
@@ -974,20 +1049,6 @@ SnackBarAction({
   required String label,
   required void Function() onPressed,
 })
-```
-
-*  SingleChildScrollView
-###  TextEditingController
-```
-var textEditingController = TextEditingController();
-textEditingController.text = "text";
-也可以创建时指定初始值
-var textEditingController = TextEditingController("text");
-
-清除内容
-textEditingController.clear();
-或
-textEditingController.text = "";
 ```
 ###  Stack
 ```
@@ -1077,6 +1138,14 @@ Text(String data, {
   int? maxLines,
 })
 ```
+###  TextAlignVertical
+```
+TextAlignVertical({required double y})
+或
+TextAlignVertical.bottom
+TextAlignVertical.center
+TextAlignVertical.top
+```
 ###  TextButton
 ```
 TextButton({
@@ -1104,7 +1173,20 @@ TextButton.styleFrom({
 ```
 ### TextEditingController
 ```
+```
+###  TextEditingController
+```
 TextEditingController(String? initText)
+例子：
+var textEditingController = TextEditingController();
+textEditingController.text = "text";
+也可以创建时指定初始值
+var textEditingController = TextEditingController("text");
+
+清除内容
+textEditingController.clear();
+或
+textEditingController.text = "";
 ```
 ###  TextField
 ```
@@ -1136,6 +1218,13 @@ TextField({
   Color? cursorColor,
 })
 ```
+###  TextInputType
+```
+TextInputType.datetime
+TextInputType.text
+TextInputType.url
+...
+```
 ###  TextStyle
 ```
 TextStyle({
@@ -1154,6 +1243,36 @@ TextStyle({
   TextDecorationStyle? decorationStyle,
   double? decorationThickness,
   TextOverflow? overflow,
+})
+```
+###  Transform
+```
+Transform({
+  required Matrix4 transform,
+  Offset? origin,
+  AlignmentGeometry? alignment,
+  FilterQuality? filterQuality,
+  Widget? child,
+})
+或
+Transform.rotate({
+  required double angle,
+  Offset? origin,
+  AlignmentGeometry? alignment = Alignment.center,
+  FilterQuality? filterQuality,
+  Widget? child,
+});
+Transform.scale({
+  required double scale,
+  Offset? origin,
+  AlignmentGeometry? alignment = Alignment.center,
+  FilterQuality? filterQuality,
+  Widget? child,
+});
+Transform.translate({
+  required Offset offset,
+  FilterQuality? filterQuality,
+  Widget? child,
 })
 ```
 ###  Uri
@@ -1188,42 +1307,22 @@ Wrap({
 ```
  
 ## 3. 全局函数
-
-### DateFormat
+### getViewSize
 ```
-String dateStr = DateFormat("yyyy-MM-dd").format(DateTime.now())
+getViewSize(BuildContext context)
+例如:
+var size = getViewSize(context);
+print size.width;
+print size.height;
 ```
-### DateTime
-```
-DateTime(
-  int year, [
-  int month = 1,
-  int day = 1,
-  int hour = 0,
-  int minute = 0,
-  int second = 0,
-  int millisecond = 0,
-  int microsecond = 0,
-])
-
-DateTime.now();
-DateTime.utc(
-  int year, [
-  int month = 1,
-  int day = 1,
-  int hour = 0,
-  int minute = 0,
-  int second = 0,
-  int millisecond = 0,
-  int microsecond = 0,
-]);
-DateTime.parse(String formattedString);
-```
-
 ### setState
 ```
 setState(() {...});
 这个无需多说，刷新页面用
+```
+### showSnackBar
+```
+showSackBar(BuildContext context, SnackBar snackBar)
 ```
 ### showDialog
 ```
@@ -1248,24 +1347,4 @@ showModalBottomSheet({
   ShapeBorder? shape,
   BoxConstraints? constraints,
 })
-```
-### RegExp
-```
-RegExp(
-  String source, {
-  bool multiLine = false,
-  bool caseSensitive = true,
-  bool unicode = false,
-  bool dotAll = false,
-})
-
-var d = RegExp('(\\w+)');
-print d.hasMatch('aaa');
-var e = d.firstMatch('aaa');
-print e[0];
-var str = 'Parse my string';
-var f = d.allMatches(str);
-f.forEach((i){
-	print i[0];
-});
 ```

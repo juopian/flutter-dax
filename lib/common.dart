@@ -8,6 +8,10 @@ final edgeInsetsMap = {
   "all": (Object value) {
     return EdgeInsets.all(parseDouble(value) ?? 0);
   },
+  "fromLTRB": (Object left, Object top, Object right, Object bottom) {
+    return EdgeInsets.fromLTRB(parseDouble(left) ?? 0, parseDouble(top) ?? 0,
+        parseDouble(right) ?? 0, parseDouble(bottom) ?? 0);
+  },
   "only": ({Object? left, Object? top, Object? right, Object? bottom}) {
     return EdgeInsets.only(
         left: parseDouble(left) ?? 0,
@@ -22,24 +26,18 @@ final edgeInsetsMap = {
   }
 };
 
-final borderMap = {
-  "all": ({Object? width, Object? color}) {
-    double _width = parseDouble(width) ?? 1.0;
-    Color _color = Colors.black;
-    if (color is Color) {
-      _color = color;
-    }
-    return Border.all(width: _width, color: _color);
-  }
-};
-
 final radiusMap = {
+  "zero": Radius.zero,
   "circular": (Object value) {
     return Radius.circular(parseDouble(value) ?? 0);
-  }
+  },
+  "elliptical": (Object x, Object y) {
+    return Radius.elliptical(parseDouble(x) ?? 0, parseDouble(y) ?? 0);
+  },
 };
 
 final borderRadiusMap = {
+  "zero": BorderRadius.zero,
   "circular": (Object value) {
     return BorderRadius.circular(parseDouble(value) ?? 0);
   },
@@ -105,74 +103,6 @@ final borderRadiusMap = {
   }
 };
 
-final transformMap = {
-  "translate": ({Object? offset, Object? child}) {
-    Offset _offset = Offset.zero;
-    if (offset is Offset) {
-      _offset = offset;
-    }
-    Widget? _child;
-    if (child is Widget) {
-      _child = child;
-    }
-    return Transform.translate(
-      offset: _offset,
-      child: _child,
-    );
-  },
-  "rotate": ({Object? angle, Object? child}) {
-    double _angle = parseDouble(angle) ?? 0;
-    Widget? _child;
-    if (child is Widget) {
-      _child = child;
-    }
-    return Transform.rotate(
-      angle: _angle,
-      child: _child,
-    );
-  },
-  "scale": ({Object? scale, Object? child}) {
-    double _scale = parseDouble(scale) ?? 0;
-    Widget? _child;
-    if (child is Widget) {
-      _child = child;
-    }
-    return Transform.scale(
-      scale: _scale,
-      child: _child,
-    );
-  }
-};
-
-final matrix4Map = {
-  "skew": (Object? x, Object? y) {
-    return Matrix4.skew(parseDouble(x) ?? 0, parseDouble(y) ?? 0);
-  },
-  "skewX": (Object? x) {
-    return Matrix4.skewX(parseDouble(x) ?? 0);
-  },
-  "skewY": (Object? y) {
-    return Matrix4.skewY(parseDouble(y) ?? 0);
-  },
-  "translate": (Object? x, Object? y, Object? z) {
-    return Matrix4.translationValues(
-        parseDouble(x) ?? 0, parseDouble(y) ?? 0, parseDouble(z) ?? 0);
-  },
-  "rotationX": (Object? x) {
-    return Matrix4.rotationX(parseDouble(x) ?? 0);
-  },
-  "rotationY": (Object? y) {
-    return Matrix4.rotationY(parseDouble(y) ?? 0);
-  },
-  "rotationZ": (Object? z) {
-    return Matrix4.rotationZ(parseDouble(z) ?? 0);
-  },
-  "scale": (Object? x, Object? y, Object? z) {
-    return Matrix4.diagonal3Values(
-        parseDouble(x) ?? 1, parseDouble(y) ?? 1, parseDouble(z) ?? 1);
-  },
-};
-
 final navigatorMap = {
   "pop": (Object? context) {
     Navigator.pop(context as BuildContext);
@@ -206,6 +136,7 @@ final apiMap = {
   "platform": () => Api.platform,
   "buildNumber": () => Api.buildNumber
 };
+
 final mathMap = {
   "randomInt": (Object x) {
     return Random().nextInt(x as int);
@@ -259,4 +190,3 @@ final jsonMap = {
     return json.decode(value as String);
   }
 };
-

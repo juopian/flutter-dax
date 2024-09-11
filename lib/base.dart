@@ -79,6 +79,54 @@ class IUri implements LoxFlutterFunction {
   }
 }
 
+class SizefromHeight implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double height = 0;
+    if (arguments.length == 1) {
+      height = parseDouble(arguments[0]) ?? 0;
+    }
+    return Size.fromHeight(height);
+  }
+}
+
+class SizefromWidth implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double width = 0;
+    if (arguments.length == 1) {
+      width = parseDouble(arguments[0]) ?? 0;
+    }
+    return Size.fromWidth(width);
+  }
+}
+
+class SizefromRadius implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double radius = 0;
+    if (arguments.length == 1) {
+      radius = parseDouble(arguments[0]) ?? 0;
+    }
+    return Size.fromRadius(radius);
+  }
+}
+
+class Sizesquare implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double size = 0;
+    if (arguments.length == 1) {
+      size = parseDouble(arguments[0]) ?? 0;
+    }
+    return Size.square(size);
+  }
+}
+
 class ISize implements LoxFlutterFunction {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
@@ -89,7 +137,447 @@ class ISize implements LoxFlutterFunction {
       width = parseDouble(arguments[0]) ?? 0;
       height = parseDouble(arguments[1]) ?? 0;
     }
-    return Size(width, height);
+    return SizeIns(width, height);
+  }
+}
+
+class SizeIns extends Size implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'width':
+        return width;
+      case 'height':
+        return height;
+      case 'zero':
+        return Size.zero;
+      case 'infinite':
+        return Size.infinite;
+      case 'fromHeight':
+        return SizefromHeight();
+      case 'fromWidth':
+        return SizefromWidth();
+      case 'fromRadius':
+        return SizefromRadius();
+      case 'square':
+        return Sizesquare();
+    }
+    return null;
+  }
+
+  SizeIns(double width, double height) : super(width, height);
+}
+
+class IViewSize implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var size = MediaQuery.of(arguments.first as BuildContext).size;
+    return ISize().call(interpreter, [size.width, size.height], namedArguments);
+  }
+}
+
+class ISnackBarShow implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return ScaffoldMessenger.of(arguments.first as BuildContext)
+        .showSnackBar(arguments.last as SnackBar);
+  }
+}
+
+class TransformRotate implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var angle = namedArguments[const Symbol('angle')];
+    if (angle == null) {
+      throw "angle required in Transform.rotate";
+    }
+    Offset? origin;
+    var originParsed = namedArguments[const Symbol('origin')];
+    if (originParsed != null) {
+      origin = originParsed as Offset;
+    }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
+    FilterQuality? filterQuality;
+    var filterQualityParsed = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParsed != null) {
+      filterQuality = filterQualityParsed as FilterQuality;
+    }
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    return Transform.rotate(
+      angle: angle as double,
+      origin: origin,
+      alignment: alignment,
+      filterQuality: filterQuality,
+      child: child,
+    );
+  }
+}
+
+class TransformScale implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var scale = namedArguments[const Symbol('scale')];
+    if (scale == null) {
+      throw "scale required in Transform.scale";
+    }
+    Offset? origin;
+    var originParsed = namedArguments[const Symbol('origin')];
+    if (originParsed != null) {
+      origin = originParsed as Offset;
+    }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
+    FilterQuality? filterQuality;
+    var filterQualityParsed = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParsed != null) {
+      filterQuality = filterQualityParsed as FilterQuality;
+    }
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    return Transform.scale(
+      scale: scale as double,
+      origin: origin,
+      alignment: alignment,
+      filterQuality: filterQuality,
+      child: child,
+    );
+  }
+}
+
+class TransformTranslate implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var offset = namedArguments[const Symbol('offset')];
+    if (offset == null) {
+      throw "offset required in Transform.translate";
+    }
+    FilterQuality? filterQuality;
+    var filterQualityParsed = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParsed != null) {
+      filterQuality = filterQualityParsed as FilterQuality;
+    }
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    return Transform.translate(
+      offset: offset as Offset,
+      filterQuality: filterQuality,
+      child: child,
+    );
+  }
+}
+
+class ITransform implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case "rotate":
+        return TransformRotate();
+      case "scale":
+        return TransformScale();
+      case "translate":
+        return TransformTranslate();
+    }
+  }
+
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var transform = namedArguments[const Symbol('tranform')];
+    if (transform == null) {
+      throw "tranform required in Transform";
+    }
+    Offset? origin;
+    var originParsed = namedArguments[const Symbol('origin')];
+    if (originParsed != null) {
+      origin = originParsed as Offset;
+    }
+    AlignmentGeometry? alignment;
+    var alignmentParsed = namedArguments[const Symbol('alignment')];
+    if (alignmentParsed != null) {
+      alignment = alignmentParsed as AlignmentGeometry;
+    }
+    FilterQuality? filterQuality;
+    var filterQualityParsed = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParsed != null) {
+      filterQuality = filterQualityParsed as FilterQuality;
+    }
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    return Transform(
+      origin: origin,
+      transform: transform as Matrix4,
+      alignment: alignment,
+      filterQuality: filterQuality,
+      child: child,
+    );
+  }
+}
+
+class Matrix4skew implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 2) {
+      throw "skew requires 2 arguments";
+    }
+    double alpha = parseDouble(arguments[0]) ?? 0;
+    double beta = parseDouble(arguments[1]) ?? 0;
+    return Matrix4.skew(alpha, beta);
+  }
+}
+
+class Matrix4skewX implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    double alpha = parseDouble(arguments.first) ?? 0;
+    return Matrix4.skewX(alpha);
+  }
+}
+
+class Matrix4skewY implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    double alpha = parseDouble(arguments.first) ?? 0;
+    return Matrix4.skewY(alpha);
+  }
+}
+
+class Matrix4translate implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 3) {
+      throw "translate requires 3 arguments";
+    }
+    double x = parseDouble(arguments[0]) ?? 0;
+    double y = parseDouble(arguments[1]) ?? 0;
+    double z = parseDouble(arguments[2]) ?? 0;
+    return Matrix4.translationValues(x, y, z);
+  }
+}
+
+class Matrix4rotationX implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    double alpha = parseDouble(arguments.first) ?? 0;
+    return Matrix4.rotationX(alpha);
+  }
+}
+
+class Matrix4rotationY implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    double alpha = parseDouble(arguments.first) ?? 0;
+    return Matrix4.rotationY(alpha);
+  }
+}
+
+class Matrix4rotationZ implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    double alpha = parseDouble(arguments.first) ?? 0;
+    return Matrix4.rotationZ(alpha);
+  }
+}
+
+class Matrix4scale implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 3) {
+      throw "scale requires 3 arguments";
+    }
+    double x = parseDouble(arguments[0]) ?? 0;
+    double y = parseDouble(arguments[1]) ?? 0;
+    double z = parseDouble(arguments[2]) ?? 0;
+    return Matrix4.diagonal3Values(x, y, z);
+  }
+}
+
+class IMatrix4 implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case "skew":
+        return Matrix4skew();
+      case "skewX":
+        return Matrix4skewX();
+      case "skewY":
+        return Matrix4skewY();
+      case "translationValues":
+        return Matrix4translate();
+      case "rotationX":
+        return Matrix4rotationX();
+      case "rotationY":
+        return Matrix4rotationY();
+      case "rotationZ":
+        return Matrix4rotationZ();
+      case "diagonal3Values":
+        return Matrix4scale();
+      case "zero":
+        return Matrix4.zero();
+      case "identity":
+        return Matrix4.identity();
+    }
+  }
+
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 16) {
+      throw "16 arguments required in Matrix4.fromList";
+    }
+    return Matrix4(
+      arguments[0] as double,
+      arguments[1] as double,
+      arguments[2] as double,
+      arguments[3] as double,
+      arguments[4] as double,
+      arguments[5] as double,
+      arguments[6] as double,
+      arguments[7] as double,
+      arguments[8] as double,
+      arguments[9] as double,
+      arguments[10] as double,
+      arguments[11] as double,
+      arguments[12] as double,
+      arguments[13] as double,
+      arguments[14] as double,
+      arguments[15] as double,
+    );
+  }
+}
+
+class BorderAll implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Color color = Colors.black;
+    var colorParsed = namedArguments[const Symbol('color')];
+    if (colorParsed != null) {
+      color = colorParsed as Color;
+    }
+    double width = parseDouble(namedArguments[const Symbol('width')]) ?? 1;
+    BorderStyle style = BorderStyle.solid;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as BorderStyle;
+    }
+    return Border.all(color: color, width: width, style: style);
+  }
+}
+
+class BorderfromBorderSide implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "side required in Border.fromBorderSide";
+    }
+    return Border.fromBorderSide(arguments.first as BorderSide);
+  }
+}
+
+class BorderSymmetric implements LoxFlutterFunction {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    BorderSide horizontal = BorderSide.none;
+    var horizontalParsed = namedArguments[const Symbol('horizontal')];
+    if (horizontalParsed != null) {
+      horizontal = horizontalParsed as BorderSide;
+    }
+    BorderSide vertical = BorderSide.none;
+    var verticalParsed = namedArguments[const Symbol('vertical')];
+    if (verticalParsed != null) {
+      vertical = verticalParsed as BorderSide;
+    }
+    return Border.symmetric(horizontal: horizontal, vertical: vertical);
+  }
+}
+
+class IBorder implements LoxFlutterFunction, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'all':
+        return BorderAll();
+      case 'fromBorderSide':
+        return BorderAll();
+      case 'symmetric':
+        return BorderSymmetric();
+    }
+  }
+
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    BorderSide top = BorderSide.none;
+    var topParsed = namedArguments[const Symbol('top')];
+    if (topParsed != null) {
+      top = topParsed as BorderSide;
+    }
+    BorderSide right = BorderSide.none;
+    var rightParsed = namedArguments[const Symbol('right')];
+    if (rightParsed != null) {
+      right = rightParsed as BorderSide;
+    }
+    BorderSide bottom = BorderSide.none;
+    var bottomParsed = namedArguments[const Symbol('bottom')];
+    if (bottomParsed != null) {
+      bottom = bottomParsed as BorderSide;
+    }
+    BorderSide left = BorderSide.none;
+    var leftParsed = namedArguments[const Symbol('left')];
+    if (leftParsed != null) {
+      left = leftParsed as BorderSide;
+    }
+    return Border(top: top, right: right, bottom: bottom, left: left);
   }
 }
 
@@ -117,6 +605,7 @@ class IAlignmentDirectional implements LoxFlutterFunction, LoxGetCallable {
         return AlignmentDirectional.bottomEnd;
     }
   }
+
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

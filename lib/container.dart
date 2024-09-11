@@ -51,12 +51,12 @@ class IScaffold implements LoxFlutterFunction {
     if (primaryParsed != null) {
       primary = primaryParsed as bool;
     }
-    bool extendBody = true;
+    bool extendBody = false;
     var extendBodyParsed = namedArguments[const Symbol('extendBody')];
     if (extendBodyParsed != null) {
       extendBody = extendBodyParsed as bool;
     }
-    bool extendBodyBehindAppBar = true;
+    bool extendBodyBehindAppBar = false;
     var extendBodyBehindAppBarParsed =
         namedArguments[const Symbol('extendBodyBehindAppBar')];
     if (extendBodyBehindAppBarParsed != null) {
@@ -1088,86 +1088,86 @@ class IDropdownButton implements LoxFlutterFunction {
       onTap = () {
         (onTapParse as LoxFunction).call(interpreter, [], {});
       };
-      Widget? icon;
-      var iconParse = namedArguments[const Symbol('icon')];
-      if (iconParse != null) {
-        icon = iconParse as Widget;
-      }
-      TextStyle? style;
-      var styleParse = namedArguments[const Symbol('style')];
-      if (styleParse != null) {
-        style = styleParse as TextStyle;
-      }
-      double? menuMaxHeight =
-          parseDouble(namedArguments[const Symbol('menuMaxHeight')]);
-      Color? dropdownColor;
-      var dropdownColorParse = namedArguments[const Symbol('dropdownColor')];
-      if (dropdownColorParse != null) {
-        dropdownColor = dropdownColorParse as Color;
-      }
-      double iconSize =
-          parseDouble(namedArguments[const Symbol('iconSize')]) ?? 24.0;
-      Widget? underline;
-      var underlineParse = namedArguments[const Symbol('underline')];
-      if (underlineParse != null) {
-        underline = underlineParse as Widget;
-      }
-      AlignmentGeometry alignment = AlignmentDirectional.centerStart;
-      var alignmentParse = namedArguments[const Symbol('alignment')];
-      if (alignmentParse != null) {
-        alignment = alignmentParse as AlignmentGeometry;
-      }
-      Color? iconDisabledColor;
-      var iconDisabledColorParse =
-          namedArguments[const Symbol('iconDisabledColor')];
-      if (iconDisabledColorParse != null) {
-        iconDisabledColor = iconDisabledColorParse as Color;
-      }
-      Color? iconEnabledColor;
-      var iconEnabledColorParse =
-          namedArguments[const Symbol('iconEnabledColor')];
-      if (iconEnabledColorParse != null) {
-        iconEnabledColor = iconEnabledColorParse as Color;
-      }
-      Color? focusColor;
-      var focusColorParsed = namedArguments[const Symbol('focusColor')];
-      if (focusColorParsed != null) {
-        focusColor = focusColorParsed as Color;
-      }
-      bool autofocus = false;
-      var autofocusParsed = namedArguments[const Symbol('autofocus')];
-      if (autofocusParsed != null) {
-        autofocus = autofocusParsed as bool;
-      }
-      BorderRadius? borderRadius;
-      var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
-      if (borderRadiusParsed != null) {
-        borderRadius = borderRadiusParsed as BorderRadius;
-      }
-      double? itemHeight =
-          parseDouble(namedArguments[const Symbol('itemHeight')]);
-      return DropdownButton(
-          value: value,
-          icon: icon,
-          itemHeight: itemHeight,
-          alignment: alignment,
-          iconSize: iconSize,
-          iconDisabledColor: iconDisabledColor,
-          borderRadius: borderRadius,
-          iconEnabledColor: iconEnabledColor,
-          underline: underline,
-          focusColor: focusColor,
-          autofocus: autofocus,
-          dropdownColor: dropdownColor,
-          style: style,
-          menuMaxHeight: menuMaxHeight,
-          onChanged: onChanged,
-          onTap: onTap,
-          isDense: isDense,
-          isExpanded: isExpanded,
-          elevation: elevation,
-          items: (items as List).cast<DropdownMenuItem<Object>>());
     }
+    Widget? icon;
+    var iconParse = namedArguments[const Symbol('icon')];
+    if (iconParse != null) {
+      icon = iconParse as Widget;
+    }
+    TextStyle? style;
+    var styleParse = namedArguments[const Symbol('style')];
+    if (styleParse != null) {
+      style = styleParse as TextStyle;
+    }
+    double? menuMaxHeight =
+        parseDouble(namedArguments[const Symbol('menuMaxHeight')]);
+    Color? dropdownColor;
+    var dropdownColorParse = namedArguments[const Symbol('dropdownColor')];
+    if (dropdownColorParse != null) {
+      dropdownColor = dropdownColorParse as Color;
+    }
+    double iconSize =
+        parseDouble(namedArguments[const Symbol('iconSize')]) ?? 24.0;
+    Widget? underline;
+    var underlineParse = namedArguments[const Symbol('underline')];
+    if (underlineParse != null) {
+      underline = underlineParse as Widget;
+    }
+    AlignmentGeometry alignment = AlignmentDirectional.centerStart;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    Color? iconDisabledColor;
+    var iconDisabledColorParse =
+        namedArguments[const Symbol('iconDisabledColor')];
+    if (iconDisabledColorParse != null) {
+      iconDisabledColor = iconDisabledColorParse as Color;
+    }
+    Color? iconEnabledColor;
+    var iconEnabledColorParse =
+        namedArguments[const Symbol('iconEnabledColor')];
+    if (iconEnabledColorParse != null) {
+      iconEnabledColor = iconEnabledColorParse as Color;
+    }
+    Color? focusColor;
+    var focusColorParsed = namedArguments[const Symbol('focusColor')];
+    if (focusColorParsed != null) {
+      focusColor = focusColorParsed as Color;
+    }
+    bool autofocus = false;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    BorderRadius? borderRadius;
+    var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
+    if (borderRadiusParsed != null) {
+      borderRadius = borderRadiusParsed as BorderRadius;
+    }
+    double? itemHeight =
+        parseDouble(namedArguments[const Symbol('itemHeight')]);
+    return DropdownButton(
+        value: value,
+        icon: icon,
+        itemHeight: itemHeight,
+        alignment: alignment,
+        iconSize: iconSize,
+        iconDisabledColor: iconDisabledColor,
+        borderRadius: borderRadius,
+        iconEnabledColor: iconEnabledColor,
+        underline: underline,
+        focusColor: focusColor,
+        autofocus: autofocus,
+        dropdownColor: dropdownColor,
+        style: style,
+        menuMaxHeight: menuMaxHeight,
+        onChanged: onChanged,
+        onTap: onTap,
+        isDense: isDense,
+        isExpanded: isExpanded,
+        elevation: elevation,
+        items: (items as List).cast<DropdownMenuItem<Object>>());
   }
 }
 
