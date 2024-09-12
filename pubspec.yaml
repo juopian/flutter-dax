@@ -44,6 +44,10 @@ dependencies:
   package_info_plus: ^1.4.2
   logger: ^1.4.0
   intl: ^0.18.1
+  webview_flutter: ^3.0.4
+  url_launcher: ^6.1.2
+  geolocator: ^8.0.5
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:

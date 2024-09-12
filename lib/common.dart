@@ -113,7 +113,10 @@ final navigatorMap = {
   "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
     Navigator.pushNamed(context as BuildContext, routeName as String,
         arguments: arguments);
-  }
+  },
+  "pushReplacement": (Object? context, Object? route) {
+    Navigator.pushReplacement(context as BuildContext, route as Route);
+  },
 };
 
 final apiMap = {
@@ -138,6 +141,12 @@ final apiMap = {
 };
 
 final mathMap = {
+  "min": (Object x, Object y) {
+    return min(x as num, y as num); 
+  },
+  "max": (Object x, Object y) {
+    return max(x as num, y as num); 
+  },
   "randomInt": (Object x) {
     return Random().nextInt(x as int);
   },

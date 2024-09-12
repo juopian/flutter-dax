@@ -49,19 +49,88 @@ Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSna
 ## 1. 全局对象
 
 * Api
+```
+Api.get(String url, {params})
+Api.post(String url, {params})
+Api.jwt
+Api.version
+Api.platform
+Api.versionNumber
+```
 * AxisDirection
 * BoxFit
 * BorderRadius
+```
+BorderRadius.circular(double radius)
+BorderRadius.zero
+BorderRadius.all(Radius radius)
+BorderRadius.only({
+  Radius topLeft = Radius.zero,
+  Radius topRight = Radius.zero,
+  Radius bottomLeft = Radius.zero,
+  Radius bottomRight = Radius.zero,
+})
+BorderRadius.vertical({Radius top = Radius.zero, Radius bottom = Radius.zero})
+BorderRadius.horizontal({Radius left = Radius.zero, Radius right = Radius.zero})
+```
 * BorderStyle
 * Colors
 * CrossAxisAlignment
 * EdgeInsets
+```
+EdgeInsets.all(double value)
+EdgeInsets.only({double? top, double? right, double? bottom, double? left})
+EdgeInsets.fromLTRB(double left, double top, double right, double bottom)
+EdgeInsets.symmetric({double vertical = 0.0, double horizontal = 0.0})
+```
 * FontWeight
 * Icons
+* ImageRepeat
+* ImageSource
+* JavascriptMode
+* json
+```
+json.encode(Object? value)
+json.decode(String source)
+```
+* LaunchMode
+* ListTileControlAffinity
+* LocationPermission
 * MainAxisAlignment
+* Math
+```
+Math.max(num a, num b)
+Math.min(num a, num b)
+Math.randInt(int max) // [0, max)
+Math.randDouble() // [0.0, 1.0)
+Math.randBool() // true or false
+Math.sin(num x)
+Math.asin(num x)
+Math.cos(num x)
+Math.acos(num x)
+Math.tan(num x)
+Math.atan(num x)
+Math.atan2(num x, num y)
+Math.sqrt(num x)
+Math.exp(num x)
+Math.log(num x)
+Math.pow(num x, num y)
+...
+```
 * Matrix4
 * Navigator
+```
+Navigator.pop(BuildContext context)
+Navigator.push(BuildContext context, Route<dynamic> route)
+Navigator.pushNamed(BuildContext context, String routeName, {Object? arguments})
+Navigator.pushReplacement(BuildContext context, Route<dynamic> route)
+```
 * Radius
+```
+Radius.circular(double radius)
+Radius.elliptical(double x, double y)
+Radius.zero
+```
 * SnackBarBehavior
 * StackFit
 * TabBarIndicatorSize
@@ -562,6 +631,12 @@ FloatingActionButton({
 FontWeight.bold
 ...
 ```
+###  Geolocator
+```
+Geolocator.checkPermission().then((LocationPermission permission){...})	
+Geolocator.requestPermission().then((LocationPermission permission){...})	
+Geolocator.getCurrentPosition().then((GeolocatorPosition position){...})	
+```
 ###  GestureDetector
 ```
 GestureDetector({
@@ -613,6 +688,10 @@ Image({
   FilterQuality filterQuality = FilterQuality.low,
 })
 ```
+###  ImagePicker
+```
+	ImagePicker()
+```
 ###  InputDecoration
 ```
 InputDecoration({
@@ -655,6 +734,20 @@ InputDecoration({
   InputBorder? border,
   bool enabled = true,
   BoxConstraints? constraints,
+})
+```
+###  JavascriptChannel
+```
+JavascriptChannel({
+	required String name, 
+	required void Function(JavascriptMessage) onMessageReceived
+})
+```
+### launchUrl
+```
+launchUrl(
+  Uri url, {
+  LaunchMode mode = LaunchMode.platformDefault,
 })
 ```
 ###  LinearGradient

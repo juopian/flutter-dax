@@ -12,6 +12,8 @@ import 'layout.dart';
 import 'scroll.dart';
 import 'container.dart';
 import 'popup.dart';
+import 'webview.dart';
+import 'imagepicker.dart';
 
 bool isApiRegistered = false;
 
@@ -82,8 +84,6 @@ class _DaxPageState extends State<DaxPage> {
     }
     // regist local function which related to context
     interpreter.registerLocal("context", context);
-    interpreter.registerLocal("getViewSize", IViewSize());
-    interpreter.registerLocal("showSnackBar", ISnackBarShow());
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
@@ -137,9 +137,13 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("FontStyle", fontStyleMap);
     interpreter.registerGlobal("Icons", iconsMap);
     interpreter.registerGlobal("ImageRepeat", imageRepeatMap);
+    interpreter.registerGlobal("ImageSource", imageSourceMap);
+    interpreter.registerGlobal("JavascriptMode", javascriptModeMap);
     interpreter.registerGlobal("json", jsonMap);
+    interpreter.registerGlobal("LaunchMode", launchModeMap);
     interpreter.registerGlobal(
         "ListTileControlAffinity", listTileControlAffinityMap);
+    interpreter.registerGlobal("LocationPermission", locationPermissionMap);
     interpreter.registerGlobal("MainAxisAlignment", mainAxisAlignmentMap);
     interpreter.registerGlobal("MainAxisSize", mainAxisSizeMap);
     interpreter.registerGlobal("Math", mathMap);
@@ -209,11 +213,16 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal(
         "FloatingActionButtonLocation", IFloatingActionButtonLocation());
     interpreter.registerGlobal("FontWeight", IFontWeight());
+    interpreter.registerGlobal("getViewSize", IViewSize());
+    interpreter.registerGlobal("Geolocator", IGeolocator());
     interpreter.registerGlobal("GestureDetector", IGestureDetector());
     interpreter.registerGlobal("Icon", IIcon());
     interpreter.registerGlobal("IconButton", IIconButton());
     interpreter.registerGlobal("Image", IImage());
+    interpreter.registerGlobal("ImagePicker", IImagePicker());
     interpreter.registerGlobal("InputDecoration", IInputDecoration());
+    interpreter.registerGlobal("JavascriptChannel", IJavascriptChannel());
+    interpreter.registerGlobal("launchUrl", ILaunchUrl());
     interpreter.registerGlobal("LinearGradient", ILinearGradient());
     interpreter.registerGlobal("ListTile", IListTile());
     interpreter.registerGlobal("ListView", IListView());
@@ -250,7 +259,7 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Switch", ISwitch());
     interpreter.registerGlobal("showDialog", IShowDialog());
     interpreter.registerGlobal("showModalBottomSheet", IShowModalBottomSheet());
-    interpreter.registerLocal("getViewSize", IViewSize());
+    interpreter.registerGlobal("showSnackBar", ISnackBarShow());
     interpreter.registerGlobal("Tab", ITab());
     interpreter.registerGlobal("TabBar", ITabBar());
     interpreter.registerGlobal("TabBarView", ITabBarView());
@@ -265,6 +274,8 @@ class _DaxPageState extends State<DaxPage> {
     interpreter.registerGlobal("Transform", ITransform());
     interpreter.registerGlobal("Uri", IUri());
     interpreter.registerGlobal("UnderlineInputBorder", IUnderlineInputBorder());
+    interpreter.registerGlobal("WebView", IWebView());
+    interpreter.registerGlobal("WebViewController", IWebViewController());
     interpreter.registerGlobal("Wrap", IWrap());
   }
 

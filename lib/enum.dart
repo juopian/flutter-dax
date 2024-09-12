@@ -2,6 +2,11 @@ import 'package:dax/dax.dart';
 import 'package:dax_flutter/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class IColors implements LoxGetCallable {
   @override
@@ -360,4 +365,29 @@ final textDecorationStyleMap = {
   "dotted": TextDecorationStyle.dotted,
   "dashed": TextDecorationStyle.dashed,
   "wavy": TextDecorationStyle.wavy,
+};
+
+final javascriptModeMap = {
+  "disabled": JavascriptMode.disabled,
+  "unrestricted": JavascriptMode.unrestricted
+};
+
+final launchModeMap = {
+  "inAppWebView": LaunchMode.inAppWebView,
+  "platformDefault": LaunchMode.platformDefault,
+  "externalApplication": LaunchMode.externalApplication,
+  "externalNonBrowserApplication": LaunchMode.externalNonBrowserApplication,
+};
+
+final locationPermissionMap = {
+  "deniedForever": LocationPermission.deniedForever,
+  "always": LocationPermission.always,
+  "denied": LocationPermission.denied,
+  "whenInUse": LocationPermission.whileInUse,
+  "unableToDetermine": LocationPermission.unableToDetermine
+};
+
+final imageSourceMap = {
+  "camera": ImageSource.camera,
+  "gallery": ImageSource.gallery,
 };
