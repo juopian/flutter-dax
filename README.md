@@ -63,7 +63,6 @@ Api.versionNumber
 base64.encode(List<int> input)
 base64.decode(String input)
 ```
-```
 * BlendMode
 * BoxFit
 * BorderRadius
@@ -165,7 +164,6 @@ Platform.isFuchsia
 Platform.isMacOS
 Platform.isWindows
 Platform.isLinux
-```
 ```
 * Radius
 ```
