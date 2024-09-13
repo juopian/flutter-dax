@@ -2,7 +2,7 @@ import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
-class IBoxDecoration implements LoxFlutterFunction {
+class IBoxDecoration implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -59,7 +59,7 @@ class IBoxDecoration implements LoxFlutterFunction {
   }
 }
 
-class ILinearGradient implements LoxFlutterFunction {
+class ILinearGradient implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -97,7 +97,7 @@ class ILinearGradient implements LoxFlutterFunction {
   }
 }
 
-class ITextStyle implements LoxFlutterFunction {
+class ITextStyle implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -180,7 +180,7 @@ class ITextStyle implements LoxFlutterFunction {
   }
 }
 
-class IShadow implements LoxFlutterFunction {
+class IShadow implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -198,7 +198,7 @@ class IShadow implements LoxFlutterFunction {
   }
 }
 
-class IBoxShadow implements LoxFlutterFunction {
+class IBoxShadow implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -222,7 +222,7 @@ class IBoxShadow implements LoxFlutterFunction {
   }
 }
 
-class IInputDecoration implements LoxFlutterFunction {
+class IInputDecoration implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -378,12 +378,14 @@ class IInputDecoration implements LoxFlutterFunction {
       prefixIconConstraints = prefixIconConstraintsParsed as BoxConstraints;
     }
     BoxConstraints? suffixIconConstraints;
-    var suffixIconConstraintsParsed = namedArguments[const Symbol('suffixIconConstraints')];
+    var suffixIconConstraintsParsed =
+        namedArguments[const Symbol('suffixIconConstraints')];
     if (suffixIconConstraintsParsed != null) {
       suffixIconConstraints = suffixIconConstraintsParsed as BoxConstraints;
     }
     TextDirection? hintTextDirection;
-    var hintTextDirectionParsed = namedArguments[const Symbol('hintTextDirection')];
+    var hintTextDirectionParsed =
+        namedArguments[const Symbol('hintTextDirection')];
     if (hintTextDirectionParsed != null) {
       hintTextDirection = hintTextDirectionParsed as TextDirection;
     }
@@ -423,7 +425,7 @@ class IInputDecoration implements LoxFlutterFunction {
   }
 }
 
-class ICircleBorder implements LoxFlutterFunction {
+class ICircleBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -436,7 +438,7 @@ class ICircleBorder implements LoxFlutterFunction {
   }
 }
 
-class IStadiumBorder implements LoxFlutterFunction {
+class IStadiumBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -449,7 +451,7 @@ class IStadiumBorder implements LoxFlutterFunction {
   }
 }
 
-class IContinuousRectangleBorder implements LoxFlutterFunction {
+class IContinuousRectangleBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -467,7 +469,7 @@ class IContinuousRectangleBorder implements LoxFlutterFunction {
   }
 }
 
-class IRoundedRectangleBorder implements LoxFlutterFunction {
+class IRoundedRectangleBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -485,7 +487,7 @@ class IRoundedRectangleBorder implements LoxFlutterFunction {
   }
 }
 
-class IBeveledRectangleBorder implements LoxFlutterFunction {
+class IBeveledRectangleBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -503,7 +505,7 @@ class IBeveledRectangleBorder implements LoxFlutterFunction {
   }
 }
 
-class IUnderlineInputBorder implements LoxFlutterFunction {
+class IUnderlineInputBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -527,7 +529,7 @@ class IUnderlineInputBorder implements LoxFlutterFunction {
   }
 }
 
-class IOutlineInputBorder implements LoxFlutterFunction {
+class IOutlineInputBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -551,7 +553,7 @@ class IOutlineInputBorder implements LoxFlutterFunction {
   }
 }
 
-class IBorderSide implements LoxFlutterFunction {
+class IBorderSide implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -570,7 +572,7 @@ class IBorderSide implements LoxFlutterFunction {
   }
 }
 
-class IDefaultTextStyle implements LoxFlutterFunction {
+class IDefaultTextStyle implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -587,9 +589,27 @@ class IDefaultTextStyle implements LoxFlutterFunction {
     if (child == null) {
       throw "DefaultTextStyle must have a child";
     }
+    bool softWrap = true;
+    var softWrapParsed = namedArguments[const Symbol('softWrap')];
+    if (softWrapParsed != null) {
+      softWrap = softWrapParsed as bool;
+    }
+    TextOverflow overflow = TextOverflow.clip;
+    var overflowParsed = namedArguments[const Symbol('overflow')];
+    if (overflowParsed != null) {
+      overflow = overflowParsed as TextOverflow;
+    }
+    int? maxLines;
+    var maxLinesParsed = namedArguments[const Symbol('maxLines')];
+    if (maxLinesParsed != null) {
+      maxLines = maxLinesParsed as int;
+    }
     return DefaultTextStyle(
-        textAlign: textAlign,
         style: style as TextStyle,
-        child: child as Widget);
+        child: child as Widget,
+        textAlign: textAlign,
+        softWrap: softWrap,
+        overflow: overflow,
+        maxLines: maxLines);
   }
 }

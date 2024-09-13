@@ -1,10 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'utils.dart';
 import 'datepicker.dart';
 
-class IText implements LoxFlutterFunction {
+class IText implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -50,7 +53,7 @@ class IText implements LoxFlutterFunction {
   }
 }
 
-class ElevatedButtonStyleBuilder implements LoxFlutterFunction {
+class ElevatedButtonStyleBuilder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -120,7 +123,7 @@ class ElevatedButtonStyleBuilder implements LoxFlutterFunction {
   }
 }
 
-class IElevatedButton implements LoxFlutterFunction, LoxGetCallable {
+class IElevatedButton implements DaxCallable, LoxGetCallable {
   final builder = ElevatedButtonStyleBuilder();
   @override
   Object? get(Token name) {
@@ -161,7 +164,7 @@ class IElevatedButton implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class OutlinedButtonStyleBuilder implements LoxFlutterFunction {
+class OutlinedButtonStyleBuilder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -237,7 +240,7 @@ class OutlinedButtonStyleBuilder implements LoxFlutterFunction {
   }
 }
 
-class IOutlinedButton implements LoxFlutterFunction, LoxGetCallable {
+class IOutlinedButton implements DaxCallable, LoxGetCallable {
   final builder = OutlinedButtonStyleBuilder();
   @override
   Object? get(Token name) {
@@ -278,7 +281,7 @@ class IOutlinedButton implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class TextButtonStyleBuilder implements LoxFlutterFunction {
+class TextButtonStyleBuilder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -354,7 +357,7 @@ class TextButtonStyleBuilder implements LoxFlutterFunction {
   }
 }
 
-class ITextButton implements LoxFlutterFunction, LoxGetCallable {
+class ITextButton implements DaxCallable, LoxGetCallable {
   final builder = TextButtonStyleBuilder();
   @override
   Object? get(Token name) {
@@ -395,7 +398,7 @@ class ITextButton implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class IIcon implements LoxFlutterFunction {
+class IIcon implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -413,7 +416,7 @@ class IIcon implements LoxFlutterFunction {
   }
 }
 
-class IIconButton implements LoxFlutterFunction {
+class IIconButton implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -484,7 +487,7 @@ class IIconButton implements LoxFlutterFunction {
   }
 }
 
-class IDecorationImage implements LoxFlutterFunction {
+class IDecorationImage implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -517,7 +520,222 @@ class IDecorationImage implements LoxFlutterFunction {
   }
 }
 
-class IImage implements LoxFlutterFunction {
+class MemoryImageBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double scale = parseDouble(namedArguments[const Symbol('scale')]) ?? 1.0;
+    double? height = parseDouble(namedArguments[const Symbol('height')]);
+    double? width = parseDouble(namedArguments[const Symbol('width')]);
+    BoxFit? fit;
+    var fitParsed = namedArguments[const Symbol('fit')];
+    if (fitParsed != null) {
+      fit = fitParsed as BoxFit;
+    }
+    Color? color;
+    var colorParse = namedArguments[const Symbol('color')];
+    if (colorParse != null) {
+      color = colorParse as Color;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    BlendMode? blendMode;
+    var blendModeParse = namedArguments[const Symbol('blendMode')];
+    if (blendModeParse != null) {
+      blendMode = blendModeParse as BlendMode;
+    }
+    ImageRepeat repeat = ImageRepeat.noRepeat;
+    var repeatParse = namedArguments[const Symbol('repeat')];
+    if (repeatParse != null) {
+      repeat = repeatParse as ImageRepeat;
+    }
+    bool matchTextDirection = false;
+    var matchTextDirectionParse =
+        namedArguments[const Symbol('matchTextDirection')];
+    if (matchTextDirectionParse != null) {
+      matchTextDirection = matchTextDirectionParse as bool;
+    }
+    bool isAntiAlias = false;
+    var isAntiAliasParse = namedArguments[const Symbol('isAntiAlias')];
+    if (isAntiAliasParse != null) {
+      isAntiAlias = isAntiAliasParse as bool;
+    }
+    FilterQuality filterQuality = FilterQuality.low;
+    var filterQualityParse = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParse != null) {
+      filterQuality = filterQualityParse as FilterQuality;
+    }
+    return Image.memory(
+      arguments[0] as Uint8List,
+      scale: scale,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      repeat: repeat,
+      matchTextDirection: matchTextDirection,
+      isAntiAlias: isAntiAlias,
+      color: color,
+      colorBlendMode: blendMode,
+      filterQuality: filterQuality,
+    );
+  }
+}
+
+class NetworkImageBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double scale = parseDouble(namedArguments[const Symbol('scale')]) ?? 1.0;
+
+    double? height = parseDouble(namedArguments[const Symbol('height')]);
+    double? width = parseDouble(namedArguments[const Symbol('width')]);
+    BoxFit? fit;
+    var fitParsed = namedArguments[const Symbol('fit')];
+    if (fitParsed != null) {
+      fit = fitParsed as BoxFit;
+    }
+    Color? color;
+    var colorParse = namedArguments[const Symbol('color')];
+    if (colorParse != null) {
+      color = colorParse as Color;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    BlendMode? blendMode;
+    var blendModeParse = namedArguments[const Symbol('blendMode')];
+    if (blendModeParse != null) {
+      blendMode = blendModeParse as BlendMode;
+    }
+    ImageRepeat repeat = ImageRepeat.noRepeat;
+    var repeatParse = namedArguments[const Symbol('repeat')];
+    if (repeatParse != null) {
+      repeat = repeatParse as ImageRepeat;
+    }
+    bool matchTextDirection = false;
+    var matchTextDirectionParse =
+        namedArguments[const Symbol('matchTextDirection')];
+    if (matchTextDirectionParse != null) {
+      matchTextDirection = matchTextDirectionParse as bool;
+    }
+    bool isAntiAlias = false;
+    var isAntiAliasParse = namedArguments[const Symbol('isAntiAlias')];
+    if (isAntiAliasParse != null) {
+      isAntiAlias = isAntiAliasParse as bool;
+    }
+    FilterQuality filterQuality = FilterQuality.low;
+    var filterQualityParse = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParse != null) {
+      filterQuality = filterQualityParse as FilterQuality;
+    }
+    Map<String, String>? headers;
+    var headersParse = namedArguments[const Symbol('headers')];
+    if (headersParse != null) {
+      headers = headersParse as Map<String, String>;
+    }
+    return Image.network(
+      arguments[0] as String,
+      scale: scale,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      repeat: repeat,
+      matchTextDirection: matchTextDirection,
+      isAntiAlias: isAntiAlias,
+      color: color,
+      headers: headers,
+      colorBlendMode: blendMode,
+      filterQuality: filterQuality,
+    );
+  }
+}
+
+class AssetImageBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double scale = parseDouble(namedArguments[const Symbol('scale')]) ?? 1.0;
+
+    double? height = parseDouble(namedArguments[const Symbol('height')]);
+    double? width = parseDouble(namedArguments[const Symbol('width')]);
+    BoxFit? fit;
+    var fitParsed = namedArguments[const Symbol('fit')];
+    if (fitParsed != null) {
+      fit = fitParsed as BoxFit;
+    }
+    Color? color;
+    var colorParse = namedArguments[const Symbol('color')];
+    if (colorParse != null) {
+      color = colorParse as Color;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    BlendMode? blendMode;
+    var blendModeParse = namedArguments[const Symbol('blendMode')];
+    if (blendModeParse != null) {
+      blendMode = blendModeParse as BlendMode;
+    }
+    ImageRepeat repeat = ImageRepeat.noRepeat;
+    var repeatParse = namedArguments[const Symbol('repeat')];
+    if (repeatParse != null) {
+      repeat = repeatParse as ImageRepeat;
+    }
+    bool matchTextDirection = false;
+    var matchTextDirectionParse =
+        namedArguments[const Symbol('matchTextDirection')];
+    if (matchTextDirectionParse != null) {
+      matchTextDirection = matchTextDirectionParse as bool;
+    }
+    bool isAntiAlias = false;
+    var isAntiAliasParse = namedArguments[const Symbol('isAntiAlias')];
+    if (isAntiAliasParse != null) {
+      isAntiAlias = isAntiAliasParse as bool;
+    }
+    FilterQuality filterQuality = FilterQuality.low;
+    var filterQualityParse = namedArguments[const Symbol('filterQuality')];
+    if (filterQualityParse != null) {
+      filterQuality = filterQualityParse as FilterQuality;
+    }
+    return Image.asset(
+      arguments[0] as String,
+      scale: scale,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      repeat: repeat,
+      matchTextDirection: matchTextDirection,
+      isAntiAlias: isAntiAlias,
+      color: color,
+      colorBlendMode: blendMode,
+      filterQuality: filterQuality,
+    );
+  }
+}
+
+class IImage implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'memory':
+        return MemoryImageBuilder();
+      case 'asset':
+        return AssetImageBuilder();
+      case 'network':
+        return NetworkImageBuilder();
+    }
+  }
+
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -585,7 +803,7 @@ class IImage implements LoxFlutterFunction {
   }
 }
 
-class ICupertinoActivityIndicator implements LoxFlutterFunction {
+class ICupertinoActivityIndicator implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -596,7 +814,7 @@ class ICupertinoActivityIndicator implements LoxFlutterFunction {
   }
 }
 
-class ICircularProgressIndicator implements LoxFlutterFunction {
+class ICircularProgressIndicator implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -622,7 +840,7 @@ class ICircularProgressIndicator implements LoxFlutterFunction {
   }
 }
 
-class SwitchAdaptive implements LoxFlutterFunction {
+class SwitchAdaptive implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -681,7 +899,7 @@ class SwitchAdaptive implements LoxFlutterFunction {
   }
 }
 
-class ISwitch implements LoxFlutterFunction, LoxGetCallable {
+class ISwitch implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     if (name.lexeme == "adaptive") {
@@ -749,7 +967,7 @@ class ISwitch implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class ISlider implements LoxFlutterFunction {
+class ISlider implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -810,7 +1028,7 @@ class ISlider implements LoxFlutterFunction {
   }
 }
 
-class IRadio implements LoxFlutterFunction {
+class IRadio implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -863,7 +1081,7 @@ class IRadio implements LoxFlutterFunction {
   }
 }
 
-class ICheckbox implements LoxFlutterFunction {
+class ICheckbox implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -923,7 +1141,7 @@ class ICheckbox implements LoxFlutterFunction {
   }
 }
 
-class ITextField implements LoxFlutterFunction {
+class ITextField implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1081,7 +1299,7 @@ class ITextField implements LoxFlutterFunction {
   }
 }
 
-class IDivider implements LoxFlutterFunction {
+class IDivider implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1104,7 +1322,7 @@ class IDivider implements LoxFlutterFunction {
   }
 }
 
-class IBottomNavigationBarItem implements LoxFlutterFunction {
+class IBottomNavigationBarItem implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1142,7 +1360,7 @@ class IBottomNavigationBarItem implements LoxFlutterFunction {
   }
 }
 
-class ISimpleDialog implements LoxFlutterFunction {
+class ISimpleDialog implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1196,7 +1414,7 @@ class ISimpleDialog implements LoxFlutterFunction {
   }
 }
 
-class IAlertDialog implements LoxFlutterFunction {
+class IAlertDialog implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1299,7 +1517,7 @@ class IAlertDialog implements LoxFlutterFunction {
   }
 }
 
-class ISnackBar implements LoxFlutterFunction {
+class ISnackBar implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1360,7 +1578,7 @@ class ISnackBar implements LoxFlutterFunction {
   }
 }
 
-class ISnackBarAction implements LoxFlutterFunction {
+class ISnackBarAction implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1381,7 +1599,7 @@ class ISnackBarAction implements LoxFlutterFunction {
   }
 }
 
-class IGestureDetector implements LoxFlutterFunction {
+class IGestureDetector implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1421,7 +1639,7 @@ class IGestureDetector implements LoxFlutterFunction {
   }
 }
 
-class IDatePicker implements LoxFlutterFunction {
+class IDatePicker implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1448,7 +1666,7 @@ class IDatePicker implements LoxFlutterFunction {
   }
 }
 
-class ISafeArea implements LoxFlutterFunction {
+class ISafeArea implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

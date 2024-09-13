@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
-class IListView implements LoxFlutterFunction, LoxGetCallable {
+class IListView implements DaxCallable, LoxGetCallable {
   final builder = ListViewBuilder();
   final separated = ListViewSeparated();
   @override
@@ -71,7 +71,7 @@ class IListView implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class ListViewBuilder implements LoxFlutterFunction {
+class ListViewBuilder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -135,7 +135,7 @@ class ListViewBuilder implements LoxFlutterFunction {
   }
 }
 
-class ListViewSeparated implements LoxFlutterFunction {
+class ListViewSeparated implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -196,7 +196,7 @@ class ListViewSeparated implements LoxFlutterFunction {
   }
 }
 
-class ISingleChildScrollView implements LoxFlutterFunction {
+class ISingleChildScrollView implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -235,7 +235,7 @@ class ISingleChildScrollView implements LoxFlutterFunction {
   }
 }
 
-class ITabBar implements LoxFlutterFunction {
+class ITabBar implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -338,7 +338,7 @@ class ITabBar implements LoxFlutterFunction {
   }
 }
 
-class ITab implements LoxFlutterFunction {
+class ITab implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -373,7 +373,7 @@ class ITab implements LoxFlutterFunction {
   }
 }
 
-class IDefaultTabController implements LoxFlutterFunction {
+class IDefaultTabController implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -398,7 +398,7 @@ class IDefaultTabController implements LoxFlutterFunction {
   }
 }
 
-class ITabBarView implements LoxFlutterFunction {
+class ITabBarView implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

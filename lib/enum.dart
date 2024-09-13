@@ -243,7 +243,7 @@ final filterQualityMap = {
   "high": FilterQuality.high
 };
 
-class ITextAlignVertical implements LoxGetCallable, LoxFlutterFunction {
+class ITextAlignVertical implements LoxGetCallable, DaxCallable {
   @override
   Object? get(Token name) {
     return _textAlignVerticalMap[name.lexeme];

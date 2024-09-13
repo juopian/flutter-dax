@@ -6,7 +6,7 @@ const Duration _kMenuDuration = Duration(milliseconds: 300);
 const double _kMenuScreenPadding = 0.0;
 const double _kMenuVerticalPadding = 8.0;
 
-class IPopupMenuFilter implements LoxFlutterFunction {
+class IPopupMenuFilter implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -63,7 +63,7 @@ class IPopupMenuFilter implements LoxFlutterFunction {
     if (shapeParse != null) {
       shape = shapeParse as ShapeBorder;
     }
-    return DropdownFullWidth(
+    return PopupMenuFilter(
       child: child as Widget,
       initValue: initValue,
       elevation: elevation,
@@ -134,7 +134,7 @@ class _FullPopupMenu extends StatelessWidget {
   }
 }
 
-class DropdownFullWidth extends StatefulWidget {
+class PopupMenuFilter extends StatefulWidget {
   final Widget child;
   final Object? initValue;
   final void Function(Object?)? onSelected;
@@ -149,7 +149,7 @@ class DropdownFullWidth extends StatefulWidget {
   final double? iconSize;
   final BorderRadiusGeometry? borderRadius;
 
-  const DropdownFullWidth(
+  const PopupMenuFilter(
       {Key? key,
       this.initValue,
       this.onSelected,
@@ -167,10 +167,10 @@ class DropdownFullWidth extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<DropdownFullWidth> createState() => _DropdownFullWidthState();
+  State<PopupMenuFilter> createState() => _PopupMenuFilterState();
 }
 
-class _DropdownFullWidthState extends State<DropdownFullWidth>
+class _PopupMenuFilterState extends State<PopupMenuFilter>
     with SingleTickerProviderStateMixin {
   bool isExpanded = false;
   late AnimationController animationController;

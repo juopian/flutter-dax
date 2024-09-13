@@ -2,7 +2,7 @@ import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
-class IExpanded implements LoxFlutterFunction {
+class IExpanded implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -22,7 +22,7 @@ class IExpanded implements LoxFlutterFunction {
   }
 }
 
-class IRow implements LoxFlutterFunction {
+class IRow implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -75,7 +75,7 @@ class IRow implements LoxFlutterFunction {
   }
 }
 
-class IColumn implements LoxFlutterFunction {
+class IColumn implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -129,7 +129,7 @@ class IColumn implements LoxFlutterFunction {
   }
 }
 
-class ICenter implements LoxFlutterFunction {
+class ICenter implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -149,7 +149,7 @@ class ICenter implements LoxFlutterFunction {
   }
 }
 
-class IWrap implements LoxFlutterFunction {
+class IWrap implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -206,7 +206,7 @@ class IWrap implements LoxFlutterFunction {
   }
 }
 
-class IAlign implements LoxFlutterFunction {
+class IAlign implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -233,7 +233,7 @@ class IAlign implements LoxFlutterFunction {
   }
 }
 
-class IStack implements LoxFlutterFunction {
+class IStack implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -272,7 +272,7 @@ class IStack implements LoxFlutterFunction {
   }
 }
 
-class IPositioned implements LoxFlutterFunction {
+class IPositioned implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -298,7 +298,7 @@ class IPositioned implements LoxFlutterFunction {
   }
 }
 
-class IConstrainedBox implements LoxFlutterFunction {
+class IConstrainedBox implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

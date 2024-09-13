@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'utils.dart';
 
-class IOffset implements LoxFlutterFunction, LoxGetCallable {
+class IOffset implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -29,7 +29,7 @@ class IOffset implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class IUri implements LoxFlutterFunction {
+class IUri implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -79,7 +79,7 @@ class IUri implements LoxFlutterFunction {
   }
 }
 
-class SizefromHeight implements LoxFlutterFunction {
+class SizefromHeight implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -91,7 +91,7 @@ class SizefromHeight implements LoxFlutterFunction {
   }
 }
 
-class SizefromWidth implements LoxFlutterFunction {
+class SizefromWidth implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -103,7 +103,7 @@ class SizefromWidth implements LoxFlutterFunction {
   }
 }
 
-class SizefromRadius implements LoxFlutterFunction {
+class SizefromRadius implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -115,7 +115,7 @@ class SizefromRadius implements LoxFlutterFunction {
   }
 }
 
-class Sizesquare implements LoxFlutterFunction {
+class Sizesquare implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -127,7 +127,7 @@ class Sizesquare implements LoxFlutterFunction {
   }
 }
 
-class ISize implements LoxFlutterFunction {
+class ISize implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -168,7 +168,7 @@ class SizeIns extends Size implements LoxGetCallable {
   SizeIns(double width, double height) : super(width, height);
 }
 
-class IViewSize implements LoxFlutterFunction {
+class IViewSize implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -177,7 +177,7 @@ class IViewSize implements LoxFlutterFunction {
   }
 }
 
-class ISnackBarShow implements LoxFlutterFunction {
+class ISnackBarShow implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -186,7 +186,7 @@ class ISnackBarShow implements LoxFlutterFunction {
   }
 }
 
-class TransformRotate implements LoxFlutterFunction {
+class TransformRotate implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -224,7 +224,7 @@ class TransformRotate implements LoxFlutterFunction {
   }
 }
 
-class TransformScale implements LoxFlutterFunction {
+class TransformScale implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -262,7 +262,7 @@ class TransformScale implements LoxFlutterFunction {
   }
 }
 
-class TransformTranslate implements LoxFlutterFunction {
+class TransformTranslate implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -288,7 +288,7 @@ class TransformTranslate implements LoxFlutterFunction {
   }
 }
 
-class ITransform implements LoxFlutterFunction, LoxGetCallable {
+class ITransform implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -338,7 +338,7 @@ class ITransform implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class Matrix4skew implements LoxFlutterFunction {
+class Matrix4skew implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -351,7 +351,7 @@ class Matrix4skew implements LoxFlutterFunction {
   }
 }
 
-class Matrix4skewX implements LoxFlutterFunction {
+class Matrix4skewX implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -363,7 +363,7 @@ class Matrix4skewX implements LoxFlutterFunction {
   }
 }
 
-class Matrix4skewY implements LoxFlutterFunction {
+class Matrix4skewY implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -375,7 +375,7 @@ class Matrix4skewY implements LoxFlutterFunction {
   }
 }
 
-class Matrix4translate implements LoxFlutterFunction {
+class Matrix4translate implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -389,7 +389,7 @@ class Matrix4translate implements LoxFlutterFunction {
   }
 }
 
-class Matrix4rotationX implements LoxFlutterFunction {
+class Matrix4rotationX implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -401,7 +401,7 @@ class Matrix4rotationX implements LoxFlutterFunction {
   }
 }
 
-class Matrix4rotationY implements LoxFlutterFunction {
+class Matrix4rotationY implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -413,7 +413,7 @@ class Matrix4rotationY implements LoxFlutterFunction {
   }
 }
 
-class Matrix4rotationZ implements LoxFlutterFunction {
+class Matrix4rotationZ implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -425,7 +425,7 @@ class Matrix4rotationZ implements LoxFlutterFunction {
   }
 }
 
-class Matrix4scale implements LoxFlutterFunction {
+class Matrix4scale implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -439,7 +439,7 @@ class Matrix4scale implements LoxFlutterFunction {
   }
 }
 
-class IMatrix4 implements LoxFlutterFunction, LoxGetCallable {
+class IMatrix4 implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -493,7 +493,7 @@ class IMatrix4 implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class BorderAll implements LoxFlutterFunction {
+class BorderAll implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -512,7 +512,7 @@ class BorderAll implements LoxFlutterFunction {
   }
 }
 
-class BorderfromBorderSide implements LoxFlutterFunction {
+class BorderfromBorderSide implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -523,7 +523,7 @@ class BorderfromBorderSide implements LoxFlutterFunction {
   }
 }
 
-class BorderSymmetric implements LoxFlutterFunction {
+class BorderSymmetric implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -541,7 +541,7 @@ class BorderSymmetric implements LoxFlutterFunction {
   }
 }
 
-class IBorder implements LoxFlutterFunction, LoxGetCallable {
+class IBorder implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -581,7 +581,7 @@ class IBorder implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class IAlignmentDirectional implements LoxFlutterFunction, LoxGetCallable {
+class IAlignmentDirectional implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -619,7 +619,7 @@ class IAlignmentDirectional implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class IAlignment implements LoxFlutterFunction, LoxGetCallable {
+class IAlignment implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -659,7 +659,7 @@ class IAlignment implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class IColor implements LoxFlutterFunction {
+class IColor implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -670,7 +670,7 @@ class IColor implements LoxFlutterFunction {
   }
 }
 
-class IAssetImage implements LoxFlutterFunction {
+class IAssetImage implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -681,7 +681,7 @@ class IAssetImage implements LoxFlutterFunction {
   }
 }
 
-class INetworkImage implements LoxFlutterFunction {
+class INetworkImage implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -693,7 +693,7 @@ class INetworkImage implements LoxFlutterFunction {
   }
 }
 
-class ITextEditingController implements LoxFlutterFunction {
+class ITextEditingController implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -729,7 +729,7 @@ class TextEditingControllerIns extends TextEditingController
   }
 }
 
-class IShowDialog implements LoxFlutterFunction {
+class IShowDialog implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -776,7 +776,7 @@ class IShowDialog implements LoxFlutterFunction {
   }
 }
 
-class IShowModalBottomSheet implements LoxFlutterFunction {
+class IShowModalBottomSheet implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -829,7 +829,7 @@ class IShowModalBottomSheet implements LoxFlutterFunction {
   }
 }
 
-class IDateFormat implements LoxFlutterFunction {
+class IDateFormat implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -856,7 +856,7 @@ class DateFormatIns extends DateFormat implements LoxGetCallable {
   }
 }
 
-class IDateTime implements LoxFlutterFunction, LoxGetCallable {
+class IDateTime implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     if (name.lexeme == "now") {
@@ -906,7 +906,7 @@ class IDateTime implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class DateTimeNow implements LoxFlutterFunction {
+class DateTimeNow implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -914,7 +914,7 @@ class DateTimeNow implements LoxFlutterFunction {
   }
 }
 
-class DateTimeUTC implements LoxFlutterFunction {
+class DateTimeUTC implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -952,7 +952,7 @@ class DateTimeUTC implements LoxFlutterFunction {
   }
 }
 
-class DateTimeParse implements LoxFlutterFunction {
+class DateTimeParse implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -964,7 +964,7 @@ class DateTimeParse implements LoxFlutterFunction {
   }
 }
 
-class IRegExp implements LoxFlutterFunction {
+class IRegExp implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

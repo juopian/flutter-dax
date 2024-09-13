@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 
-class IScaffold implements LoxFlutterFunction {
+class IScaffold implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -85,7 +85,7 @@ class IScaffold implements LoxFlutterFunction {
   }
 }
 
-class IBottomNavigationBar implements LoxFlutterFunction {
+class IBottomNavigationBar implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -179,7 +179,7 @@ class IBottomNavigationBar implements LoxFlutterFunction {
   }
 }
 
-class IAppBar implements LoxFlutterFunction {
+class IAppBar implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -291,7 +291,7 @@ class IAppBar implements LoxFlutterFunction {
   }
 }
 
-class IContainer implements LoxFlutterFunction {
+class IContainer implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -371,7 +371,7 @@ class IContainer implements LoxFlutterFunction {
   }
 }
 
-class BoxConstraintsLoose implements LoxFlutterFunction {
+class BoxConstraintsLoose implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -380,7 +380,7 @@ class BoxConstraintsLoose implements LoxFlutterFunction {
   }
 }
 
-class BoxConstraintsTight implements LoxFlutterFunction {
+class BoxConstraintsTight implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -389,7 +389,7 @@ class BoxConstraintsTight implements LoxFlutterFunction {
   }
 }
 
-class BoxConstraintsExpand implements LoxFlutterFunction {
+class BoxConstraintsExpand implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -402,7 +402,7 @@ class BoxConstraintsExpand implements LoxFlutterFunction {
   }
 }
 
-class IBoxConstraints implements LoxFlutterFunction, LoxGetCallable {
+class IBoxConstraints implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -436,7 +436,7 @@ class IBoxConstraints implements LoxFlutterFunction, LoxGetCallable {
   }
 }
 
-class IPadding implements LoxFlutterFunction {
+class IPadding implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -456,7 +456,7 @@ class IPadding implements LoxFlutterFunction {
   }
 }
 
-class IClipOval implements LoxFlutterFunction {
+class IClipOval implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -477,7 +477,7 @@ class IClipOval implements LoxFlutterFunction {
   }
 }
 
-class IClipRRect implements LoxFlutterFunction {
+class IClipRRect implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -504,7 +504,7 @@ class IClipRRect implements LoxFlutterFunction {
   }
 }
 
-class IClipRect implements LoxFlutterFunction {
+class IClipRect implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -525,7 +525,7 @@ class IClipRect implements LoxFlutterFunction {
   }
 }
 
-class IListTile implements LoxFlutterFunction {
+class IListTile implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -643,7 +643,7 @@ class IListTile implements LoxFlutterFunction {
   }
 }
 
-class IFloatingActionButton implements LoxFlutterFunction {
+class IFloatingActionButton implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -736,7 +736,7 @@ class IFloatingActionButton implements LoxFlutterFunction {
   }
 }
 
-class ISizedBox implements LoxFlutterFunction {
+class ISizedBox implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -755,7 +755,7 @@ class ISizedBox implements LoxFlutterFunction {
   }
 }
 
-class IExpansionTile implements LoxFlutterFunction {
+class IExpansionTile implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -875,7 +875,7 @@ class IExpansionTile implements LoxFlutterFunction {
   }
 }
 
-class IPopupMenuButton implements LoxFlutterFunction {
+class IPopupMenuButton implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -958,7 +958,7 @@ class IPopupMenuButton implements LoxFlutterFunction {
   }
 }
 
-class IPopupMenuDivider implements LoxFlutterFunction {
+class IPopupMenuDivider implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -967,7 +967,7 @@ class IPopupMenuDivider implements LoxFlutterFunction {
   }
 }
 
-class IPopupMenuItem implements LoxFlutterFunction {
+class IPopupMenuItem implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1012,7 +1012,7 @@ class IPopupMenuItem implements LoxFlutterFunction {
   }
 }
 
-class IPopupMenuWrap implements LoxFlutterFunction {
+class IPopupMenuWrap implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1051,7 +1051,7 @@ class PopupMenuWrapState extends State<PopupMenuWrap> {
   }
 }
 
-class IDropdownButton implements LoxFlutterFunction {
+class IDropdownButton implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1171,7 +1171,7 @@ class IDropdownButton implements LoxFlutterFunction {
   }
 }
 
-class IDropdownMenuItem implements LoxFlutterFunction {
+class IDropdownMenuItem implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

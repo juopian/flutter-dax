@@ -21,7 +21,7 @@ class GeolocatorPosition implements LoxGetCallable {
   }
 }
 
-class GeolocatorGetCurrrentPosition implements LoxFlutterFunction {
+class GeolocatorGetCurrrentPosition implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -54,7 +54,7 @@ class IGeolocator implements LoxGetCallable {
   }
 }
 
-class ILaunchUrl implements LoxFlutterFunction {
+class ILaunchUrl implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -71,7 +71,7 @@ class ILaunchUrl implements LoxFlutterFunction {
   }
 }
 
-class IWebViewController implements LoxFlutterFunction {
+class IWebViewController implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -119,7 +119,7 @@ class WebViewControllerIns implements LoxGetCallable, LoxSetCallable {
   }
 }
 
-class IJavascriptChannel implements LoxFlutterFunction {
+class IJavascriptChannel implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -153,7 +153,7 @@ class JavascriptMessageIns extends JavascriptMessage implements LoxGetCallable {
   }
 }
 
-class IWebView implements LoxFlutterFunction {
+class IWebView implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

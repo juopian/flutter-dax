@@ -3,7 +3,7 @@ import 'package:dax_flutter/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class IImagePicker implements LoxFlutterFunction {
+class IImagePicker implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -11,7 +11,27 @@ class IImagePicker implements LoxFlutterFunction {
   }
 }
 
-class PickImage implements LoxFlutterFunction {
+class ImagePickerXfile implements LoxGetCallable {
+  final XFile xfile;
+  ImagePickerXfile(this.xfile);
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'path':
+        return xfile.path;
+      case 'name':
+        return xfile.name;
+      case 'legnth':
+        return xfile.length;
+      case 'mimeType':
+        return xfile.mimeType;
+      case 'readAsBytes':
+        return xfile.readAsBytes;
+    }
+  }
+}
+
+class PickImage implements DaxCallable {
   final ImagePicker picker;
 
   PickImage(this.picker);
@@ -24,10 +44,15 @@ class PickImage implements LoxFlutterFunction {
     if (source == null) {
       throw "source required in ImagePicker";
     }
-    return picker.pickImage(
-        source: source as ImageSource,
-        maxHeight: maxHeight,
-        maxWidth: maxWidth).then((value) => value?.path);
+    return picker
+        .pickImage(
+            source: source as ImageSource,
+            maxHeight: maxHeight,
+            maxWidth: maxWidth)
+        .then((value) {
+      if (value == null) return value;
+      return ImagePickerXfile(value);
+    });
   }
 }
 

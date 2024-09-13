@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:path/path.dart' as p;
 import 'dart:math';
 import 'dart:convert';
 import 'utils.dart';
@@ -142,10 +143,10 @@ final apiMap = {
 
 final mathMap = {
   "min": (Object x, Object y) {
-    return min(x as num, y as num); 
+    return min(x as num, y as num);
   },
   "max": (Object x, Object y) {
-    return max(x as num, y as num); 
+    return max(x as num, y as num);
   },
   "randomInt": (Object x) {
     return Random().nextInt(x as int);
@@ -197,5 +198,90 @@ final jsonMap = {
   },
   "decode": (Object value) {
     return json.decode(value as String);
+  }
+};
+
+final base64Map = {
+  "encode": (Object bytes) {
+    return base64Encode(bytes as List<int>);
+  },
+  "decode": (Object value) {
+    return base64Decode(value as String);
+  }
+};
+
+final pathMap = {
+  "join": (
+    Object path1, [
+    Object? path2,
+    Object? path3,
+    Object? path4,
+    Object? path5,
+    Object? path6,
+    Object? path7,
+    Object? path8,
+  ]) {
+    if (path8 != null) {
+      return p.join(
+          path1 as String,
+          path2 as String,
+          path3 as String,
+          path4 as String,
+          path5 as String,
+          path6 as String,
+          path7 as String,
+          path8 as String);
+    } else if (path7 != null) {
+      return p.join(path1 as String, path2 as String, path3 as String,
+          path4 as String, path5 as String, path6 as String, path7 as String);
+    } else if (path6 != null) {
+      return p.join(path1 as String, path2 as String, path3 as String,
+          path4 as String, path5 as String, path6 as String);
+    } else if (path5 != null) {
+      return p.join(path1 as String, path2 as String, path3 as String,
+          path4 as String, path5 as String);
+    } else if (path4 != null) {
+      return p.join(
+          path1 as String, path2 as String, path3 as String, path4 as String);
+    } else if (path3 != null) {
+      return p.join(path1 as String, path2 as String, path3 as String);
+    } else if (path2 != null) {
+      return p.join(path1 as String, path2 as String);
+    } else {
+      return p.join(path1 as String);
+    }
+  },
+  "joinAll": (Object parts) {
+    return p.joinAll(parts as List<String>);
+  },
+  "absolute": (Object path) {
+    return p.absolute(path as String);
+  },
+  "relative": (Object path, {Object? from}) {
+    return p.relative(path as String, from: from as String);
+  },
+  "dirname": (Object path) {
+    return p.dirname(path as String);
+  },
+  "basename": (Object path) {
+    return p.basename(path as String);
+  },
+  "basenameWithoutExtension": (Object path) {
+    return p.basenameWithoutExtension(path as String);
+  },
+  "extension": (Object path) {
+    return p.extension(path as String);
+  },
+  "normalize": (Object path) {
+    return p.normalize(path as String);
+  },
+  "isAbsolute": (Object path) {
+    return p.isAbsolute(path as String);
+  },
+  "isRelative": (Object path) {
+    return p.isRelative(path as String);
+  },
+  "split": (Object path) {
+    return p.split(path as String);
   }
 };

@@ -58,6 +58,13 @@ Api.platform
 Api.versionNumber
 ```
 * AxisDirection
+* base64
+```
+base64.encode(List<int> input)
+base64.decode(String input)
+```
+```
+* BlendMode
 * BoxFit
 * BorderRadius
 ```
@@ -97,24 +104,25 @@ json.decode(String source)
 * ListTileControlAffinity
 * LocationPermission
 * MainAxisAlignment
-* Math
+* MainAxisSize
+* math
 ```
-Math.max(num a, num b)
-Math.min(num a, num b)
-Math.randInt(int max) // [0, max)
-Math.randDouble() // [0.0, 1.0)
-Math.randBool() // true or false
-Math.sin(num x)
-Math.asin(num x)
-Math.cos(num x)
-Math.acos(num x)
-Math.tan(num x)
-Math.atan(num x)
-Math.atan2(num x, num y)
-Math.sqrt(num x)
-Math.exp(num x)
-Math.log(num x)
-Math.pow(num x, num y)
+math.max(num a, num b)
+math.min(num a, num b)
+math.randInt(int max) // [0, max)
+math.randDouble() // [0.0, 1.0)
+math.randBool() // true or false
+math.sin(num x)
+math.asin(num x)
+math.cos(num x)
+math.acos(num x)
+math.tan(num x)
+math.atan(num x)
+math.atan2(num x, num y)
+math.sqrt(num x)
+math.exp(num x)
+math.log(num x)
+math.pow(num x, num y)
 ...
 ```
 * Matrix4
@@ -124,6 +132,40 @@ Navigator.pop(BuildContext context)
 Navigator.push(BuildContext context, Route<dynamic> route)
 Navigator.pushNamed(BuildContext context, String routeName, {Object? arguments})
 Navigator.pushReplacement(BuildContext context, Route<dynamic> route)
+```
+* path
+```
+path.basename(String path)
+path.basenameWithoutExtension(String path)
+path.dirname(String path)
+path.join(
+  String part1, [
+  String? part2,
+  String? part3,
+  String? part4,
+  String? part5,
+  String? part6,
+  String? part7,
+  String? part8,
+])
+path.absolute(String path)
+path.joinAll(Iterable<String> paths)
+path.normalize(String path)
+path.relative(String path, {String? from})
+path.split(String path)
+path.extension(String path)
+path.isAbsolute(String path)
+path.isRelative(String path)
+```
+* Platform
+```
+Platform.isAndroid
+Platform.isIOS
+Platform.isFuchsia
+Platform.isMacOS
+Platform.isWindows
+Platform.isLinux
+```
 ```
 * Radius
 ```
@@ -687,6 +729,10 @@ Image({
   bool isAntiAlias = false,
   FilterQuality filterQuality = FilterQuality.low,
 })
+或
+Image.network(...)
+Image.asset(...)
+Image.memory(...)
 ```
 ###  ImagePicker
 ```
@@ -741,13 +787,6 @@ InputDecoration({
 JavascriptChannel({
 	required String name, 
 	required void Function(JavascriptMessage) onMessageReceived
-})
-```
-### launchUrl
-```
-launchUrl(
-  Uri url, {
-  LaunchMode mode = LaunchMode.platformDefault,
 })
 ```
 ###  LinearGradient
@@ -1407,6 +1446,13 @@ getViewSize(BuildContext context)
 var size = getViewSize(context);
 print size.width;
 print size.height;
+```
+###  launchUrl 
+```
+launchUrl(
+  Uri url, {
+  LaunchMode mode = LaunchMode.platformDefault,
+})
 ```
 ### setState
 ```
