@@ -14,9 +14,9 @@ import 'container.dart';
 import 'popup.dart';
 import 'webview.dart';
 import 'imagepicker.dart';
+import 'http.dart';
 
-bool isApiRegistered = false;
-Interpreter interpreter = Interpreter();
+bool _isApiRegistered = false;
 
 class ErrorPage extends StatelessWidget {
   final String errMsg;
@@ -29,7 +29,7 @@ class ErrorPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         foregroundColor: Colors.white,
-        title: const Text("Error Happened"),
+        title: const Text("出错啦!"),
       ),
       body: Center(
         child: Column(
@@ -50,26 +50,73 @@ class ErrorPage extends StatelessWidget {
   }
 }
 
-class DaxPage extends StatefulWidget {
-  const DaxPage(this.codeSnap, {Key? key}) : super(key: key);
-  final String codeSnap;
-
+class DaxStatelessWidget extends StatelessWidget {
+  const DaxStatelessWidget(
+      {Key? key,
+      required this.klass,
+      required this.interpreter,
+      required this.arguments})
+      : super(key: key);
+  final LoxClass klass;
+  final Interpreter interpreter;
+  final List<Object?> arguments;
   @override
-  State<DaxPage> createState() => _DaxPageState();
+  Widget build(BuildContext context) {
+    LoxFunction? method = klass.findMethod('build');
+    if (method == null) {
+      return Container();
+    }
+    LoxInstance instance = LoxInstance(klass);
+    LoxFunction? initializer = klass.findMethod('init');
+    if (initializer != null) {
+      initializer.bind(instance).call(interpreter, arguments, {});
+    }
+    return method.bind(instance).call(interpreter, [], {}) as Widget;
+  }
 }
 
-class _DaxPageState extends State<DaxPage> {
+class DaxStatefulWidget extends StatefulWidget {
+  const DaxStatefulWidget(
+      {Key? key,
+      required this.klass,
+      required this.interpreter,
+      required this.arguments})
+      : super(key: key);
+  final LoxClass klass;
+  final Interpreter interpreter;
+  final List<Object?> arguments;
+  @override
+  State<DaxStatefulWidget> createState() => _DaxStatefulWidgetState();
+}
+
+class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
   Widget? renderedWidget;
-  bool hasInitialized = false;
+  LoxFunction? buildMethod;
+  Interpreter interpreter = Interpreter();
+  late LoxInstance instance;
+
+  @override
+  void didUpdateWidget(DaxStatefulWidget old) {
+    super.didUpdateWidget(old);
+    return;
+  }
+
+  LoxFunction? _find(String functionName) {
+    return widget.klass.findMethod(functionName)?.bind(instance);
+  }
+
   @override
   void initState() {
     super.initState();
-    if (!isApiRegistered) {
-      _registerGlobalFunctions();
-      isApiRegistered = true;
+    LoxFunction? method = widget.klass.findMethod('build');
+    if (method == null) {
+      return;
     }
-    // regist local function which related to context
-    interpreter.registerLocal("context", context);
+    instance = LoxInstance(widget.klass);
+    buildMethod = method.bind(instance);
+    interpreter.environment = buildMethod!.closure;
+    interpreter.locals = widget.interpreter.locals;
+    _find('init')?.call(interpreter, widget.arguments, {});
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
@@ -77,7 +124,51 @@ class _DaxPageState extends State<DaxPage> {
           (arguments.first as LoxFunction).call(interpreter, [], {});
           updateUI();
         }));
-    Scanner scanner = Scanner(widget.codeSnap);
+    _find('initState')?.call(interpreter, [], {});
+    renderedWidget = buildMethod!.call(interpreter, [], {}) as Widget;
+  }
+
+  void updateUI() {
+    if (!mounted) return;
+    var renderResult = buildMethod!.call(interpreter, [], {});
+    setState(() {
+      renderedWidget = renderResult as Widget;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return renderedWidget ?? Container();
+  }
+}
+
+class DaxPage extends StatefulWidget {
+  const DaxPage({Key? key, required this.args}) : super(key: key);
+  final Map<String, dynamic> args;
+  @override
+  State<DaxPage> createState() => _DaxPageState();
+}
+
+class _DaxPageState extends State<DaxPage> {
+  Widget? renderedWidget;
+  bool hasInitialized = false;
+  bool loaded = false;
+  Interpreter interpreter = Interpreter();
+
+  void run() async {
+    String code = '';
+    if (widget.args.containsKey('url')) {
+      code = await Api.get(widget.args['url']) as String;
+      setState(() {
+        loaded = true;
+      });
+    } else if (widget.args.containsKey('snap')) {
+      code = widget.args['snap'] as String;
+      loaded = true;
+    } else {
+      return;
+    }
+    Scanner scanner = Scanner(code);
     try {
       List<Token> tokens = scanner.scanTokens();
       Parser parser = Parser(tokens);
@@ -97,6 +188,45 @@ class _DaxPageState extends State<DaxPage> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (!_isApiRegistered) {
+      _registerGlobalFunctions();
+      _isApiRegistered = true;
+    }
+    interpreter.registerLocal("context", context);
+    interpreter.registerLocal('Navigator', {
+      "pop": (Object? context) {
+        Navigator.pop(context as BuildContext);
+      },
+      "push": (Object? context, Object? route) async {
+        var _ = await Navigator.push(context as BuildContext, route as Route);
+        interpreter.registerLocal("context", context);
+      },
+      "pushNamed": (Object? context, Object? routeName,
+          {Object? arguments}) async {
+        var _ = await Navigator.pushNamed(
+            context as BuildContext, routeName as String,
+            arguments: arguments);
+        interpreter.registerLocal("context", context);
+      },
+      "pushReplacement": (Object? context, Object? route) async {
+        var _ =
+            Navigator.pushReplacement(context as BuildContext, route as Route);
+        interpreter.registerLocal("context", context);
+      },
+    });
+    interpreter.registerLocal(
+        "setState",
+        GenericLoxCallable(() => 1, (Interpreter interpreter,
+            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+          (arguments.first as LoxFunction).call(interpreter, [], {});
+          updateUI();
+        }));
+    run();
+  }
+
   void updateUI() {
     if (!mounted) return;
     final renderResult = interpreter.invokeFunction('build');
@@ -107,12 +237,13 @@ class _DaxPageState extends State<DaxPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!loaded) return const Scaffold();
     if (!hasInitialized) {
       hasInitialized = true;
       if (renderedWidget != null) return renderedWidget!;
       try {
-        var r = interpreter.invokeFunction('build');
-        if (r != null) return r as Widget;
+        var widget = interpreter.invokeFunction('build');
+        if (widget != null) return widget as Widget;
         return const ErrorPage(
           errMsg: "No build function found",
         );
@@ -129,161 +260,157 @@ class _DaxPageState extends State<DaxPage> {
 }
 
 void _registerGlobalFunctions() {
-  interpreter.registerGlobal("Api", apiMap);
-  interpreter.registerGlobal("Axis", axisMap);
-  interpreter.registerGlobal("AxisDirection", axisDirectionMap);
-  interpreter.registerGlobal("base64", base64Map);
-  interpreter.registerGlobal("BlendMode", blendModeMap);
-  interpreter.registerGlobal("BoxFit", boxFitMap);
-  interpreter.registerGlobal("BoxShape", boxShapeMap);
-  interpreter.registerGlobal("BorderRadius", borderRadiusMap);
-  interpreter.registerGlobal("BorderStyle", borderStyleMap);
-  interpreter.registerGlobal("Clip", clipBehaviorMap);
-  interpreter.registerGlobal("CrossAxisAlignment", crossAxisAlignmentMap);
-  interpreter.registerGlobal("DismissDirection", dismissDirectionMap);
-  interpreter.registerGlobal("DragStartBehavior", dragStartBehaviorMap);
-  interpreter.registerGlobal("EdgeInsets", edgeInsetsMap);
-  interpreter.registerGlobal("FilterQuality", filterQualityMap);
-  interpreter.registerGlobal("FontStyle", fontStyleMap);
-  interpreter.registerGlobal("Icons", iconsMap);
-  interpreter.registerGlobal("ImageRepeat", imageRepeatMap);
-  interpreter.registerGlobal("ImageSource", imageSourceMap);
-  interpreter.registerGlobal("JavascriptMode", javascriptModeMap);
-  interpreter.registerGlobal("json", jsonMap);
-  interpreter.registerGlobal("LaunchMode", launchModeMap);
-  interpreter.registerGlobal(
-      "ListTileControlAffinity", listTileControlAffinityMap);
-  interpreter.registerGlobal("LocationPermission", locationPermissionMap);
-  interpreter.registerGlobal("MainAxisAlignment", mainAxisAlignmentMap);
-  interpreter.registerGlobal("MainAxisSize", mainAxisSizeMap);
-  interpreter.registerGlobal("math", mathMap);
-  interpreter.registerGlobal("Navigator", navigatorMap);
-  interpreter.registerGlobal("path", pathMap);
-  interpreter.registerGlobal("Radius", radiusMap);
-  interpreter.registerGlobal("SnackBarBehavior", snackBarBehaviorMap);
-  interpreter.registerGlobal("StackFit", stackFitMap);
-  interpreter.registerGlobal("TabBarIndicatorSize", tabBarIndicatorSizeMap);
-  interpreter.registerGlobal("TextAlign", textAlignMap);
-  interpreter.registerGlobal("TextBaseline", textBaselineMap);
-  interpreter.registerGlobal("TextCapitalization", textCapitalizationMap);
-  interpreter.registerGlobal("TextDecorationStyle", textDecorationStyleMap);
-  interpreter.registerGlobal("TextInputAction", textInputActionMap);
-  interpreter.registerGlobal("TextDirection", textDirectionMap);
-  interpreter.registerGlobal("TextOverflow", textOverflowMap);
-  interpreter.registerGlobal("TileMode", tileModeMap);
-  interpreter.registerGlobal("VerticalDirection", verticalDirectionMap);
-  interpreter.registerGlobal("WrapAlignment", wrapAlignmentMap);
-  interpreter.registerGlobal("WrapCrossAlignment", wrapCrossAlignmentMap);
+  top.define("StatefulWidget", LoxClass("StatefulWidget", null, {}));
+  top.define("StatelessWidget", LoxClass("StatelessWidget", null, {}));
+  top.define("DaxStatefulWidget", IDaxStatefulWidget());
+  top.define("DaxStatelessWidget", IDaxStatelessWidget());
+  top.define("Api", apiMap);
+  top.define("Axis", axisMap);
+  top.define("AxisDirection", axisDirectionMap);
+  top.define("base64", base64Map);
+  top.define("BlendMode", blendModeMap);
+  top.define("BoxFit", boxFitMap);
+  top.define("BoxShape", boxShapeMap);
+  top.define("BorderRadius", borderRadiusMap);
+  top.define("BorderStyle", borderStyleMap);
+  top.define("Clip", clipBehaviorMap);
+  top.define("CrossAxisAlignment", crossAxisAlignmentMap);
+  top.define("DismissDirection", dismissDirectionMap);
+  top.define("DragStartBehavior", dragStartBehaviorMap);
+  top.define("EdgeInsets", edgeInsetsMap);
+  top.define("FilterQuality", filterQualityMap);
+  top.define("FontStyle", fontStyleMap);
+  top.define("Icons", iconsMap);
+  top.define("ImageRepeat", imageRepeatMap);
+  top.define("ImageSource", imageSourceMap);
+  top.define("JavascriptMode", javascriptModeMap);
+  top.define("json", jsonMap);
+  top.define("LaunchMode", launchModeMap);
+  top.define("ListTileControlAffinity", listTileControlAffinityMap);
+  top.define("LocationPermission", locationPermissionMap);
+  top.define("MainAxisAlignment", mainAxisAlignmentMap);
+  top.define("MainAxisSize", mainAxisSizeMap);
+  top.define("math", mathMap);
+  // top.define("Navigator", navigatorMap);
+  top.define("path", pathMap);
+  top.define("Radius", radiusMap);
+  top.define("SnackBarBehavior", snackBarBehaviorMap);
+  top.define("StackFit", stackFitMap);
+  top.define("TabBarIndicatorSize", tabBarIndicatorSizeMap);
+  top.define("TextAlign", textAlignMap);
+  top.define("TextBaseline", textBaselineMap);
+  top.define("TextCapitalization", textCapitalizationMap);
+  top.define("TextDecorationStyle", textDecorationStyleMap);
+  top.define("TextInputAction", textInputActionMap);
+  top.define("TextDirection", textDirectionMap);
+  top.define("TextOverflow", textOverflowMap);
+  top.define("TileMode", tileModeMap);
+  top.define("VerticalDirection", verticalDirectionMap);
+  top.define("WrapAlignment", wrapAlignmentMap);
+  top.define("WrapCrossAlignment", wrapCrossAlignmentMap);
   ////  regist global functions and classes
-  interpreter.registerGlobal("AlertDialog", IAlertDialog());
-  interpreter.registerGlobal("Align", IAlign());
-  interpreter.registerGlobal("Alignment", IAlignment());
-  interpreter.registerGlobal("AlignmentDirectional", IAlignmentDirectional());
-  interpreter.registerGlobal("AppBar", IAppBar());
-  interpreter.registerGlobal("AssetImage", IAssetImage());
-  interpreter.registerGlobal(
-      "BeveledRectangleBorder", IBeveledRectangleBorder());
-  interpreter.registerGlobal("Border", IBorder());
-  interpreter.registerGlobal("BorderSide", IBorderSide());
-  interpreter.registerGlobal("BottomNavigationBar", IBottomNavigationBar());
-  interpreter.registerGlobal(
-      "BottomNavigationBarItem", IBottomNavigationBarItem());
-  interpreter.registerGlobal("BoxDecoration", IBoxDecoration());
-  interpreter.registerGlobal("BoxConstraints", IBoxConstraints());
-  interpreter.registerGlobal("BoxShadow", IBoxShadow());
-  interpreter.registerGlobal("Center", ICenter());
-  interpreter.registerGlobal("Checkbox", ICheckbox());
-  interpreter.registerGlobal("CircleBorder", ICircleBorder());
-  interpreter.registerGlobal(
-      "CircularProgressIndicator", ICircularProgressIndicator());
-  interpreter.registerGlobal("ClipOval", IClipOval());
-  interpreter.registerGlobal("ClipRRect", IClipRRect());
-  interpreter.registerGlobal("ClipRect", IClipRect());
-  interpreter.registerGlobal("Color", IColor());
-  interpreter.registerGlobal("Colors", IColors());
-  interpreter.registerGlobal("Column", IColumn());
-  interpreter.registerGlobal("ConstrainedBox", IConstrainedBox());
-  interpreter.registerGlobal("Container", IContainer());
-  interpreter.registerGlobal(
-      "ContinuousRectangleBorder", IContinuousRectangleBorder());
-  interpreter.registerGlobal(
-      "CupertinoActivityIndicator", ICupertinoActivityIndicator());
-  interpreter.registerGlobal("DateFormat", IDateFormat());
-  interpreter.registerGlobal("DatePicker", IDatePicker());
-  interpreter.registerGlobal("DateTime", IDateTime());
-  interpreter.registerGlobal("DecorationImage", IDecorationImage());
-  interpreter.registerGlobal("DefaultTabController", IDefaultTabController());
-  interpreter.registerGlobal("DefaultTextStyle", IDefaultTextStyle());
-  interpreter.registerGlobal("Divider", IDivider());
-  interpreter.registerGlobal("DropdownButton", IDropdownButton());
-  interpreter.registerGlobal("DropdownMenuItem", IDropdownMenuItem());
-  interpreter.registerGlobal("ElevatedButton", IElevatedButton());
-  interpreter.registerGlobal("Expanded", IExpanded());
-  interpreter.registerGlobal("ExpansionTile", IExpansionTile());
-  interpreter.registerGlobal("FloatingActionButton", IFloatingActionButton());
-  interpreter.registerGlobal(
-      "FloatingActionButtonLocation", IFloatingActionButtonLocation());
-  interpreter.registerGlobal("FontWeight", IFontWeight());
-  interpreter.registerGlobal("getViewSize", IViewSize());
-  interpreter.registerGlobal("Geolocator", IGeolocator());
-  interpreter.registerGlobal("GestureDetector", IGestureDetector());
-  interpreter.registerGlobal("Icon", IIcon());
-  interpreter.registerGlobal("IconButton", IIconButton());
-  interpreter.registerGlobal("Image", IImage());
-  interpreter.registerGlobal("ImagePicker", IImagePicker());
-  interpreter.registerGlobal("InputDecoration", IInputDecoration());
-  interpreter.registerGlobal("JavascriptChannel", IJavascriptChannel());
-  interpreter.registerGlobal("launchUrl", ILaunchUrl());
-  interpreter.registerGlobal("LinearGradient", ILinearGradient());
-  interpreter.registerGlobal("ListTile", IListTile());
-  interpreter.registerGlobal("ListView", IListView());
-  interpreter.registerGlobal("Matrix4", IMatrix4());
-  interpreter.registerGlobal("NetworkImage", INetworkImage());
-  interpreter.registerGlobal("Offset", IOffset());
-  interpreter.registerGlobal("OutlinedButton", IOutlinedButton());
-  interpreter.registerGlobal("OutlineInputBorder", IOutlineInputBorder());
-  interpreter.registerGlobal("Padding", IPadding());
-  interpreter.registerGlobal("PopupMenuButton", IPopupMenuButton());
-  interpreter.registerGlobal("PopupMenuFilter", IPopupMenuFilter());
-  interpreter.registerGlobal("PopupMenuDivider", IPopupMenuDivider());
-  interpreter.registerGlobal("PopupMenuItem", IPopupMenuItem());
-  interpreter.registerGlobal("PopupMenuWrap", IPopupMenuWrap());
-  interpreter.registerGlobal("Positioned", IPositioned());
-  interpreter.registerGlobal("Radio", IRadio());
-  interpreter.registerGlobal("RegExp", IRegExp());
-  interpreter.registerGlobal("Row", IRow());
-  interpreter.registerGlobal(
-      "RoundedRectangleBorder", IRoundedRectangleBorder());
-  interpreter.registerGlobal("SafeArea", ISafeArea());
-  interpreter.registerGlobal("Scaffold", IScaffold());
-  interpreter.registerGlobal("Shadow", IShadow());
-  interpreter.registerGlobal("SimpleDialog", ISimpleDialog());
-  interpreter.registerGlobal("SingleChildScrollView", ISingleChildScrollView());
-  interpreter.registerGlobal("Size", ISize());
-  interpreter.registerGlobal("SizedBox", ISizedBox());
-  interpreter.registerGlobal("Slider", ISlider());
-  interpreter.registerGlobal("SnackBar", ISnackBar());
-  interpreter.registerGlobal("SnackBarAction", ISnackBarAction());
-  interpreter.registerGlobal("Stack", IStack());
-  interpreter.registerGlobal("StadiumBorder", IStadiumBorder());
-  interpreter.registerGlobal("Switch", ISwitch());
-  interpreter.registerGlobal("showDialog", IShowDialog());
-  interpreter.registerGlobal("showModalBottomSheet", IShowModalBottomSheet());
-  interpreter.registerGlobal("showSnackBar", ISnackBarShow());
-  interpreter.registerGlobal("Tab", ITab());
-  interpreter.registerGlobal("TabBar", ITabBar());
-  interpreter.registerGlobal("TabBarView", ITabBarView());
-  interpreter.registerGlobal("Text", IText());
-  interpreter.registerGlobal("TextAlignVertical", ITextAlignVertical());
-  interpreter.registerGlobal("TextButton", ITextButton());
-  interpreter.registerGlobal("TextEditingController", ITextEditingController());
-  interpreter.registerGlobal("TextField", ITextField());
-  interpreter.registerGlobal("TextInputType", ITextInputType());
-  interpreter.registerGlobal("TextStyle", ITextStyle());
-  interpreter.registerGlobal("Transform", ITransform());
-  interpreter.registerGlobal("Uri", IUri());
-  interpreter.registerGlobal("UnderlineInputBorder", IUnderlineInputBorder());
-  interpreter.registerGlobal("WebView", IWebView());
-  interpreter.registerGlobal("WebViewController", IWebViewController());
-  interpreter.registerGlobal("Wrap", IWrap());
+  top.define("AlertDialog", IAlertDialog());
+  top.define("Align", IAlign());
+  top.define("Alignment", IAlignment());
+  top.define("AlignmentDirectional", IAlignmentDirectional());
+  top.define("AppBar", IAppBar());
+  top.define("AssetImage", IAssetImage());
+  top.define("BeveledRectangleBorder", IBeveledRectangleBorder());
+  top.define("Border", IBorder());
+  top.define("BorderSide", IBorderSide());
+  top.define("BottomNavigationBar", IBottomNavigationBar());
+  top.define("BottomNavigationBarItem", IBottomNavigationBarItem());
+  top.define("BoxDecoration", IBoxDecoration());
+  top.define("BoxConstraints", IBoxConstraints());
+  top.define("BoxShadow", IBoxShadow());
+  top.define("Center", ICenter());
+  top.define("Checkbox", ICheckbox());
+  top.define("CircleBorder", ICircleBorder());
+  top.define("CircularProgressIndicator", ICircularProgressIndicator());
+  top.define("ClipOval", IClipOval());
+  top.define("ClipRRect", IClipRRect());
+  top.define("ClipRect", IClipRect());
+  top.define("Color", IColor());
+  top.define("Colors", IColors());
+  top.define("Column", IColumn());
+  top.define("ConstrainedBox", IConstrainedBox());
+  top.define("Container", IContainer());
+  top.define("ContinuousRectangleBorder", IContinuousRectangleBorder());
+  top.define("CupertinoActivityIndicator", ICupertinoActivityIndicator());
+  top.define("DateFormat", IDateFormat());
+  top.define("DatePicker", IDatePicker());
+  top.define("DateTime", IDateTime());
+  top.define("DecorationImage", IDecorationImage());
+  top.define("DefaultTabController", IDefaultTabController());
+  top.define("DefaultTextStyle", IDefaultTextStyle());
+  top.define("Divider", IDivider());
+  top.define("DropdownButton", IDropdownButton());
+  top.define("DropdownMenuItem", IDropdownMenuItem());
+  top.define("ElevatedButton", IElevatedButton());
+  top.define("Expanded", IExpanded());
+  top.define("ExpansionTile", IExpansionTile());
+  top.define("FloatingActionButton", IFloatingActionButton());
+  top.define("FloatingActionButtonLocation", IFloatingActionButtonLocation());
+  top.define("FontWeight", IFontWeight());
+  top.define("getViewSize", IViewSize());
+  top.define("Geolocator", IGeolocator());
+  top.define("GestureDetector", IGestureDetector());
+  top.define("Icon", IIcon());
+  top.define("IconButton", IIconButton());
+  top.define("Image", IImage());
+  top.define("ImagePicker", IImagePicker());
+  top.define("InputDecoration", IInputDecoration());
+  top.define("JavascriptChannel", IJavascriptChannel());
+  top.define("launchUrl", ILaunchUrl());
+  top.define("LinearGradient", ILinearGradient());
+  top.define("ListTile", IListTile());
+  top.define("ListView", IListView());
+  top.define("Matrix4", IMatrix4());
+  top.define("NetworkImage", INetworkImage());
+  top.define("Offset", IOffset());
+  top.define("OutlinedButton", IOutlinedButton());
+  top.define("OutlineInputBorder", IOutlineInputBorder());
+  top.define("Padding", IPadding());
+  top.define("PopupMenuButton", IPopupMenuButton());
+  top.define("PopupMenuFilter", IPopupMenuFilter());
+  top.define("PopupMenuDivider", IPopupMenuDivider());
+  top.define("PopupMenuItem", IPopupMenuItem());
+  top.define("PopupMenuWrap", IPopupMenuWrap());
+  top.define("Positioned", IPositioned());
+  top.define("Radio", IRadio());
+  top.define("RegExp", IRegExp());
+  top.define("Row", IRow());
+  top.define("RoundedRectangleBorder", IRoundedRectangleBorder());
+  top.define("SafeArea", ISafeArea());
+  top.define("Scaffold", IScaffold());
+  top.define("Shadow", IShadow());
+  top.define("SimpleDialog", ISimpleDialog());
+  top.define("SingleChildScrollView", ISingleChildScrollView());
+  top.define("Size", ISize());
+  top.define("SizedBox", ISizedBox());
+  top.define("Slider", ISlider());
+  top.define("SnackBar", ISnackBar());
+  top.define("SnackBarAction", ISnackBarAction());
+  top.define("Stack", IStack());
+  top.define("StadiumBorder", IStadiumBorder());
+  top.define("Switch", ISwitch());
+  top.define("showDialog", IShowDialog());
+  top.define("showModalBottomSheet", IShowModalBottomSheet());
+  top.define("showSnackBar", ISnackBarShow());
+  top.define("Tab", ITab());
+  top.define("TabBar", ITabBar());
+  top.define("TabBarView", ITabBarView());
+  top.define("Text", IText());
+  top.define("TextAlignVertical", ITextAlignVertical());
+  top.define("TextButton", ITextButton());
+  top.define("TextEditingController", ITextEditingController());
+  top.define("TextField", ITextField());
+  top.define("TextInputType", ITextInputType());
+  top.define("TextStyle", ITextStyle());
+  top.define("Transform", ITransform());
+  top.define("Uri", IUri());
+  top.define("UnderlineInputBorder", IUnderlineInputBorder());
+  top.define("WebView", IWebView());
+  top.define("WebViewController", IWebViewController());
+  top.define("Wrap", IWrap());
 }

@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'utils.dart';
 import 'datepicker.dart';
+import 'main.dart';
 
 class IText implements DaxCallable {
   @override
@@ -1714,5 +1713,36 @@ class ISafeArea implements DaxCallable {
       minimum: minimum,
       maintainBottomViewPadding: maintainBottomViewPadding,
     );
+  }
+}
+
+class IDaxStatefulWidget implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var klass = namedArguments[const Symbol('klass')];
+    if (klass == null) {
+      throw "klass required in DaxStatefulWidget";
+    }
+    return DaxStatefulWidget(
+      klass: klass as LoxClass,
+      interpreter: interpreter,
+      arguments: arguments,
+    );
+  }
+}
+
+class IDaxStatelessWidget implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var klass = namedArguments[const Symbol('klass')];
+    if (klass == null) {
+      throw "klass required in DaxStatefulWidget";
+    }
+    return DaxStatelessWidget(
+        klass: klass as LoxClass,
+        interpreter: interpreter,
+        arguments: arguments);
   }
 }

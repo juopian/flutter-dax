@@ -1,3 +1,4 @@
+import 'package:dax_flutter/dax_flutter.dart';
 import "package:flutter/material.dart";
 import 'package:path/path.dart' as p;
 import 'dart:math';
@@ -104,21 +105,25 @@ final borderRadiusMap = {
   }
 };
 
-final navigatorMap = {
-  "pop": (Object? context) {
-    Navigator.pop(context as BuildContext);
-  },
-  "push": (Object? context, Object? route) {
-    Navigator.push(context as BuildContext, route as Route);
-  },
-  "pushNamed": (Object? context, Object? routeName, {Object? arguments}) {
-    Navigator.pushNamed(context as BuildContext, routeName as String,
-        arguments: arguments);
-  },
-  "pushReplacement": (Object? context, Object? route) {
-    Navigator.pushReplacement(context as BuildContext, route as Route);
-  },
-};
+// final navigatorMap = {
+//   "pop": (Object? context) {
+//     Navigator.pop(context as BuildContext);
+//   },
+//   "push": (Object? context, Object? route) async {
+//     var _ = await Navigator.push(context as BuildContext, route as Route);
+//     interpreter.registerLocal("context", context);
+//   },
+//   "pushNamed": (Object? context, Object? routeName, {Object? arguments}) async {
+//     var _ = await Navigator.pushNamed(
+//         context as BuildContext, routeName as String,
+//         arguments: arguments);
+//     interpreter.registerLocal("context", context);
+//   },
+//   "pushReplacement": (Object? context, Object? route) async {
+//     var _ = Navigator.pushReplacement(context as BuildContext, route as Route);
+//     interpreter.registerLocal("context", context);
+//   },
+// };
 
 final apiMap = {
   "get": (Object? url, {Object? debug}) {
