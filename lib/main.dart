@@ -14,6 +14,7 @@ import 'container.dart';
 import 'popup.dart';
 import 'webview.dart';
 import 'imagepicker.dart';
+import 'shared_preference.dart';
 import 'http.dart';
 
 bool _isApiRegistered = false;
@@ -67,7 +68,7 @@ class DaxStatelessWidget extends StatelessWidget {
       return Container();
     }
     LoxInstance instance = LoxInstance(klass);
-    LoxFunction? initializer = klass.findMethod('init');
+    LoxFunction? initializer = klass.findMethod(klass.name); // init
     if (initializer != null) {
       initializer.bind(instance).call(interpreter, arguments, {});
     }
@@ -116,7 +117,27 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
     buildMethod = method.bind(instance);
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
-    _find('init')?.call(interpreter, widget.arguments, {});
+    _find(widget.klass.name)?.call(interpreter, widget.arguments, {});
+    interpreter.registerLocal("context", context);
+    interpreter.registerLocal('Navigator', {
+      "pop": (Object? context) {
+        Navigator.pop(context as BuildContext);
+      },
+      "push": (Object? context, Object? route) async {
+        await Navigator.push(context as BuildContext, route as Route);
+        interpreter.registerLocal("context", context);
+      },
+      "pushNamed": (Object? context, Object? routeName,
+          {Object? arguments}) async {
+        await Navigator.pushNamed(context as BuildContext, routeName as String,
+            arguments: arguments);
+        interpreter.registerLocal("context", context);
+      },
+      "pushReplacement": (Object? context, Object? route) async {
+        Navigator.pushReplacement(context as BuildContext, route as Route);
+        interpreter.registerLocal("context", context);
+      },
+    });
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
@@ -201,19 +222,18 @@ class _DaxPageState extends State<DaxPage> {
         Navigator.pop(context as BuildContext);
       },
       "push": (Object? context, Object? route) async {
-        var _ = await Navigator.push(context as BuildContext, route as Route);
+        await Navigator.push(context as BuildContext, route as Route);
         interpreter.registerLocal("context", context);
       },
       "pushNamed": (Object? context, Object? routeName,
           {Object? arguments}) async {
-        var _ = await Navigator.pushNamed(
+        await Navigator.pushNamed(
             context as BuildContext, routeName as String,
             arguments: arguments);
         interpreter.registerLocal("context", context);
       },
       "pushReplacement": (Object? context, Object? route) async {
-        var _ =
-            Navigator.pushReplacement(context as BuildContext, route as Route);
+        Navigator.pushReplacement(context as BuildContext, route as Route);
         interpreter.registerLocal("context", context);
       },
     });
@@ -292,6 +312,7 @@ void _registerGlobalFunctions() {
   top.define("MainAxisSize", mainAxisSizeMap);
   top.define("math", mathMap);
   // top.define("Navigator", navigatorMap);
+  top.define("OpenFile", openFileMap);
   top.define("path", pathMap);
   top.define("Radius", radiusMap);
   top.define("SnackBarBehavior", snackBarBehaviorMap);
@@ -384,6 +405,7 @@ void _registerGlobalFunctions() {
   top.define("SafeArea", ISafeArea());
   top.define("Scaffold", IScaffold());
   top.define("Shadow", IShadow());
+  top.define("SharedPreferences", ISharedPreferences());
   top.define("SimpleDialog", ISimpleDialog());
   top.define("SingleChildScrollView", ISingleChildScrollView());
   top.define("Size", ISize());

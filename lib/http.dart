@@ -1,15 +1,16 @@
+import "dart:io";
 import "dart:convert";
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import "dart:io";
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 final logger = Logger();
 
 class Api {
   static String jwt = '';
-  static String platform = '';
+  static String platform = kIsWeb ? 'web' : Platform.operatingSystem;
   static String version = '';
   static String buildNumber = '';
   static late SharedPreferences prefs;
@@ -26,11 +27,10 @@ class Api {
       {Map<String, String>? customHeaders}) async {
     String? jwt = await getJwt();
     if (version.isEmpty) {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      var packageInfo = await PackageInfo.fromPlatform();
       version = packageInfo.version;
       buildNumber = packageInfo.buildNumber;
     }
-    platform = Platform.operatingSystem;
     Map<String, String> headers = {
       'Authorization': 'Bearer $jwt',
       'version-number': version,

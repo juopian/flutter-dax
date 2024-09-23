@@ -1,6 +1,6 @@
-import 'package:dax_flutter/dax_flutter.dart';
 import "package:flutter/material.dart";
 import 'package:path/path.dart' as p;
+import 'package:open_file/open_file.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'utils.dart';
@@ -125,7 +125,17 @@ final borderRadiusMap = {
 //   },
 // };
 
+final openFileMap = {
+  "open": (Object? file) {
+    return OpenFile.open(file as String);
+  }
+};
+
 final apiMap = {
+  "jwt": Api.jwt,
+  "version": Api.version,
+  "platform": Api.platform,
+  "buildNumber": Api.buildNumber,
   "get": (Object? url, {Object? debug}) {
     bool _debug = false;
     if (debug != null) {
@@ -140,10 +150,6 @@ final apiMap = {
     }
     return Api.post(url as String, body, debug: _debug);
   },
-  "jwt": () => Api.jwt,
-  "version": () => Api.version,
-  "platform": () => Api.platform,
-  "buildNumber": () => Api.buildNumber
 };
 
 final mathMap = {

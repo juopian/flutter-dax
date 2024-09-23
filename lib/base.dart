@@ -29,7 +29,49 @@ class IOffset implements DaxCallable, LoxGetCallable {
   }
 }
 
-class IUri implements DaxCallable {
+class UriIns implements LoxGetCallable {
+  final Uri uri;
+  UriIns(this.uri);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'uri':
+        return uri;
+      case 'scheme':
+        return uri.scheme;
+      case 'host':
+        return uri.host;
+      case 'port':
+        return uri.port;
+      case 'path':
+        return uri.path;
+      case 'query':
+        return uri.query;
+      case 'fragment':
+        return uri.fragment;
+    }
+  }
+}
+
+class UriParseBuilder implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    String uriString = arguments.first as String;
+    return UriIns(Uri.parse(uriString));
+  }
+}
+
+class IUri implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'parse':
+        return UriParseBuilder();
+    }
+  }
+
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -68,14 +110,14 @@ class IUri implements DaxCallable {
     if (queryParametersParsed != null) {
       queryParameters = queryParametersParsed as Map<String, dynamic>;
     }
-    return Uri(
+    return UriIns(Uri(
         scheme: scheme,
         host: host,
         port: port,
         path: path,
         query: query,
         queryParameters: queryParameters,
-        fragment: fragment);
+        fragment: fragment));
   }
 }
 
@@ -992,36 +1034,23 @@ class IRegExp implements DaxCallable {
     if (dotAllParsed != null) {
       dotAll = dotAllParsed as bool;
     }
-    return RegExpIns(pattern,
+    return RegExpIns(RegExp(pattern,
         multiLine: multiLine,
         unicode: unicode,
         caseSensitive: caseSensitive,
-        dotAll: dotAll);
+        dotAll: dotAll));
   }
 }
 
 class RegExpIns implements LoxGetCallable {
   final RegExp _regExp;
-  final String source;
-  final bool multiLine;
-  final bool unicode;
-  final bool caseSensitive;
-  final bool dotAll;
-
-  RegExpIns(this.source,
-      {this.multiLine = false,
-      this.unicode = false,
-      this.caseSensitive = true,
-      this.dotAll = false})
-      : _regExp = RegExp(source,
-            multiLine: multiLine,
-            unicode: unicode,
-            caseSensitive: caseSensitive,
-            dotAll: dotAll);
+  RegExpIns(this._regExp);
 
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
+      case 'regexp':
+        return _regExp;
       case 'allMatches':
         return _regExp.allMatches;
       case 'firstMatch':

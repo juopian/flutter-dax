@@ -1,5 +1,6 @@
 import 'package:dax/dax.dart';
 import "package:flutter/material.dart";
+import "package:flutter/foundation.dart";
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
@@ -225,6 +226,7 @@ class IWebView implements DaxCallable {
       javascriptChannels =
           (javascriptChannelsParsed as List).cast<JavascriptChannel>().toSet();
     }
+    if (kIsWeb) return const Text("Webview only support on iOS and android");
     return WebView(
       initialUrl: initialUrl,
       javascriptMode: javascriptMode,
