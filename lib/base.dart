@@ -29,15 +29,27 @@ class IOffset implements DaxCallable, LoxGetCallable {
   }
 }
 
-class UriIns implements LoxGetCallable {
+class UriParseBuilder implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    String uriString = arguments.first as String;
+    return UriIns(Uri.parse(uriString));
+  }
+}
+
+class UriIns implements Uri, LoxGetCallable {
   final Uri uri;
   UriIns(this.uri);
 
   @override
+  String toString() {
+    return uri.toString();
+  }
+
+  @override
   Object? get(Token name) {
     switch (name.lexeme) {
-      case 'uri':
-        return uri;
       case 'scheme':
         return uri.scheme;
       case 'host':
@@ -52,16 +64,124 @@ class UriIns implements LoxGetCallable {
         return uri.fragment;
     }
   }
+
+  @override
+  String get authority => uri.authority;
+
+  @override
+  UriData? get data => uri.data;
+
+  @override
+  String get fragment => uri.fragment;
+
+  @override
+  bool get hasAbsolutePath => uri.hasAbsolutePath;
+
+  @override
+  bool get hasAuthority => uri.hasAuthority;
+
+  @override
+  bool get hasEmptyPath => uri.hasEmptyPath;
+
+  @override
+  bool get hasFragment => uri.hasFragment;
+
+  @override
+  bool get hasPort => uri.hasPort;
+
+  @override
+  bool get hasQuery => uri.hasQuery;
+
+  @override
+  bool get hasScheme => uri.hasScheme;
+
+  @override
+  String get host => uri.host;
+
+  @override
+  bool get isAbsolute => uri.isAbsolute;
+
+  @override
+  bool isScheme(String scheme) {
+    return uri.isScheme(scheme);
+  }
+
+  @override
+  Uri normalizePath() {
+    return uri.normalizePath();
+  }
+
+  @override
+  String get origin => uri.origin;
+
+  @override
+  String get path => uri.path;
+
+  @override
+  List<String> get pathSegments => uri.pathSegments;
+
+  @override
+  int get port => uri.port;
+
+  @override
+  String get query => uri.query;
+
+  @override
+  Map<String, String> get queryParameters => uri.queryParameters;
+
+  @override
+  Map<String, List<String>> get queryParametersAll => uri.queryParametersAll;
+
+  @override
+  Uri removeFragment() {
+    return uri.removeFragment();
+  }
+
+  @override
+  Uri replace(
+      {String? scheme,
+      String? userInfo,
+      String? host,
+      int? port,
+      String? path,
+      Iterable<String>? pathSegments,
+      String? query,
+      Map<String, dynamic>? queryParameters,
+      String? fragment}) {
+    return uri.replace(
+        scheme: scheme,
+        userInfo: userInfo,
+        host: host,
+        port: port,
+        path: path,
+        pathSegments: pathSegments,
+        query: query,
+        queryParameters: queryParameters,
+        fragment: fragment);
+  }
+
+  @override
+  Uri resolve(String reference) {
+    return uri.resolve(reference);
+  }
+
+  @override
+  Uri resolveUri(Uri reference) {
+    return uri.resolveUri(reference);
+  }
+
+  @override
+  String get scheme => uri.scheme;
+
+  @override
+  String toFilePath({bool? windows}) {
+    return uri.toFilePath(windows: windows);
+  }
+
+  @override
+  String get userInfo => uri.userInfo;
 }
 
-class UriParseBuilder implements DaxCallable {
-  @override
-  Object call(Interpreter interpreter, List<Object?> arguments,
-      Map<Symbol, Object?> namedArguments) {
-    String uriString = arguments.first as String;
-    return UriIns(Uri.parse(uriString));
-  }
-}
 
 class IUri implements DaxCallable, LoxGetCallable {
   @override
@@ -1042,7 +1162,7 @@ class IRegExp implements DaxCallable {
   }
 }
 
-class RegExpIns implements LoxGetCallable {
+class RegExpIns implements RegExp, LoxGetCallable {
   final RegExp _regExp;
   RegExpIns(this._regExp);
 
@@ -1061,5 +1181,45 @@ class RegExpIns implements LoxGetCallable {
         return _regExp.stringMatch;
     }
     throw "Unknown property: ${name.lexeme}";
+  }
+
+  @override
+  Iterable<RegExpMatch> allMatches(String input, [int start = 0]) {
+    return _regExp.allMatches(input, start);
+  }
+
+  @override
+  RegExpMatch? firstMatch(String input) {
+    return _regExp.firstMatch(input);
+  }
+
+  @override
+  bool hasMatch(String input) {
+    return _regExp.hasMatch(input);
+  }
+
+  @override
+  bool get isCaseSensitive => _regExp.isCaseSensitive;
+
+  @override
+  bool get isDotAll => _regExp.isDotAll;
+
+  @override
+  bool get isMultiLine => _regExp.isMultiLine;
+
+  @override
+  bool get isUnicode => _regExp.isUnicode;
+
+  @override
+  Match? matchAsPrefix(String string, [int start = 0]) {
+    return _regExp.matchAsPrefix(string, start);
+  }
+
+  @override
+  String get pattern => _regExp.pattern;
+
+  @override
+  String? stringMatch(String input) {
+    return _regExp.stringMatch(input);
   }
 }

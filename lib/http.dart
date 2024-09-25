@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 
 final logger = Logger();
 
+
 class Api {
   static String jwt = '';
   static String platform = kIsWeb ? 'web' : Platform.operatingSystem;

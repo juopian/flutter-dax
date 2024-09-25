@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:path/path.dart' as p;
 import 'package:open_file/open_file.dart';
+import 'package:http/http.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'utils.dart';
@@ -128,6 +129,28 @@ final borderRadiusMap = {
 final openFileMap = {
   "open": (Object? file) {
     return OpenFile.open(file as String);
+  }
+};
+
+var httpMap = {
+  'get': (Object url, {Object? headers}) {
+    Map<String, String> _headers = {};
+    if (headers != null) {
+      _headers = headers as Map<String, String>;
+    }
+    return get(url as Uri, headers: _headers).then((r) {
+      return utf8.decode(r.bodyBytes);
+    });
+  },
+  'post': (Object url, {Object? headers, Object? body}) {
+    Map<String, String> _headers = {};
+    if (headers != null) {
+      _headers = headers as Map<String, String>;
+    }
+    return post(url as Uri, headers: _headers, body: body)
+        .then((r) {
+      return utf8.decode(r.bodyBytes);
+    });
   }
 };
 

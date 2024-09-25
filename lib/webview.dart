@@ -72,16 +72,9 @@ class ILaunchUrl implements DaxCallable {
   }
 }
 
-class IWebViewController implements DaxCallable {
-  @override
-  Object? call(Interpreter interpreter, List<Object?> arguments,
-      Map<Symbol, Object?> namedArguments) {
-    return WebViewControllerIns();
-  }
-}
-
-class WebViewControllerIns implements LoxGetCallable, LoxSetCallable {
-  late WebViewController _controller;
+class WebViewControllerIns implements LoxGetCallable {
+  final WebViewController _controller;
+  WebViewControllerIns(this._controller);
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
@@ -109,14 +102,6 @@ class WebViewControllerIns implements LoxGetCallable, LoxSetCallable {
         return _controller.runJavascriptReturningResult;
     }
     throw "Unknown property: ${name.lexeme}";
-  }
-
-  @override
-  void set(Token name, Object? value) {
-    switch (name.lexeme) {
-      case 'controller':
-        _controller = value as WebViewController;
-    }
   }
 }
 
@@ -207,8 +192,9 @@ class IWebView implements DaxCallable {
     var onWebViewCreatedParsed =
         namedArguments[const Symbol('onWebViewCreated')];
     if (onWebViewCreatedParsed != null) {
-      onWebViewCreated = (s) {
-        (onWebViewCreatedParsed as LoxFunction).call(interpreter, [s], {});
+      onWebViewCreated = (WebViewController s) {
+        (onWebViewCreatedParsed as LoxFunction)
+            .call(interpreter, [WebViewControllerIns(s)], {});
       };
     }
     Function(WebResourceError)? onWebResourceError;

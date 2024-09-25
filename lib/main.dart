@@ -300,6 +300,7 @@ void _registerGlobalFunctions() {
   top.define("EdgeInsets", edgeInsetsMap);
   top.define("FilterQuality", filterQualityMap);
   top.define("FontStyle", fontStyleMap);
+  top.define("http", httpMap);
   top.define("Icons", iconsMap);
   top.define("ImageRepeat", imageRepeatMap);
   top.define("ImageSource", imageSourceMap);
@@ -433,6 +434,5 @@ void _registerGlobalFunctions() {
   top.define("Uri", IUri());
   top.define("UnderlineInputBorder", IUnderlineInputBorder());
   top.define("WebView", IWebView());
-  top.define("WebViewController", IWebViewController());
   top.define("Wrap", IWrap());
 }
