@@ -123,6 +123,9 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
       "pop": (Object? context) {
         Navigator.pop(context as BuildContext);
       },
+      "canPop": (Object? context) {
+        return Navigator.canPop(context as BuildContext);
+      },
       "push": (Object? context, Object? route) async {
         await Navigator.push(context as BuildContext, route as Route);
         interpreter.registerLocal("context", context);
@@ -218,6 +221,9 @@ class _DaxPageState extends State<DaxPage> {
     }
     interpreter.registerLocal("context", context);
     interpreter.registerLocal('Navigator', {
+      "canPop": (Object? context) {
+        return Navigator.canPop(context as BuildContext);
+      },
       "pop": (Object? context) {
         Navigator.pop(context as BuildContext);
       },
@@ -227,8 +233,7 @@ class _DaxPageState extends State<DaxPage> {
       },
       "pushNamed": (Object? context, Object? routeName,
           {Object? arguments}) async {
-        await Navigator.pushNamed(
-            context as BuildContext, routeName as String,
+        await Navigator.pushNamed(context as BuildContext, routeName as String,
             arguments: arguments);
         interpreter.registerLocal("context", context);
       },
@@ -294,8 +299,10 @@ void _registerGlobalFunctions() {
   top.define("BorderRadius", borderRadiusMap);
   top.define("BorderStyle", borderStyleMap);
   top.define("Clip", clipBehaviorMap);
+  top.define("Clipboard", clipboardMap);
   top.define("CrossAxisAlignment", crossAxisAlignmentMap);
   top.define("DismissDirection", dismissDirectionMap);
+  top.define("double", doubleMap);
   top.define("DragStartBehavior", dragStartBehaviorMap);
   top.define("EdgeInsets", edgeInsetsMap);
   top.define("FilterQuality", filterQualityMap);
@@ -304,6 +311,7 @@ void _registerGlobalFunctions() {
   top.define("Icons", iconsMap);
   top.define("ImageRepeat", imageRepeatMap);
   top.define("ImageSource", imageSourceMap);
+  top.define("int", intMap);
   top.define("JavascriptMode", javascriptModeMap);
   top.define("json", jsonMap);
   top.define("LaunchMode", launchModeMap);
@@ -337,6 +345,7 @@ void _registerGlobalFunctions() {
   top.define("AlignmentDirectional", IAlignmentDirectional());
   top.define("AppBar", IAppBar());
   top.define("AssetImage", IAssetImage());
+  top.define("BackButton", IBackButton());
   top.define("BeveledRectangleBorder", IBeveledRectangleBorder());
   top.define("Border", IBorder());
   top.define("BorderSide", IBorderSide());
@@ -349,6 +358,7 @@ void _registerGlobalFunctions() {
   top.define("Checkbox", ICheckbox());
   top.define("CircleBorder", ICircleBorder());
   top.define("CircularProgressIndicator", ICircularProgressIndicator());
+  top.define("ClipboardData", IClipboardData());
   top.define("ClipOval", IClipOval());
   top.define("ClipRRect", IClipRRect());
   top.define("ClipRect", IClipRect());
@@ -371,6 +381,7 @@ void _registerGlobalFunctions() {
   top.define("ElevatedButton", IElevatedButton());
   top.define("Expanded", IExpanded());
   top.define("ExpansionTile", IExpansionTile());
+  top.define("FittedBox", IFittedBox());
   top.define("FloatingActionButton", IFloatingActionButton());
   top.define("FloatingActionButtonLocation", IFloatingActionButtonLocation());
   top.define("FontWeight", IFontWeight());

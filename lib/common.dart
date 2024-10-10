@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:open_file/open_file.dart';
 import 'package:http/http.dart';
@@ -26,6 +27,14 @@ final edgeInsetsMap = {
     return EdgeInsets.symmetric(
         horizontal: parseDouble(horizontal) ?? 0,
         vertical: parseDouble(vertical) ?? 0);
+  }
+};
+
+final doubleMap = {"infinity": double.infinity, "parse": double.parse};
+
+final intMap = {
+  "parse": (Object value, {Object? radix}) {
+    return int.parse(value.toString(), radix: radix as int? ?? 10);
   }
 };
 
@@ -147,10 +156,18 @@ var httpMap = {
     if (headers != null) {
       _headers = headers as Map<String, String>;
     }
-    return post(url as Uri, headers: _headers, body: body)
-        .then((r) {
+    return post(url as Uri, headers: _headers, body: body).then((r) {
       return utf8.decode(r.bodyBytes);
     });
+  }
+};
+
+final clipboardMap = {
+  "setData": (Object data) {
+    return Clipboard.setData(data as ClipboardData);
+  },
+  "getData": (Object format) {
+    return Clipboard.getData(format as String);
   }
 };
 
@@ -159,19 +176,28 @@ final apiMap = {
   "version": Api.version,
   "platform": Api.platform,
   "buildNumber": Api.buildNumber,
-  "get": (Object? url, {Object? debug}) {
+  "get": (Object? url, {Object? debug, Object? headers}) {
     bool _debug = false;
     if (debug != null) {
       _debug = debug as bool;
     }
-    return Api.get(url as String, debug: _debug);
+    Map<String, String>? _headers;
+    if (headers != null) {
+      _headers = headers as Map<String, String>;
+    }
+    return Api.get(url as String, debug: _debug, headers: _headers);
   },
-  "post": (Object? url, Object? body, {Object? debug}) {
+  "post": (Object? url, {Object? body, Object? debug, Object? headers}) {
     bool _debug = false;
     if (debug != null) {
       _debug = debug as bool;
     }
-    return Api.post(url as String, body, debug: _debug);
+    Map<String, String>? _headers;
+    if (headers != null) {
+      _headers = headers as Map<String, String>;
+    }
+    return Api.post(url as String,
+        body: body, debug: _debug, headers: _headers);
   },
 };
 

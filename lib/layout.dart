@@ -298,6 +298,33 @@ class IPositioned implements DaxCallable {
   }
 }
 
+class IFittedBox implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    BoxFit fit = BoxFit.contain;
+    var fitParsed = namedArguments[const Symbol('fit')];
+    if (fitParsed != null) {
+      fit = fitParsed as BoxFit;
+    }
+    AlignmentGeometry alignment = Alignment.center;
+    var alignmentParse = namedArguments[const Symbol('alignment')];
+    if (alignmentParse != null) {
+      alignment = alignmentParse as AlignmentGeometry;
+    }
+    return FittedBox(
+      child: child,
+      fit: fit,
+      alignment: alignment,
+    );
+  }
+}
+
 class IConstrainedBox implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,

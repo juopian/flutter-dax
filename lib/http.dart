@@ -8,17 +8,15 @@ import 'package:logger/logger.dart';
 
 final logger = Logger();
 
-
 class Api {
   static String jwt = '';
   static String platform = kIsWeb ? 'web' : Platform.operatingSystem;
   static String version = '';
   static String buildNumber = '';
-  static late SharedPreferences prefs;
 
   static Future<String?> getJwt() async {
     if (jwt.isEmpty) {
-      prefs = await SharedPreferences.getInstance();
+      var prefs = await SharedPreferences.getInstance();
       jwt = prefs.getString("jwt") ?? '';
     }
     return jwt;
@@ -46,6 +44,7 @@ class Api {
 
   static Future<dynamic> handleResponse(http.Response response) async {
     String reqUrl = response.request!.url.toString();
+    var prefs = await SharedPreferences.getInstance();
     if (response.statusCode == 200) {
       String utf8Body = utf8.decode(response.bodyBytes);
       // check if contain Last-Modified
@@ -73,6 +72,7 @@ class Api {
       bool debug = false,
       bool sendLastModified = true}) async {
     var reqHeaders = await getHeaders(customHeaders: headers);
+    var prefs = await SharedPreferences.getInstance();
     if (sendLastModified && prefs.containsKey(url)) {
       reqHeaders['If-Modified-Since'] =
           prefs.getString(url + '_Last-Modified') ?? '';
@@ -84,14 +84,14 @@ class Api {
     return handleResponse(response);
   }
 
-  static Future<dynamic> post(String url, dynamic body,
-      {Map<String, String>? headers, bool debug = false}) async {
+  static Future<dynamic> post(String url,
+      {dynamic body, Map<String, String>? headers, bool debug = false}) async {
     var reqHeaders = await getHeaders(customHeaders: headers);
     if (debug) {
       logger.d('Request headers: $reqHeaders');
     }
     var response = await http.post(Uri.parse(url),
-        headers: reqHeaders, body: json.encode(body));
+        headers: reqHeaders, body: body);
     return handleResponse(response);
   }
 }

@@ -122,12 +122,52 @@ class ElevatedButtonStyleBuilder implements DaxCallable {
   }
 }
 
+class ElevatedButtonIconBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var icon = namedArguments[const Symbol('icon')];
+    if (icon == null) {
+      throw "icon required in TextButton.icon";
+    }
+    var label = namedArguments[const Symbol('label')];
+    if (label == null) {
+      throw "label required in TextButton.icon";
+    }
+    ButtonStyle? style;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as ButtonStyle;
+    }
+    var onPressed = namedArguments[const Symbol('onPressed')];
+    if (onPressed == null) {
+      throw "onPressed required in TextButton";
+    }
+    bool? autofocus;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    return ElevatedButton.icon(
+        icon: icon as Widget,
+        label: label as Widget,
+        autofocus: autofocus,
+        style: style,
+        onPressed: () {
+          (onPressed as LoxFunction).call(interpreter, [], {});
+        });
+  }
+}
+
 class IElevatedButton implements DaxCallable, LoxGetCallable {
   final builder = ElevatedButtonStyleBuilder();
   @override
   Object? get(Token name) {
-    if (name.lexeme == "styleFrom") {
-      return builder;
+    switch (name.lexeme) {
+      case 'styleFrom':
+        return builder;
+      case 'icon':
+        return ElevatedButtonIconBuilder();
     }
     throw "Unknown property: ${name.lexeme}";
   }
@@ -239,12 +279,52 @@ class OutlinedButtonStyleBuilder implements DaxCallable {
   }
 }
 
+class OutlinedButtonIconBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var icon = namedArguments[const Symbol('icon')];
+    if (icon == null) {
+      throw "icon required in TextButton.icon";
+    }
+    var label = namedArguments[const Symbol('label')];
+    if (label == null) {
+      throw "label required in TextButton.icon";
+    }
+    ButtonStyle? style;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as ButtonStyle;
+    }
+    var onPressed = namedArguments[const Symbol('onPressed')];
+    if (onPressed == null) {
+      throw "onPressed required in TextButton";
+    }
+    bool? autofocus;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    return OutlinedButton.icon(
+        icon: icon as Widget,
+        label: label as Widget,
+        autofocus: autofocus,
+        style: style,
+        onPressed: () {
+          (onPressed as LoxFunction).call(interpreter, [], {});
+        });
+  }
+}
+
 class IOutlinedButton implements DaxCallable, LoxGetCallable {
   final builder = OutlinedButtonStyleBuilder();
   @override
   Object? get(Token name) {
-    if (name.lexeme == "styleFrom") {
-      return builder;
+    switch (name.lexeme) {
+      case 'styleFrom':
+        return builder;
+      case 'icon':
+        return OutlinedButtonIconBuilder();
     }
     throw "Unknown property: ${name.lexeme}";
   }
@@ -356,12 +436,52 @@ class TextButtonStyleBuilder implements DaxCallable {
   }
 }
 
+class TextButtonIconBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var icon = namedArguments[const Symbol('icon')];
+    if (icon == null) {
+      throw "icon required in TextButton.icon";
+    }
+    var label = namedArguments[const Symbol('label')];
+    if (label == null) {
+      throw "label required in TextButton.icon";
+    }
+    ButtonStyle? style;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as ButtonStyle;
+    }
+    var onPressed = namedArguments[const Symbol('onPressed')];
+    if (onPressed == null) {
+      throw "onPressed required in TextButton";
+    }
+    bool? autofocus;
+    var autofocusParsed = namedArguments[const Symbol('autofocus')];
+    if (autofocusParsed != null) {
+      autofocus = autofocusParsed as bool;
+    }
+    return TextButton.icon(
+        icon: icon as Widget,
+        label: label as Widget,
+        autofocus: autofocus,
+        style: style,
+        onPressed: () {
+          (onPressed as LoxFunction).call(interpreter, [], {});
+        });
+  }
+}
+
 class ITextButton implements DaxCallable, LoxGetCallable {
   final builder = TextButtonStyleBuilder();
   @override
   Object? get(Token name) {
-    if (name.lexeme == "styleFrom") {
-      return builder;
+    switch (name.lexeme) {
+      case 'styleFrom':
+        return builder;
+      case 'icon':
+        return TextButtonIconBuilder();
     }
     throw "Unknown property: ${name.lexeme}";
   }
@@ -483,6 +603,29 @@ class IIconButton implements DaxCallable {
         onPressed: () {
           (onPressed as LoxFunction).call(interpreter, [], {});
         });
+  }
+}
+
+class IBackButton implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Color? color;
+    var colorParsed = namedArguments[const Symbol('color')];
+    if (colorParsed != null) {
+      color = colorParsed as Color;
+    }
+    Function()? onPressed;
+    var onPressedParsed = namedArguments[const Symbol('onPressed')];
+    if (onPressedParsed != null) {
+      onPressed = () {
+        (onPressedParsed as LoxFunction).call(interpreter, [], {});
+      };
+    }
+    return BackButton(
+      color: color,
+      onPressed: onPressed,
+    );
   }
 }
 
@@ -1604,7 +1747,7 @@ class IGestureDetector implements DaxCallable {
       Map<Symbol, Object?> namedArguments) {
     Widget? child;
     var childParsed = namedArguments[const Symbol('child')];
-    if (child != null) {
+    if (childParsed != null) {
       child = childParsed as Widget;
     }
     Function()? onTap;

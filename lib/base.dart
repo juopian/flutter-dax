@@ -1,6 +1,7 @@
 import 'package:dax/dax.dart';
 import 'package:dax/lox_callable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'utils.dart';
 
@@ -1124,6 +1125,18 @@ class DateTimeParse implements DaxCallable {
     var dateTimeStr = arguments[0] as String;
     return DateTime.parse(dateTimeStr);
   }
+}
+
+class IClipboardData implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments, 
+      Map<Symbol, Object?> namedArguments) {
+    var text = namedArguments[const Symbol('text')];
+    if (text == null) {
+      throw "text required in ClipboardData";
+    }
+    return ClipboardData(text: text as String);
+  }  
 }
 
 class IRegExp implements DaxCallable {

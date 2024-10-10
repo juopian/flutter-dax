@@ -644,6 +644,15 @@ ExpansionTile({
   ListTileControlAffinity? controlAffinity,
 })
 ```
+###  FittedBox
+```
+FittedBox({
+  BoxFit fit = BoxFit.contain,
+  AlignmentGeometry alignment = Alignment.center,
+  Widget? child,
+})
+```
+
 ###  FloatingActionButton
 ```
 FloatingActionButton({
@@ -665,6 +674,14 @@ FloatingActionButton({
   bool autofocus = false,
   bool isExtended = false,
 })
+```
+###  FloatingActionButtonLocation
+```
+FloatingActionButtonLocation.startTop
+FloatingActionButtonLocation.centerDocked
+FloatingActionButtonLocation.endFloat
+FloatingActionButtonLocation.centerFloat
+...
 ```
 ###  FontWeight
 ```
