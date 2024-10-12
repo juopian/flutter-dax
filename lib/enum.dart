@@ -391,3 +391,11 @@ final imageSourceMap = {
   "camera": ImageSource.camera,
   "gallery": ImageSource.gallery,
 };
+
+final tableCellVerticalAlignmentMap ={
+  "top": TableCellVerticalAlignment.top,
+  "middle": TableCellVerticalAlignment.middle,
+  "bottom": TableCellVerticalAlignment.bottom,
+  "file": TableCellVerticalAlignment.fill,
+  "baseline": TableCellVerticalAlignment.baseline,
+};

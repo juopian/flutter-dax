@@ -425,6 +425,120 @@ class IInputDecoration implements DaxCallable {
   }
 }
 
+class TableBorderAllBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Color color = const Color(0xFF000000);
+    var colorParsed = namedArguments[const Symbol('color')];
+    if (colorParsed != null) {
+      color = colorParsed as Color;
+    }
+    double width = 1.0;
+    var widthParsed = namedArguments[const Symbol('width')];
+    if (widthParsed != null) {
+      width = widthParsed as double;
+    }
+    BorderStyle style = BorderStyle.solid;
+    var styleParsed = namedArguments[const Symbol('style')];
+    if (styleParsed != null) {
+      style = styleParsed as BorderStyle;
+    }
+    BorderRadius borderRadius = BorderRadius.zero;
+    var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
+    if (borderRadiusParsed != null) {
+      borderRadius = borderRadiusParsed as BorderRadius;
+    }
+    return TableBorder.all(
+      color: color,
+      width: width,
+      style: style,
+      borderRadius: borderRadius,
+    );
+  }
+}
+
+class TableBorderSymmetricBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    BorderSide inside = BorderSide.none;
+    var insideParsed = namedArguments[const Symbol('inside')];
+    if (insideParsed != null) {
+      inside = insideParsed as BorderSide;
+    }
+    BorderSide outside = BorderSide.none;
+    var outsideParsed = namedArguments[const Symbol('outside')];
+    if (outsideParsed != null) {
+      outside = outsideParsed as BorderSide;
+    }
+    return TableBorder.symmetric(inside: inside, outside: outside);
+  }
+}
+
+class ITableBorder implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    if (name.lexeme == "all") {
+      return TableBorderAllBuilder();
+    } else if (name.lexeme == "symmetric") {
+      return TableBorderSymmetricBuilder();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    BorderSide top = BorderSide.none;
+    var topParsed = namedArguments[const Symbol('top')];
+    if (topParsed != null) {
+      top = topParsed as BorderSide;
+    }
+    BorderSide right = BorderSide.none;
+    var rightParsed = namedArguments[const Symbol('right')];
+    if (rightParsed != null) {
+      right = rightParsed as BorderSide;
+    }
+    BorderSide bottom = BorderSide.none;
+    var bottomParsed = namedArguments[const Symbol('bottom')];
+    if (bottomParsed != null) {
+      bottom = bottomParsed as BorderSide;
+    }
+    BorderSide left = BorderSide.none;
+    var leftParsed = namedArguments[const Symbol('left')];
+    if (leftParsed != null) {
+      left = leftParsed as BorderSide;
+    }
+    BorderSide horizontalInside = BorderSide.none;
+    var horizontalInsideParsed =
+        namedArguments[const Symbol('horizontalInside')];
+    if (horizontalInsideParsed != null) {
+      horizontalInside = horizontalInsideParsed as BorderSide;
+    }
+    BorderSide verticalInside = BorderSide.none;
+    var verticalInsideParsed = namedArguments[const Symbol('verticalInside')];
+    if (verticalInsideParsed != null) {
+      verticalInside = verticalInsideParsed as BorderSide;
+    }
+    BorderRadius borderRadius = BorderRadius.zero;
+    var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
+    if (borderRadiusParsed != null) {
+      borderRadius = borderRadiusParsed as BorderRadius;
+    }
+
+    return TableBorder(
+      top: top,
+      right: right,
+      bottom: bottom,
+      left: left,
+      horizontalInside: horizontalInside,
+      verticalInside: verticalInside,
+      borderRadius: borderRadius,
+    );
+  }
+}
+
 class ICircleBorder implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,

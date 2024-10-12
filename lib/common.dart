@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:open_file/open_file.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
@@ -171,11 +173,20 @@ final clipboardMap = {
   }
 };
 
+final platformMap = {
+  "isAndroid": Platform.isAndroid,
+  "isIOS": Platform.isIOS,
+  "isMacOS": Platform.isMacOS,
+  "isWindows": Platform.isWindows,
+  "isLinux": Platform.isLinux,
+  "isFuchsia": Platform.isFuchsia,
+  "localHostname": Platform.localHostname,
+  "localeName": Platform.localeName,
+  "operatingSystem": Platform.operatingSystem,
+  "version": Platform.version,
+};
+
 final apiMap = {
-  "jwt": Api.jwt,
-  "version": Api.version,
-  "platform": Api.platform,
-  "buildNumber": Api.buildNumber,
   "get": (Object? url, {Object? debug, Object? headers}) {
     bool _debug = false;
     if (debug != null) {

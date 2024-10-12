@@ -1,4 +1,5 @@
 import 'package:dax/runtime_error.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dax/dax.dart';
@@ -312,6 +313,7 @@ void _registerGlobalFunctions() {
   top.define("ImageRepeat", imageRepeatMap);
   top.define("ImageSource", imageSourceMap);
   top.define("int", intMap);
+  top.define("kIsWeb", kIsWeb);
   top.define("JavascriptMode", javascriptModeMap);
   top.define("json", jsonMap);
   top.define("LaunchMode", launchModeMap);
@@ -320,13 +322,16 @@ void _registerGlobalFunctions() {
   top.define("MainAxisAlignment", mainAxisAlignmentMap);
   top.define("MainAxisSize", mainAxisSizeMap);
   top.define("math", mathMap);
-  // top.define("Navigator", navigatorMap);
   top.define("OpenFile", openFileMap);
   top.define("path", pathMap);
+  if (!kIsWeb) {
+    top.define("Platform", platformMap);
+  }
   top.define("Radius", radiusMap);
   top.define("SnackBarBehavior", snackBarBehaviorMap);
   top.define("StackFit", stackFitMap);
   top.define("TabBarIndicatorSize", tabBarIndicatorSizeMap);
+  top.define("TableCellVerticalAlignment", tableCellVerticalAlignmentMap);
   top.define("TextAlign", textAlignMap);
   top.define("TextBaseline", textBaselineMap);
   top.define("TextCapitalization", textCapitalizationMap);
@@ -355,6 +360,9 @@ void _registerGlobalFunctions() {
   top.define("BoxConstraints", IBoxConstraints());
   top.define("BoxShadow", IBoxShadow());
   top.define("Center", ICenter());
+  top.define("ChartBar", IChartBar());
+  top.define("ChartLine", IChartLine());
+  top.define("ChartPie", IChartPie());
   top.define("Checkbox", ICheckbox());
   top.define("CircleBorder", ICircleBorder());
   top.define("CircularProgressIndicator", ICircularProgressIndicator());
@@ -382,10 +390,12 @@ void _registerGlobalFunctions() {
   top.define("Expanded", IExpanded());
   top.define("ExpansionTile", IExpansionTile());
   top.define("FittedBox", IFittedBox());
+  top.define("FixedColumnWidth", IFixedColumnWidth());
+  top.define("FlexColumnWidth", IFlexColumnWidth());
   top.define("FloatingActionButton", IFloatingActionButton());
   top.define("FloatingActionButtonLocation", IFloatingActionButtonLocation());
   top.define("FontWeight", IFontWeight());
-  top.define("getViewSize", IViewSize());
+  /* top.define("getViewSize", IViewSize()); */
   top.define("Geolocator", IGeolocator());
   top.define("GestureDetector", IGestureDetector());
   top.define("Icon", IIcon());
@@ -393,12 +403,14 @@ void _registerGlobalFunctions() {
   top.define("Image", IImage());
   top.define("ImagePicker", IImagePicker());
   top.define("InputDecoration", IInputDecoration());
+  top.define("IntrinsicColumnWidth", IIntrinsicColumnWidth());
   top.define("JavascriptChannel", IJavascriptChannel());
   top.define("launchUrl", ILaunchUrl());
   top.define("LinearGradient", ILinearGradient());
   top.define("ListTile", IListTile());
   top.define("ListView", IListView());
   top.define("Matrix4", IMatrix4());
+  top.define("MediaQuery", IMediaQuery());
   top.define("NetworkImage", INetworkImage());
   top.define("Offset", IOffset());
   top.define("OutlinedButton", IOutlinedButton());
@@ -410,12 +422,14 @@ void _registerGlobalFunctions() {
   top.define("PopupMenuItem", IPopupMenuItem());
   top.define("PopupMenuWrap", IPopupMenuWrap());
   top.define("Positioned", IPositioned());
+  top.define("PreferredSize", IPreferredSize());
   top.define("Radio", IRadio());
   top.define("RegExp", IRegExp());
   top.define("Row", IRow());
   top.define("RoundedRectangleBorder", IRoundedRectangleBorder());
   top.define("SafeArea", ISafeArea());
   top.define("Scaffold", IScaffold());
+  top.define("ScaffoldMessenger", IScaffoldMessenger());
   top.define("Shadow", IShadow());
   top.define("SharedPreferences", ISharedPreferences());
   top.define("SimpleDialog", ISimpleDialog());
@@ -430,10 +444,14 @@ void _registerGlobalFunctions() {
   top.define("Switch", ISwitch());
   top.define("showDialog", IShowDialog());
   top.define("showModalBottomSheet", IShowModalBottomSheet());
-  top.define("showSnackBar", ISnackBarShow());
+  top.define("showSnackBar", ISnackBarShow()); // deprecated
   top.define("Tab", ITab());
   top.define("TabBar", ITabBar());
   top.define("TabBarView", ITabBarView());
+  top.define("Table", ITable());
+  top.define("TableCell", ITableCell());
+  top.define("TableBorder", ITableBorder());
+  top.define("TableRow", ITableRow());
   top.define("Text", IText());
   top.define("TextAlignVertical", ITextAlignVertical());
   top.define("TextButton", ITextButton());
@@ -444,6 +462,8 @@ void _registerGlobalFunctions() {
   top.define("Transform", ITransform());
   top.define("Uri", IUri());
   top.define("UnderlineInputBorder", IUnderlineInputBorder());
+  top.define("ValueNotifier", IValueNotifier());
+  top.define("ValueListenableBuilder", IValueListenableBuilder());
   top.define("WebView", IWebView());
   top.define("Wrap", IWrap());
 }

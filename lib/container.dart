@@ -69,6 +69,12 @@ class IScaffold implements DaxCallable {
       persistentFooterButtons =
           (persistentFooterButtonsParsed as List).cast<Widget>();
     }
+    bool? resizeToAvoidBottomInset;
+    var resizeToAvoidBottomInsetParsed =
+        namedArguments[const Symbol('resizeToAvoidBottomInset')];
+    if (resizeToAvoidBottomInsetParsed != null) {
+      resizeToAvoidBottomInset = resizeToAvoidBottomInsetParsed as bool;
+    }
     return Scaffold(
       appBar: appBar,
       body: body,
@@ -80,6 +86,7 @@ class IScaffold implements DaxCallable {
       extendBodyBehindAppBar: extendBodyBehindAppBar,
       backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
@@ -267,6 +274,12 @@ class IAppBar implements DaxCallable {
     if (toolbarTextStyleParsed != null) {
       toolbarTextStyle = toolbarTextStyleParsed as TextStyle;
     }
+    bool automaticallyImplyLeading = true;
+    var automaticallyImplyLeadingParsed =
+        namedArguments[const Symbol('automaticallyImplyLeading')];
+    if (automaticallyImplyLeadingParsed != null) {
+      automaticallyImplyLeading = automaticallyImplyLeadingParsed as bool;
+    }
     return AppBar(
       title: title,
       leading: leading,
@@ -276,6 +289,7 @@ class IAppBar implements DaxCallable {
       flexibleSpace: flexibleSpace,
       titleSpacing: titleSpacing,
       toolbarOpacity: toolbarOptionsOpacity,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       bottomOpacity: bottomOpacity,
       toolbarHeight: toolbarHeight,
       leadingWidth: leadingWidth,
@@ -399,6 +413,119 @@ class BoxConstraintsExpand implements DaxCallable {
       width: width,
       height: height,
     );
+  }
+}
+
+class ITableRow implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    List<Widget> children = const <Widget>[];
+    var childrenParsed = namedArguments[const Symbol('children')];
+    if (childrenParsed != null) {
+      children = (childrenParsed as List).cast<Widget>();
+    }
+    Decoration? decoration;
+    var decorationParsed = namedArguments[const Symbol('decoration')];
+    if (decorationParsed != null) {
+      decoration = decorationParsed as Decoration;
+    }
+    return TableRow(children: children, decoration: decoration);
+  }
+}
+
+class IIntrinsicColumnWidth implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return const IntrinsicColumnWidth();
+  }
+}
+
+class IFlexColumnWidth implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double value = 1;
+    if (arguments.isNotEmpty) {
+      value = parseDouble(arguments[0]) ?? 1;
+    }
+    return FlexColumnWidth(value);
+  }
+}
+
+class IFixedColumnWidth implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "value required in FixedColumnWidth";
+    }
+    double value = parseDouble(arguments[0]) ?? 0;
+    return FixedColumnWidth(value);
+  }
+}
+
+
+class ITableCell implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var child = namedArguments[const Symbol('child')];
+    if (child == null) {
+      throw "child required in TableCell";
+    }
+    TableCellVerticalAlignment? verticalAlignment;
+    var verticalAlignmentParsed =
+        namedArguments[const Symbol('verticalAlignment')];
+    if (verticalAlignmentParsed != null) {
+      verticalAlignment = verticalAlignmentParsed as TableCellVerticalAlignment;
+    }
+    
+    return TableCell(
+      child: child as Widget,
+      verticalAlignment: verticalAlignment,
+    );
+  }
+}
+
+class ITable implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    TableBorder? border;
+    var borderParsed = namedArguments[const Symbol('border')];
+    if (borderParsed != null) {
+      border = borderParsed as TableBorder;
+    }
+    List<TableRow> children = const <TableRow>[];
+    var childrenParsed = namedArguments[const Symbol('children')];
+    if (childrenParsed != null) {
+      children = (childrenParsed as List).cast<TableRow>();
+    }
+    TextDirection? textDirection;
+    var textDirectionParsed = namedArguments[const Symbol('textDirection')];
+    if (textDirectionParsed != null) {
+      textDirection = textDirectionParsed as TextDirection;
+    }
+    Map<int, TableColumnWidth>? columnWidths;
+    var columnWidthsParsed = namedArguments[const Symbol('columnWidths')];
+    if (columnWidthsParsed != null) {
+      columnWidths = columnWidthsParsed as Map<int, TableColumnWidth>;
+    }
+    TableCellVerticalAlignment defaultVerticalAlignment = TableCellVerticalAlignment.top;
+    var defaultVerticalAlignmentParsed =
+        namedArguments[const Symbol('defaultVerticalAlignment')];
+    if (defaultVerticalAlignmentParsed != null) {
+      defaultVerticalAlignment =
+          defaultVerticalAlignmentParsed as TableCellVerticalAlignment;
+    }
+    return Table(
+        border: border,
+        columnWidths: columnWidths,
+        textDirection: textDirection,
+        defaultVerticalAlignment: defaultVerticalAlignment,
+        children: children);
   }
 }
 

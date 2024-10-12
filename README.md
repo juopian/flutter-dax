@@ -52,10 +52,6 @@ Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSna
 ```
 Api.get(String url, {params})
 Api.post(String url, {params})
-Api.jwt
-Api.version
-Api.platform
-Api.versionNumber
 ```
 * AxisDirection
 * base64

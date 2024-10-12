@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'utils.dart';
 import 'datepicker.dart';
 import 'main.dart';
+import 'chart.dart';
 
 class IText implements DaxCallable {
   @override
@@ -156,6 +157,23 @@ class ElevatedButtonIconBuilder implements DaxCallable {
         onPressed: () {
           (onPressed as LoxFunction).call(interpreter, [], {});
         });
+  }
+}
+
+class IPreferredSize implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var preferredSize = namedArguments[const Symbol('preferredSize')];
+    if (preferredSize == null) {
+      throw "preferredSize required in PreferredSizeWidget";
+    }
+    var child = namedArguments[const Symbol('child')];
+    if (child == null) {
+      throw "child required in PreferredSizeWidget";
+    }
+    return PreferredSize(
+        child: child as Widget, preferredSize: preferredSize as Size);
   }
 }
 
@@ -1299,6 +1317,13 @@ class ITextField implements DaxCallable {
         (onChangedParsed as LoxFunction).call(interpreter, [value], {});
       };
     }
+    Function(String)? onSubmitted;
+    var onSubmittedParsed = namedArguments[const Symbol('onChanged')];
+    if (onSubmittedParsed != null) {
+      onSubmitted = (String value) {
+        (onSubmitted as LoxFunction).call(interpreter, [value], {});
+      };
+    }
     InputDecoration? decoration;
     var decorationParsed = namedArguments[const Symbol('decoration')];
     if (decorationParsed != null) {
@@ -1427,6 +1452,7 @@ class ITextField implements DaxCallable {
       textDirection: textDirection,
       textCapitalization: textCapitalization,
       onChanged: onChanged,
+      onSubmitted: onSubmitted,
       readOnly: readOnly,
       showCursor: showCursor,
       maxLines: maxLines,
@@ -1778,6 +1804,269 @@ class IGestureDetector implements DaxCallable {
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
     );
+  }
+}
+
+class ChartLineWithDataBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "arguments required in ChartLineWithDataBuilder";
+    }
+    var data = arguments.first;
+    bool animated = false;
+    var animatedParsed = namedArguments[const Symbol('animated')];
+    if (animatedParsed != null) {
+      animated = animatedParsed as bool;
+    }
+    double height = parseDouble(namedArguments[const Symbol('height')]) ?? 200;
+    int titleFontSize = 14;
+    var titleFontSizeParsed = namedArguments[const Symbol('titleFontSize')];
+    if (titleFontSizeParsed != null) {
+      titleFontSize = titleFontSizeParsed as int;
+    }
+    double maskFontSize =
+        parseDouble(namedArguments[const Symbol('maskFontSize')]) ?? 18;
+    bool showLegend = true;
+    var showLegendParsed = namedArguments[const Symbol('showLegend')];
+    if (showLegendParsed != null) {
+      showLegend = showLegendParsed as bool;
+    }
+    var showChartTitle = true;
+    var showChartTitleParsed = namedArguments[const Symbol('showChartTitle')];
+    if (showChartTitleParsed != null) {
+      showChartTitle = showChartTitleParsed as bool;
+    }
+    double strokeWidth =
+        parseDouble(namedArguments[const Symbol('strokeWidth')]) ?? 1;
+    bool hidePrimaryAxis = false;
+    var hidePrimaryAxisParsed = namedArguments[const Symbol('hidePrimaryAxis')];
+    if (hidePrimaryAxisParsed != null) {
+      hidePrimaryAxis = hidePrimaryAxisParsed as bool;
+    }
+    bool hideSecondaryAxis = false;
+    var hideSecondaryAxisParsed =
+        namedArguments[const Symbol('hideSecondaryAxis')];
+    if (hideSecondaryAxisParsed != null) {
+      hideSecondaryAxis = hideSecondaryAxisParsed as bool;
+    }
+    bool hideDomainAxis = false;
+    var hideDomainAxisParsed = namedArguments[const Symbol('hideDomainAxis')];
+    if (hideDomainAxisParsed != null) {
+      hideDomainAxis = hideDomainAxisParsed as bool;
+    }
+    bool Function(String)? hiddenFn;
+    var hiddenFnParsed = namedArguments[const Symbol('hiddenFn')];
+    if (hiddenFnParsed != null) {
+      hiddenFn = (s) {
+        return (hiddenFnParsed as LoxFunction).call(interpreter, [s], {})
+            as bool;
+      };
+    }
+    Widget? loadingWidget;
+    var loadingWidgetParsed = namedArguments[const Symbol('loadingWidget')];
+    if (loadingWidgetParsed != null) {
+      loadingWidget = loadingWidgetParsed as Widget;
+    }
+    bool showAxisLine = false;
+    var showAxisLineParsed = namedArguments[const Symbol('showAxisLine')];
+    if (showAxisLineParsed != null) {
+      showAxisLine = showAxisLineParsed as bool;
+    }
+    return ChartLine.withChartData(data as List<dynamic>,
+        animate: animated,
+        height: height,
+        titleFontSize: titleFontSize,
+        maskFontSize: maskFontSize,
+        showLegend: showLegend,
+        showChartTitle: showChartTitle,
+        strokeWidth: strokeWidth,
+        loadingWidget: loadingWidget,
+        hidePrimaryAxis: hidePrimaryAxis,
+        hiddenFn: hiddenFn,
+        showAxisLine: showAxisLine,
+        hideSecondaryAxis: hideSecondaryAxis,
+        hideDomainAxis: hideDomainAxis);
+  }
+}
+
+class IChartLine implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'withChartData':
+        return ChartLineWithDataBuilder();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+}
+
+class ChartBarWithDataBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "arguments required in ChartBarWithDataBuilder";
+    }
+    var data = arguments.first;
+    bool animated = false;
+    var animatedParsed = namedArguments[const Symbol('animated')];
+    if (animatedParsed != null) {
+      animated = animatedParsed as bool;
+    }
+    double height = parseDouble(namedArguments[const Symbol('height')]) ?? 200;
+    bool vertical = true;
+    var verticalParsed = namedArguments[const Symbol('vertical')];
+    if (verticalParsed != null) {
+      vertical = verticalParsed as bool;
+    }
+    bool showBarLabel = false;
+    var showBarLabelParsed = namedArguments[const Symbol('showBarLabel')];
+    if (showBarLabelParsed != null) {
+      showBarLabel = showBarLabelParsed as bool;
+    }
+    int titleFontSize = 14;
+    var titleFontSizeParsed = namedArguments[const Symbol('titleFontSize')];
+    if (titleFontSizeParsed != null) {
+      titleFontSize = titleFontSizeParsed as int;
+    }
+    double maskFontSize =
+        parseDouble(namedArguments[const Symbol('maskFontSize')]) ?? 18;
+    bool showLegend = true;
+    var showLegendParsed = namedArguments[const Symbol('showLegend')];
+    if (showLegendParsed != null) {
+      showLegend = showLegendParsed as bool;
+    }
+    var showChartTitle = true;
+    var showChartTitleParsed = namedArguments[const Symbol('showChartTitle')];
+    if (showChartTitleParsed != null) {
+      showChartTitle = showChartTitleParsed as bool;
+    }
+    bool hidePrimaryAxis = false;
+    var hidePrimaryAxisParsed = namedArguments[const Symbol('hidePrimaryAxis')];
+    if (hidePrimaryAxisParsed != null) {
+      hidePrimaryAxis = hidePrimaryAxisParsed as bool;
+    }
+    bool hideSecondaryAxis = false;
+    var hideSecondaryAxisParsed =
+        namedArguments[const Symbol('hideSecondaryAxis')];
+    if (hideSecondaryAxisParsed != null) {
+      hideSecondaryAxis = hideSecondaryAxisParsed as bool;
+    }
+    bool hideDomainAxis = false;
+    var hideDomainAxisParsed = namedArguments[const Symbol('hideDomainAxis')];
+    if (hideDomainAxisParsed != null) {
+      hideDomainAxis = hideDomainAxisParsed as bool;
+    }
+
+    Widget? loadingWidget;
+    var loadingWidgetParsed = namedArguments[const Symbol('loadingWidget')];
+    if (loadingWidgetParsed != null) {
+      loadingWidget = loadingWidgetParsed as Widget;
+    }
+    bool showAxisLine = false;
+    var showAxisLineParsed = namedArguments[const Symbol('showAxisLine')];
+    if (showAxisLineParsed != null) {
+      showAxisLine = showAxisLineParsed as bool;
+    }
+    String groupType = 'grouped';
+    var groupTypeParsed = namedArguments[const Symbol('groupType')];
+    if (groupTypeParsed != null) {
+      groupType = groupTypeParsed as String;
+    }
+    return ChartBar.withChartData(data as List<dynamic>,
+        animate: animated,
+        height: height,
+        vertical: vertical,
+        titleFontSize: titleFontSize,
+        maskFontSize: maskFontSize,
+        showLegend: showLegend,
+        groupType: groupType,
+        showBarLabel: showBarLabel,
+        showChartTitle: showChartTitle,
+        loadingWidget: loadingWidget,
+        hidePrimaryAxis: hidePrimaryAxis,
+        showAxisLine: showAxisLine,
+        hideSecondaryAxis: hideSecondaryAxis,
+        hideDomainAxis: hideDomainAxis);
+  }
+}
+
+class IChartBar implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'withChartData':
+        return ChartBarWithDataBuilder();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+}
+
+class ChartPieWithDataBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "arguments required in ChartPieWithDataBuilder";
+    }
+    var data = arguments.first;
+    bool animated = false;
+    var animatedParsed = namedArguments[const Symbol('animated')];
+    if (animatedParsed != null) {
+      animated = animatedParsed as bool;
+    }
+    double height = parseDouble(namedArguments[const Symbol('height')]) ?? 200;
+    int titleFontSize = 14;
+    var titleFontSizeParsed = namedArguments[const Symbol('titleFontSize')];
+    if (titleFontSizeParsed != null) {
+      titleFontSize = titleFontSizeParsed as int;
+    }
+    double maskFontSize =
+        parseDouble(namedArguments[const Symbol('maskFontSize')]) ?? 18;
+    bool showLegend = true;
+    var showLegendParsed = namedArguments[const Symbol('showLegend')];
+    if (showLegendParsed != null) {
+      showLegend = showLegendParsed as bool;
+    }
+    var showChartTitle = true;
+    var showChartTitleParsed = namedArguments[const Symbol('showChartTitle')];
+    if (showChartTitleParsed != null) {
+      showChartTitle = showChartTitleParsed as bool;
+    }
+    Widget? loadingWidget;
+    var loadingWidgetParsed = namedArguments[const Symbol('loadingWidget')];
+    if (loadingWidgetParsed != null) {
+      loadingWidget = loadingWidgetParsed as Widget;
+    }
+    int arcWidth = 40;
+    var arcWidthParsed = namedArguments[const Symbol('arcWidth')];
+    if (arcWidthParsed != null) {
+      arcWidth = arcWidthParsed as int;
+    }
+    return ChartPie.withChartData(
+      data as List<dynamic>,
+      height: height,
+      animate: animated,
+      titleFontSize: titleFontSize,
+      maskFontSize: maskFontSize,
+      showLegend: showLegend,
+      arcWidth: arcWidth,
+      showChartTitle: showChartTitle,
+      loadingWidget: loadingWidget,
+    );
+  }
+}
+
+class IChartPie implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'withChartData':
+        return ChartPieWithDataBuilder();
+    }
+    throw "Unknown property: ${name.lexeme}";
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:dax/dax.dart';
 import 'package:dax/lox_callable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -63,6 +64,8 @@ class UriIns implements Uri, LoxGetCallable {
         return uri.query;
       case 'fragment':
         return uri.fragment;
+      case 'pathSegments':
+        return uri.pathSegments;
     }
   }
 
@@ -183,13 +186,20 @@ class UriIns implements Uri, LoxGetCallable {
   String get userInfo => uri.userInfo;
 }
 
-
 class IUri implements DaxCallable, LoxGetCallable {
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
       case 'parse':
         return UriParseBuilder();
+      case 'encodeFull':
+        return Uri.encodeFull;
+      case 'encodeComponent':
+        return Uri.encodeComponent;
+      case 'decodeComponent':
+        return Uri.decodeComponent;
+      case 'decodeFull':
+        return Uri.decodeFull;
     }
   }
 
@@ -290,7 +300,21 @@ class Sizesquare implements DaxCallable {
   }
 }
 
-class ISize implements DaxCallable {
+class ISize implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'fromHeight':
+        return SizefromHeight();
+      case 'fromWidth':
+        return SizefromWidth();
+      case 'fromRadius':
+        return SizefromRadius();
+      case 'square':
+        return Sizesquare();
+    }
+  }
+
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -316,14 +340,6 @@ class SizeIns extends Size implements LoxGetCallable {
         return Size.zero;
       case 'infinite':
         return Size.infinite;
-      case 'fromHeight':
-        return SizefromHeight();
-      case 'fromWidth':
-        return SizefromWidth();
-      case 'fromRadius':
-        return SizefromRadius();
-      case 'square':
-        return Sizesquare();
     }
     return null;
   }
@@ -346,6 +362,81 @@ class ISnackBarShow implements DaxCallable {
       Map<Symbol, Object?> namedArguments) {
     return ScaffoldMessenger.of(arguments.first as BuildContext)
         .showSnackBar(arguments.last as SnackBar);
+  }
+}
+
+class IValueNotifier implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "value required in ValueNotifier";
+    }
+    var value = arguments.first;
+    return ValueNotifierIns(value!);
+  }
+}
+
+class ValueNotifierIns extends ChangeNotifier
+    implements LoxGetCallable, LoxSetCallable, ValueListenable {
+  ValueNotifierIns(this._value);
+  @override
+  Object? set(Token name, Object? value) {
+    switch (name.lexeme) {
+      case 'value':
+        if (_value == value) {
+          break;
+        }
+        _value = value!;
+        notifyListeners();
+        break;
+    }
+  }
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'value':
+        return _value;
+    }
+  }
+
+  @override
+  Object get value => _value;
+  Object _value;
+  set value(Object newValue) {
+    if (_value == newValue) {
+      return;
+    }
+    _value = newValue;
+    notifyListeners();
+  }
+}
+
+class IValueListenableBuilder implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    var valueListenable = namedArguments[const Symbol('valueListenable')];
+    if (valueListenable == null) {
+      throw "valueListenable required in ValueListenableBuilder";
+    }
+    var builder = namedArguments[const Symbol('builder')];
+    if (builder == null) {
+      throw "builder required in ListView.builder";
+    }
+    return ValueListenableBuilder(
+        builder: (context, value, child) {
+          return (builder as LoxFunction)
+              .call(interpreter, [context, value, child], {}) as Widget;
+        },
+        valueListenable: valueListenable as ValueListenable,
+        child: child);
   }
 }
 
@@ -892,6 +983,79 @@ class TextEditingControllerIns extends TextEditingController
   }
 }
 
+class ScaffoldMessengerIns implements LoxGetCallable {
+  final ScaffoldMessengerState state;
+  ScaffoldMessengerIns(this.state);
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'showSnackBar':
+        return state.showSnackBar;
+    }
+  }
+}
+
+class ScaffoldMessengerBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    return ScaffoldMessengerIns(
+        ScaffoldMessenger.of(arguments.first as BuildContext));
+  }
+}
+
+class IScaffoldMessenger implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'of':
+        return ScaffoldMessengerBuilder();
+    }
+  }
+}
+
+class MediaQueryIns implements LoxGetCallable {
+  final MediaQueryData data;
+  MediaQueryIns(this.data);
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'size':
+        return SizeIns(data.size.width, data.size.height);
+      case 'devicePixelRatio':
+        return data.devicePixelRatio;
+      case 'textScaleFactor':
+        return data.textScaleFactor;
+      case 'padding':
+        return data.padding;
+    }
+  }
+}
+
+class MediaQueryBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    return MediaQueryIns(MediaQuery.of(arguments.first as BuildContext));
+  }
+}
+
+class IMediaQuery implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'of':
+        return MediaQueryBuilder();
+    }
+  }
+}
+
 class IShowDialog implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
@@ -1129,14 +1293,14 @@ class DateTimeParse implements DaxCallable {
 
 class IClipboardData implements DaxCallable {
   @override
-  Object? call(Interpreter interpreter, List<Object?> arguments, 
+  Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
     var text = namedArguments[const Symbol('text')];
     if (text == null) {
       throw "text required in ClipboardData";
     }
     return ClipboardData(text: text as String);
-  }  
+  }
 }
 
 class IRegExp implements DaxCallable {
