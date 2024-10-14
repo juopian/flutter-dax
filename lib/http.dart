@@ -46,7 +46,6 @@ class Api {
     String reqUrl = response.request!.url.toString();
     var prefs = await SharedPreferences.getInstance();
     if (response.statusCode == 200) {
-      String utf8Body = utf8.decode(response.bodyBytes);
       // check if contain Last-Modified
       if (response.headers['last-modified'] != null) {
         // save Last-Modified to sharedPreference
@@ -56,9 +55,10 @@ class Api {
       }
       // check Content-Type of response
       if (response.headers['content-type'] == 'application/json') {
+        String utf8Body = utf8.decode(response.bodyBytes);
         return json.decode(utf8Body);
       } else {
-        return utf8Body;
+        return response.body;
       }
     } else if (response.statusCode == 304) {
       return prefs.getString(reqUrl) ?? '';

@@ -209,15 +209,16 @@ class DatePickerState extends State<DatePicker> {
                   color: (v1 == 0 && y == sy && m == sm && d == v0)
                       ? selectedDayBgColor
                       : null,
-                  child: TextButton(
+                  child: Center(
+                    child: TextButton(
                       onPressed: () => onCellTap(v1, v0, context),
-                      child: Center(
-                        child: Text('${v[0]}',
-                            softWrap: false,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: gridFontSize, color: color)),
-                      )),
+                      child: Text('${v[0]}',
+                          softWrap: false,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: gridFontSize, color: color)),
+                    ),
+                  ),
                 ));
               }).toList(),
             ),

@@ -1,6 +1,5 @@
 import 'package:dax/dax.dart';
 import 'package:dax_flutter/utils.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class IImagePicker implements DaxCallable {

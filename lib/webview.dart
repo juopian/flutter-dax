@@ -62,7 +62,7 @@ class ILaunchUrl implements DaxCallable {
     if (arguments.isEmpty) {
       throw "Argument must be at least 1.";
     }
-    Uri url = Uri.parse(arguments.first as String);
+    Uri url = arguments.first as Uri;
     LaunchMode mode = LaunchMode.platformDefault;
     var modeParsed = namedArguments[const Symbol('mode')];
     if (modeParsed != null) {

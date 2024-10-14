@@ -1731,12 +1731,18 @@ class ISnackBar implements DaxCallable {
     if (dismissDirectionParsed != null) {
       dismissDirection = dismissDirectionParsed as DismissDirection;
     }
+    Duration duration = const Duration(milliseconds: 4000);
+    var durationParsed = namedArguments[const Symbol('duration')];
+    if (durationParsed != null) {
+      duration = durationParsed as Duration;
+    }
     return SnackBar(
       content: content as Widget,
       elevation: elevation,
       width: width,
       shape: shape,
       margin: margin,
+      duration: duration,
       padding: padding,
       behavior: snackBarBehavior,
       backgroundColor: backgroundColor,

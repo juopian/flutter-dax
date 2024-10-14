@@ -108,6 +108,12 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _find('dispose')?.call(interpreter, [], {});
+  }
+
+  @override
   void initState() {
     super.initState();
     LoxFunction? method = widget.klass.findMethod('build');
@@ -214,6 +220,12 @@ class _DaxPageState extends State<DaxPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    interpreter.invokeFunction('dispose');
+  }
+
+  @override
   void initState() {
     super.initState();
     if (!_isApiRegistered) {
@@ -239,7 +251,7 @@ class _DaxPageState extends State<DaxPage> {
         interpreter.registerLocal("context", context);
       },
       "pushReplacement": (Object? context, Object? route) async {
-        Navigator.pushReplacement(context as BuildContext, route as Route);
+        await Navigator.pushReplacement(context as BuildContext, route as Route);
         interpreter.registerLocal("context", context);
       },
     });
@@ -377,6 +389,8 @@ void _registerGlobalFunctions() {
   top.define("Container", IContainer());
   top.define("ContinuousRectangleBorder", IContinuousRectangleBorder());
   top.define("CupertinoActivityIndicator", ICupertinoActivityIndicator());
+  top.define("CustomFloatingActionButtonLocation",
+      ICustomFloatingActionButtonLocation());
   top.define("DateFormat", IDateFormat());
   top.define("DatePicker", IDatePicker());
   top.define("DateTime", IDateTime());
@@ -384,18 +398,24 @@ void _registerGlobalFunctions() {
   top.define("DefaultTabController", IDefaultTabController());
   top.define("DefaultTextStyle", IDefaultTextStyle());
   top.define("Divider", IDivider());
+  top.define("Drawer", IDrawer());
   top.define("DropdownButton", IDropdownButton());
   top.define("DropdownMenuItem", IDropdownMenuItem());
+  top.define("Duration", IDuration());
   top.define("ElevatedButton", IElevatedButton());
   top.define("Expanded", IExpanded());
   top.define("ExpansionTile", IExpansionTile());
+  top.define("File", IFile());
   top.define("FittedBox", IFittedBox());
   top.define("FixedColumnWidth", IFixedColumnWidth());
   top.define("FlexColumnWidth", IFlexColumnWidth());
   top.define("FloatingActionButton", IFloatingActionButton());
   top.define("FloatingActionButtonLocation", IFloatingActionButtonLocation());
   top.define("FontWeight", IFontWeight());
-  /* top.define("getViewSize", IViewSize()); */
+  top.define(
+      "getApplicationDocumentsDirectory", IgetApplicationDocumentsDirectory());
+  top.define("getDownloadsDirectory", IgetDownloadsDirectory());
+  top.define("getTemporaryDirectory", IgetTemporaryDirectory());
   top.define("Geolocator", IGeolocator());
   top.define("GestureDetector", IGestureDetector());
   top.define("Icon", IIcon());
@@ -409,6 +429,8 @@ void _registerGlobalFunctions() {
   top.define("LinearGradient", ILinearGradient());
   top.define("ListTile", IListTile());
   top.define("ListView", IListView());
+  top.define("Material", IMaterial());
+  top.define("MaterialPageRoute", IMaterialPageRoute());
   top.define("Matrix4", IMatrix4());
   top.define("MediaQuery", IMediaQuery());
   top.define("NetworkImage", INetworkImage());
@@ -459,6 +481,7 @@ void _registerGlobalFunctions() {
   top.define("TextField", ITextField());
   top.define("TextInputType", ITextInputType());
   top.define("TextStyle", ITextStyle());
+  top.define("Timer", ITimer());
   top.define("Transform", ITransform());
   top.define("Uri", IUri());
   top.define("UnderlineInputBorder", IUnderlineInputBorder());

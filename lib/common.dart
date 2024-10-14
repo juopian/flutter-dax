@@ -7,6 +7,7 @@ import 'package:open_file/open_file.dart';
 import 'package:http/http.dart';
 import 'dart:math';
 import 'dart:convert';
+import 'base.dart';
 import 'utils.dart';
 import 'http.dart';
 
@@ -146,20 +147,24 @@ final openFileMap = {
 var httpMap = {
   'get': (Object url, {Object? headers}) {
     Map<String, String> _headers = {};
-    if (headers != null) {
-      _headers = headers as Map<String, String>;
+    if (headers is Map) {
+      headers.forEach((key, value) {
+        _headers[key.toString()] = value.toString();
+      });
     }
-    return get(url as Uri, headers: _headers).then((r) {
-      return utf8.decode(r.bodyBytes);
+    return get(url as Uri, headers: _headers).then((response) {
+      return IResponse(response);
     });
   },
   'post': (Object url, {Object? headers, Object? body}) {
     Map<String, String> _headers = {};
-    if (headers != null) {
-      _headers = headers as Map<String, String>;
+    if (headers is Map) {
+      headers.forEach((key, value) {
+        _headers[key.toString()] = value.toString();
+      });
     }
-    return post(url as Uri, headers: _headers, body: body).then((r) {
-      return utf8.decode(r.bodyBytes);
+    return post(url as Uri, headers: _headers, body: body).then((response) {
+      return IResponse(response);
     });
   }
 };
@@ -192,9 +197,11 @@ final apiMap = {
     if (debug != null) {
       _debug = debug as bool;
     }
-    Map<String, String>? _headers;
-    if (headers != null) {
-      _headers = headers as Map<String, String>;
+    Map<String, String> _headers = {};
+    if (headers is Map) {
+      headers.forEach((key, value) {
+        _headers[key.toString()] = value.toString();
+      });
     }
     return Api.get(url as String, debug: _debug, headers: _headers);
   },
@@ -203,9 +210,11 @@ final apiMap = {
     if (debug != null) {
       _debug = debug as bool;
     }
-    Map<String, String>? _headers;
-    if (headers != null) {
-      _headers = headers as Map<String, String>;
+    Map<String, String> _headers = {};
+    if (headers is Map) {
+      headers.forEach((key, value) {
+        _headers[key.toString()] = value.toString();
+      });
     }
     return Api.post(url as String,
         body: body, debug: _debug, headers: _headers);

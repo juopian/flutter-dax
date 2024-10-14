@@ -1,10 +1,446 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:dax/dax.dart';
 import 'package:dax/lox_callable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'utils.dart';
+
+class IFile implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "file required in File";
+    }
+    return FileIns(File(arguments.first as String));
+  }
+}
+
+class FileIns implements File, LoxGetCallable {
+  final File _file;
+  FileIns(this._file);
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'writeAsStringSync':
+        return _file.writeAsStringSync;
+      case 'writeAsBytesSync':
+        return _file.writeAsBytesSync;
+      case 'writeAsString':
+        return _file.writeAsString;
+      case 'writeAsBytes':
+        return _file.writeAsBytes;
+      case 'path':
+        return _file.path;
+    }
+  }
+
+  @override
+  File get absolute => throw UnimplementedError();
+
+  @override
+  Future<File> copy(String newPath) {
+    throw UnimplementedError();
+  }
+
+  @override
+  File copySync(String newPath) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<File> create({bool recursive = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void createSync({bool recursive = false}) {}
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void deleteSync({bool recursive = false}) {}
+
+  @override
+  Future<bool> exists() {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool existsSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool get isAbsolute => throw UnimplementedError();
+
+  @override
+  Future<DateTime> lastAccessed() {
+    throw UnimplementedError();
+  }
+
+  @override
+  DateTime lastAccessedSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DateTime> lastModified() {
+    throw UnimplementedError();
+  }
+
+  @override
+  DateTime lastModifiedSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> length() {
+    throw UnimplementedError();
+  }
+
+  @override
+  int lengthSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<RandomAccessFile> open({FileMode mode = FileMode.read}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<int>> openRead([int? start, int? end]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  RandomAccessFile openSync({FileMode mode = FileMode.read}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  IOSink openWrite({FileMode mode = FileMode.write, Encoding encoding = utf8}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Directory get parent => throw UnimplementedError();
+
+  @override
+  String get path => throw UnimplementedError();
+
+  @override
+  Future<Uint8List> readAsBytes() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Uint8List readAsBytesSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<String>> readAsLines({Encoding encoding = utf8}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  List<String> readAsLinesSync({Encoding encoding = utf8}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> readAsString({Encoding encoding = utf8}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String readAsStringSync({Encoding encoding = utf8}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<File> rename(String newPath) {
+    throw UnimplementedError();
+  }
+
+  @override
+  File renameSync(String newPath) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> resolveSymbolicLinks() {
+    throw UnimplementedError();
+  }
+
+  @override
+  String resolveSymbolicLinksSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future setLastAccessed(DateTime time) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void setLastAccessedSync(DateTime time) {}
+
+  @override
+  Future setLastModified(DateTime time) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void setLastModifiedSync(DateTime time) {}
+
+  @override
+  Future<FileStat> stat() {
+    throw UnimplementedError();
+  }
+
+  @override
+  FileStat statSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri get uri => throw UnimplementedError();
+
+  @override
+  Stream<FileSystemEvent> watch(
+      {int events = FileSystemEvent.all, bool recursive = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<File> writeAsBytes(List<int> bytes,
+      {FileMode mode = FileMode.write, bool flush = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void writeAsBytesSync(List<int> bytes,
+      {FileMode mode = FileMode.write, bool flush = false}) {}
+
+  @override
+  Future<File> writeAsString(String contents,
+      {FileMode mode = FileMode.write,
+      Encoding encoding = utf8,
+      bool flush = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void writeAsStringSync(String contents,
+      {FileMode mode = FileMode.write,
+      Encoding encoding = utf8,
+      bool flush = false}) {}
+}
+
+class IResponse implements Response, LoxGetCallable {
+  final Response _response;
+  IResponse(this._response);
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'body':
+        return _response.body;
+      case 'bodyBytes':
+        return _response.bodyBytes;
+      case 'statusCode':
+        return _response.statusCode;
+      case 'contentLength':
+        return _response.contentLength;
+      case 'headers':
+        return _response.headers;
+    }
+  }
+
+  @override
+  String get body => _response.body;
+
+  @override
+  Uint8List get bodyBytes => _response.bodyBytes;
+
+  @override
+  int? get contentLength => _response.contentLength;
+
+  @override
+  Map<String, String> get headers => _response.headers;
+
+  @override
+  bool get isRedirect => _response.isRedirect;
+
+  @override
+  bool get persistentConnection => _response.persistentConnection;
+
+  @override
+  String? get reasonPhrase => _response.reasonPhrase;
+
+  @override
+  BaseRequest? get request => throw UnimplementedError();
+
+  @override
+  int get statusCode => _response.statusCode;
+}
+
+class IDirectory implements Directory, LoxGetCallable {
+  final Directory _directory;
+  IDirectory(this._directory);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'path':
+        return _directory.path;
+      case 'uri':
+        return _directory.uri;
+    }
+  }
+
+  @override
+  Directory get absolute => _directory.absolute;
+
+  @override
+  Future<Directory> create({bool recursive = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void createSync({bool recursive = false}) {}
+
+  @override
+  Future<Directory> createTemp([String? prefix]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Directory createTempSync([String? prefix]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void deleteSync({bool recursive = false}) {}
+
+  @override
+  Future<bool> exists() {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool existsSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool get isAbsolute => _directory.isAbsolute;
+
+  @override
+  Stream<FileSystemEntity> list(
+      {bool recursive = false, bool followLinks = true}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  List<FileSystemEntity> listSync(
+      {bool recursive = false, bool followLinks = true}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Directory get parent => _directory.parent;
+
+  @override
+  String get path => _directory.path;
+
+  @override
+  Future<Directory> rename(String newPath) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Directory renameSync(String newPath) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> resolveSymbolicLinks() {
+    throw UnimplementedError();
+  }
+
+  @override
+  String resolveSymbolicLinksSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<FileStat> stat() {
+    throw UnimplementedError();
+  }
+
+  @override
+  FileStat statSync() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri get uri => _directory.uri;
+
+  @override
+  Stream<FileSystemEvent> watch(
+      {int events = FileSystemEvent.all, bool recursive = false}) {
+    throw UnimplementedError();
+  }
+}
+
+class IgetApplicationDocumentsDirectory implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return getApplicationDocumentsDirectory().then((path) {
+      return IDirectory(path);
+    });
+  }
+}
+
+class IgetTemporaryDirectory implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return getTemporaryDirectory().then((path) {
+      return IDirectory(path);
+    });
+  }
+}
+
+class IgetDownloadsDirectory implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return getDownloadsDirectory().then((path) {
+      if (path == null) return null;
+      return IDirectory(path);
+    });
+  }
+}
 
 class IOffset implements DaxCallable, LoxGetCallable {
   @override
@@ -374,6 +810,39 @@ class IValueNotifier implements DaxCallable {
     }
     var value = arguments.first;
     return ValueNotifierIns(value!);
+  }
+}
+
+class CustomFloatingActionButtonLocation extends FloatingActionButtonLocation {
+  final FloatingActionButtonLocation baseLocation;
+  final Offset offset;
+
+  CustomFloatingActionButtonLocation(this.baseLocation,
+      {this.offset = Offset.zero});
+
+  @override
+  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
+    final Offset baseOffset = baseLocation.getOffset(scaffoldGeometry);
+    return baseOffset + offset;
+  }
+}
+
+class ICustomFloatingActionButtonLocation extends DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "value required in CustomFloatingActionButtonLocation";
+    }
+    var value = arguments.first;
+    Offset offset = Offset.zero;
+    var offsetParsed = namedArguments[const Symbol('offset')];
+    if (offsetParsed != null) {
+      offset = offsetParsed as Offset;
+    }
+    return CustomFloatingActionButtonLocation(
+        value as FloatingActionButtonLocation,
+        offset: offset);
   }
 }
 
@@ -1096,10 +1565,130 @@ class IShowDialog implements DaxCallable {
         barrierColor: barrierColor,
         useSafeArea: useSafeArea,
         useRootNavigator: useRootNavigator,
-        builder: (context) {
-          return (builder as LoxFunction).call(interpreter, [context], {})
+        builder: (ctx) {
+          return (builder as LoxFunction).call(interpreter, [ctx], {})
               as Widget;
         });
+  }
+}
+
+class IMaterialPageRoute implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    var builder = namedArguments[const Symbol('builder')];
+    if (builder == null) {
+      throw "builder required in MaterialPageRoute";
+    }
+    return MaterialPageRoute(builder: (ctx) {
+      return (builder as LoxFunction).call(interpreter, [ctx], {}) as Widget;
+    });
+  }
+}
+
+class TimerPeriodicBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 2) {
+      throw "arguments required in Timer";
+    }
+    return Timer.periodic(arguments.first as Duration, (timer) {
+      (arguments[1] as LoxFunction).call(interpreter, [TimerIns(timer)], {});
+    });
+  }
+}
+
+class ITimer implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'periodic':
+        return TimerPeriodicBuilder();
+    }
+  }
+
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 2) {
+      throw "arguments required in Timer";
+    }
+    return TimerIns(Timer(arguments.first as Duration, () {
+      (arguments[1] as LoxFunction).call(interpreter, [], {});
+    }));
+  }
+}
+
+class TimerIns implements Timer, LoxGetCallable {
+  final Timer _timer;
+  TimerIns(this._timer);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'cancel':
+        return _timer.cancel;
+      case 'isActive':
+        return _timer.isActive;
+      case 'tick':
+        return _timer.tick;
+    }
+  }
+
+  @override
+  void cancel() {
+    _timer.cancel();
+  }
+
+  @override
+  bool get isActive => _timer.isActive;
+
+  @override
+  int get tick => _timer.tick;
+}
+
+class IDuration implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    int days = 0;
+    var daysParsed = namedArguments[const Symbol('days')];
+    if (daysParsed != null) {
+      days = daysParsed as int;
+    }
+    int hours = 0;
+    var hoursParsed = namedArguments[const Symbol('hours')];
+    if (hoursParsed != null) {
+      hours = hoursParsed as int;
+    }
+    int minutes = 0;
+    var minutesParsed = namedArguments[const Symbol('minutes')];
+    if (minutesParsed != null) {
+      minutes = minutesParsed as int;
+    }
+    int seconds = 0;
+    var secondsParsed = namedArguments[const Symbol('seconds')];
+    if (secondsParsed != null) {
+      seconds = secondsParsed as int;
+    }
+    int milliseconds = 0;
+    var millisecondsParsed = namedArguments[const Symbol('milliseconds')];
+    if (millisecondsParsed != null) {
+      milliseconds = millisecondsParsed as int;
+    }
+    int microseconds = 0;
+    var microsecondsParsed = namedArguments[const Symbol('microseconds')];
+    if (microsecondsParsed != null) {
+      microseconds = microsecondsParsed as int;
+    }
+    return Duration(
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds,
+        microseconds: microseconds);
   }
 }
 

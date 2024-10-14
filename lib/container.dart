@@ -75,10 +75,25 @@ class IScaffold implements DaxCallable {
     if (resizeToAvoidBottomInsetParsed != null) {
       resizeToAvoidBottomInset = resizeToAvoidBottomInsetParsed as bool;
     }
+    Widget? drawer;
+    var drawerParsed = namedArguments[const Symbol('drawer')];
+    if (drawerParsed != null) {
+      drawer = drawerParsed as Widget;
+    }
+    Widget? endDrawer;
+    var endDrawerParsed = namedArguments[const Symbol('endDrawer')];
+    if (endDrawerParsed != null) {
+      endDrawer = endDrawerParsed as Widget;
+    }
+    double? drawerEdgeDragWidth =
+        parseDouble(namedArguments[const Symbol('drawerEdgeDragWidth')]);
     return Scaffold(
       appBar: appBar,
       body: body,
+      drawer: drawer,
+      endDrawer: endDrawer,
       primary: primary,
+      drawerEdgeDragWidth: drawerEdgeDragWidth,
       bottomNavigationBar: bottomNavigationBar,
       bottomSheet: bottomSheet,
       persistentFooterButtons: persistentFooterButtons,
@@ -88,6 +103,71 @@ class IScaffold implements DaxCallable {
       floatingActionButton: floatingActionButton,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       floatingActionButtonLocation: floatingActionButtonLocation,
+    );
+  }
+}
+
+class IMaterial implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Color? color;
+    var colorParsed = namedArguments[const Symbol('color')];
+    if (colorParsed != null) {
+      color = colorParsed as Color;
+    }
+    Color? shadowColor;
+    var shadowColorParsed = namedArguments[const Symbol('shadowColor')];
+    if (shadowColorParsed != null) {
+      shadowColor = shadowColorParsed as Color;
+    }
+    TextStyle? textStyle;
+    var textStyleParsed = namedArguments[const Symbol('textStyle')];
+    if (textStyleParsed != null) {
+      textStyle = textStyleParsed as TextStyle;
+    }
+    BorderRadiusGeometry? borderRadius;
+    var borderRadiusParsed = namedArguments[const Symbol('borderRadius')];
+    if (borderRadiusParsed != null) {
+      borderRadius = borderRadiusParsed as BorderRadiusGeometry;
+    }
+    ShapeBorder? shape;
+    var shapeParsed = namedArguments[const Symbol('shape')];
+    if (shapeParsed != null) {
+      shape = shapeParsed as ShapeBorder;
+    }
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    double elevation =
+        parseDouble(namedArguments[const Symbol('elevation')]) ?? 0;
+    return Material(
+        color: color,
+        shadowColor: shadowColor,
+        textStyle: textStyle,
+        elevation: elevation,
+        borderRadius: borderRadius,
+        shape: shape,
+        child: child);
+  }
+}
+
+class IDrawer implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    double elevation =
+        parseDouble(namedArguments[const Symbol('elevation')]) ?? 16.0;
+    return Drawer(
+      child: child,
+      elevation: elevation,
     );
   }
 }
@@ -466,7 +546,6 @@ class IFixedColumnWidth implements DaxCallable {
   }
 }
 
-
 class ITableCell implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
@@ -481,7 +560,7 @@ class ITableCell implements DaxCallable {
     if (verticalAlignmentParsed != null) {
       verticalAlignment = verticalAlignmentParsed as TableCellVerticalAlignment;
     }
-    
+
     return TableCell(
       child: child as Widget,
       verticalAlignment: verticalAlignment,
@@ -513,7 +592,8 @@ class ITable implements DaxCallable {
     if (columnWidthsParsed != null) {
       columnWidths = columnWidthsParsed as Map<int, TableColumnWidth>;
     }
-    TableCellVerticalAlignment defaultVerticalAlignment = TableCellVerticalAlignment.top;
+    TableCellVerticalAlignment defaultVerticalAlignment =
+        TableCellVerticalAlignment.top;
     var defaultVerticalAlignmentParsed =
         namedArguments[const Symbol('defaultVerticalAlignment')];
     if (defaultVerticalAlignmentParsed != null) {
