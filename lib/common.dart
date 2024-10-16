@@ -38,7 +38,7 @@ final doubleMap = {"infinity": double.infinity, "parse": double.parse};
 final intMap = {
   "parse": (Object value, {Object? radix}) {
     return int.parse(value.toString(), radix: radix as int? ?? 10);
-  }
+  },
 };
 
 final radiusMap = {
@@ -219,6 +219,19 @@ final apiMap = {
     return Api.post(url as String,
         body: body, debug: _debug, headers: _headers);
   },
+  "uploadFile": (Object? url,
+      {Object? headers, Object? imagePath, Object? fieldName}) {
+    Map<String, String> _headers = {};
+    if (headers is Map) {
+      headers.forEach((key, value) {
+        _headers[key.toString()] = value.toString();
+      });
+    }
+    return Api.uploadFile(url as String,
+        headers: _headers,
+        imagePath: imagePath as String,
+        fieldName: fieldName as String);
+  }
 };
 
 final mathMap = {

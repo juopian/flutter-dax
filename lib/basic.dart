@@ -1429,6 +1429,11 @@ class ITextField implements DaxCallable {
     if (expandsParsed != null) {
       expands = expandsParsed as bool;
     }
+    FocusNode? focusNode;
+    var focusNodeParsed = namedArguments[const Symbol('focusNode')];
+    if (focusNodeParsed != null) {
+      focusNode = focusNodeParsed as FocusNode;
+    }
     int? maxLength;
     var maxLengthParsed = namedArguments[const Symbol('maxLength')];
     if (maxLengthParsed != null) {
@@ -1439,6 +1444,7 @@ class ITextField implements DaxCallable {
     return TextField(
       enabled: enabled,
       autocorrect: autocorrect,
+      focusNode: focusNode,
       obscuringCharacter: obscureCharacter,
       autofocus: autofocus,
       obscureText: obscureText,
@@ -2162,6 +2168,7 @@ class IDaxStatefulWidget implements DaxCallable {
     if (klass == null) {
       throw "klass required in DaxStatefulWidget";
     }
+    print("here in DaxStatefulWidget ${arguments.last}");
     return DaxStatefulWidget(
       klass: klass as LoxClass,
       interpreter: interpreter,

@@ -351,6 +351,11 @@ class IInputDecoration implements DaxCallable {
     if (enabledBorderParsed != null) {
       enabledBorder = enabledBorderParsed as InputBorder;
     }
+    InputBorder? disabledBorder;
+    var disabledBorderParsed = namedArguments[const Symbol('disabledBorder')];
+    if (disabledBorderParsed != null) {
+      disabledBorder = disabledBorderParsed as InputBorder;
+    }
     InputBorder? errorBorder;
     var errorBorderParsed = namedArguments[const Symbol('errorBorder')];
     if (errorBorderParsed != null) {
@@ -399,6 +404,7 @@ class IInputDecoration implements DaxCallable {
         border: border,
         focusedBorder: focusedBorder,
         enabledBorder: enabledBorder,
+        disabledBorder: disabledBorder,
         prefixIconConstraints: prefixIconConstraints,
         suffixIconConstraints: suffixIconConstraints,
         errorBorder: errorBorder,
@@ -667,7 +673,15 @@ class IOutlineInputBorder implements DaxCallable {
   }
 }
 
-class IBorderSide implements DaxCallable {
+class IBorderSide implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'none':
+        return BorderSide.none;
+    }
+  }
+
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {

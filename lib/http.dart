@@ -90,8 +90,24 @@ class Api {
     if (debug) {
       logger.d('Request headers: $reqHeaders');
     }
-    var response = await http.post(Uri.parse(url),
-        headers: reqHeaders, body: body);
+    var response =
+        await http.post(Uri.parse(url), headers: reqHeaders, body: body);
     return handleResponse(response);
+  }
+
+  static Future<String> uploadFile(String url,
+      {Map<String, String>? headers,
+      String imagePath = '',
+      String fieldName = ''}) async {
+    var reqHeaders = await getHeaders(customHeaders: headers);
+
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    var pic = await http.MultipartFile.fromPath(fieldName, imagePath);
+    request.files.add(pic);
+    request.headers.addAll(reqHeaders);
+    var response = await request.send();
+
+    String responseString = await response.stream.bytesToString();
+    return responseString;
   }
 }

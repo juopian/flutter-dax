@@ -100,6 +100,8 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
   @override
   void didUpdateWidget(DaxStatefulWidget old) {
     super.didUpdateWidget(old);
+     _find(widget.klass.name)?.call(interpreter, widget.arguments, {});
+    updateUI();
     return;
   }
 
@@ -124,6 +126,7 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
     buildMethod = method.bind(instance);
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
+    interpreter.globals = widget.interpreter.globals;
     _find(widget.klass.name)?.call(interpreter, widget.arguments, {});
     interpreter.registerLocal("context", context);
     interpreter.registerLocal('Navigator', {
@@ -217,6 +220,13 @@ class _DaxPageState extends State<DaxPage> {
         renderedWidget = ErrorPage(errMsg: e.toString());
       }
     }
+  }
+
+  @override
+  void didUpdateWidget(DaxPage old) {
+    super.didUpdateWidget(old);
+    updateUI();
+    return;
   }
 
   @override
@@ -411,6 +421,7 @@ void _registerGlobalFunctions() {
   top.define("FlexColumnWidth", IFlexColumnWidth());
   top.define("FloatingActionButton", IFloatingActionButton());
   top.define("FloatingActionButtonLocation", IFloatingActionButtonLocation());
+  top.define("FocusNode", IFocusNode());
   top.define("FontWeight", IFontWeight());
   top.define(
       "getApplicationDocumentsDirectory", IgetApplicationDocumentsDirectory());
@@ -437,7 +448,10 @@ void _registerGlobalFunctions() {
   top.define("Offset", IOffset());
   top.define("OutlinedButton", IOutlinedButton());
   top.define("OutlineInputBorder", IOutlineInputBorder());
+  top.define("PackageInfo", IPackageInfo());
   top.define("Padding", IPadding());
+  top.define("PageController", IPageController());
+  top.define("PageView", IPageView());
   top.define("PopupMenuButton", IPopupMenuButton());
   top.define("PopupMenuFilter", IPopupMenuFilter());
   top.define("PopupMenuDivider", IPopupMenuDivider());

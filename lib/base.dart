@@ -9,8 +9,72 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'utils.dart';
+
+class FromPlatformBuilder implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return PackageInfo.fromPlatform().then((packageInfo) {
+      return PackageInfoIns(
+        appName_: packageInfo.appName,
+        packageName_: packageInfo.packageName,
+        version_: packageInfo.version,
+        buildNumber_: packageInfo.buildNumber,
+        buildSignature_: packageInfo.buildSignature,
+      );
+    });
+  }
+}
+
+class IPackageInfo implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'fromPlatform':
+        return FromPlatformBuilder();
+    }
+  }
+}
+
+class PackageInfoIns extends PackageInfo implements LoxGetCallable {
+  final String appName_;
+  final String packageName_;
+  final String version_;
+  final String buildNumber_;
+  final String buildSignature_;
+  PackageInfoIns({
+    required this.appName_,
+    required this.packageName_,
+    required this.version_,
+    required this.buildNumber_,
+    this.buildSignature_ = '',
+  }) : super(
+          appName: appName_,
+          packageName: packageName_,
+          version: version_,
+          buildNumber: buildNumber_,
+          buildSignature: buildSignature_,
+        );
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'appName':
+        return appName_;
+      case 'packageName':
+        return packageName_;
+      case 'version':
+        return version_;
+      case 'buildNumber':
+        return buildNumber_;
+      case 'buildSignature':
+        return buildSignature_;
+    }
+  }
+}
 
 class IFile implements DaxCallable {
   @override
@@ -1382,7 +1446,43 @@ class IAlignment implements DaxCallable, LoxGetCallable {
   }
 }
 
-class IColor implements DaxCallable {
+class ColorFromARGBBuilder implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 4) {
+      throw "Argument must be at least 4.";
+    }
+    return Color.fromARGB(arguments[0] as int, arguments[1] as int,
+        arguments[2] as int, arguments[3] as int);
+  }
+}
+
+class ColorFromRGBOBuilder implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 4) {
+      throw "Argument must be at least 4.";
+    }
+    return Color.fromRGBO(arguments[0] as int, arguments[1] as int,
+        arguments[2] as int, arguments[3] as double);
+  }
+}
+
+class IColor implements DaxCallable, LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'transparent':
+        return Colors.transparent;
+      case 'fromARGB':
+        return ColorFromARGBBuilder();
+      case 'fromRGBO':
+        return ColorFromRGBOBuilder();
+    }
+  }
+
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
@@ -1416,6 +1516,66 @@ class INetworkImage implements DaxCallable {
   }
 }
 
+class IFocusNode implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return FocusNodeIns();
+  }
+}
+
+class FocusNodeIns extends FocusNode implements LoxGetCallable {
+  FocusNodeIns() : super(debugLabel: 'FocusNodeIns');
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'unfocus':
+        return unfocus;
+      case 'hasFocus':
+        return hasFocus;
+      case 'canRequestFocus':
+        return canRequestFocus;
+      case 'requestFocus':
+        return requestFocus;
+      case 'dispose':
+        return dispose;
+    }
+  }
+}
+
+class IPageController implements DaxCallable {
+  @override
+  Object call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    int initialPage = 0;
+    var initialPageParsed = namedArguments[const Symbol('initialPage')];
+    if (initialPageParsed != null) {
+      initialPage = initialPageParsed as int;
+    }
+    return PageControllerIns(initialPage);
+  }
+}
+
+class PageControllerIns extends PageController implements LoxGetCallable {
+  final int index;
+  PageControllerIns(this.index) : super(initialPage: index);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'page':
+        return page;
+      case 'animateToPage':
+        return animateToPage;
+      case 'jumpToPage':
+        return jumpToPage;
+      case 'dispose':
+        return dispose;
+    }
+  }
+}
+
 class ITextEditingController implements DaxCallable {
   @override
   Object call(Interpreter interpreter, List<Object?> arguments,
@@ -1439,6 +1599,10 @@ class TextEditingControllerIns extends TextEditingController
     switch (name.lexeme) {
       case 'clear':
         return clear;
+      case 'text':
+        return text;
+      case 'dispose':
+        return dispose;
     }
   }
 

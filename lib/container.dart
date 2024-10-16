@@ -107,6 +107,55 @@ class IScaffold implements DaxCallable {
   }
 }
 
+class IPageView implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    List<Widget> children = const [];
+    var childrenParsed = namedArguments[const Symbol('children')];
+    if (childrenParsed != null) {
+      children = (childrenParsed as List).cast<Widget>();
+    }
+    Axis scrollDirection = Axis.horizontal;
+    var scrollDirectionParsed = namedArguments[const Symbol('scrollDirection')];
+    if (scrollDirectionParsed != null) {
+      scrollDirection = scrollDirectionParsed as Axis;
+    }
+    bool reverse = false;
+    var reverseParsed = namedArguments[const Symbol('reverse')];
+    if (reverseParsed != null) {
+      reverse = reverseParsed as bool;
+    }
+    PageController? controller;
+    var controllerParsed = namedArguments[const Symbol('controller')];
+    if (controllerParsed != null) {
+      controller = controllerParsed as PageController;
+    }
+    Function(int)? onPageChanged;
+    var onPageChangedParsed = namedArguments[const Symbol('onPageChanged')];
+    if (onPageChangedParsed != null) {
+      onPageChanged = (i) {
+        (onPageChangedParsed as LoxFunction).call(interpreter, [i], {});
+      };
+    }
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start;
+    var dragStartBehaviorParsed =
+        namedArguments[const Symbol('dragStartBehavior')];
+    if (dragStartBehaviorParsed != null) {
+      dragStartBehavior = dragStartBehaviorParsed as DragStartBehavior;
+    }
+
+    return PageView(
+      children: children,
+      scrollDirection: scrollDirection,
+      reverse: reverse,
+      onPageChanged: onPageChanged,
+      dragStartBehavior: dragStartBehavior,
+      controller: controller,
+    );
+  }
+}
+
 class IMaterial implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
@@ -587,10 +636,15 @@ class ITable implements DaxCallable {
     if (textDirectionParsed != null) {
       textDirection = textDirectionParsed as TextDirection;
     }
-    Map<int, TableColumnWidth>? columnWidths;
+    Map<int, TableColumnWidth> columnWidths = {};
     var columnWidthsParsed = namedArguments[const Symbol('columnWidths')];
     if (columnWidthsParsed != null) {
-      columnWidths = columnWidthsParsed as Map<int, TableColumnWidth>;
+      var mp = columnWidthsParsed as Map;
+      // loop k,v in mp
+      for (var entry in mp.entries) {
+        columnWidths[entry.key as int] = entry.value as TableColumnWidth;
+      }
+  
     }
     TableCellVerticalAlignment defaultVerticalAlignment =
         TableCellVerticalAlignment.top;
