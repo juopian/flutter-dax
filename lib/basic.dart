@@ -2168,7 +2168,6 @@ class IDaxStatefulWidget implements DaxCallable {
     if (klass == null) {
       throw "klass required in DaxStatefulWidget";
     }
-    print("here in DaxStatefulWidget ${arguments.last}");
     return DaxStatefulWidget(
       klass: klass as LoxClass,
       interpreter: interpreter,

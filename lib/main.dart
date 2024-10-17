@@ -1,8 +1,11 @@
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:dax/runtime_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dax/dax.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'base.dart';
 import 'icon.dart';
 import 'common.dart';
@@ -100,19 +103,19 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
   @override
   void didUpdateWidget(DaxStatefulWidget old) {
     super.didUpdateWidget(old);
-     _find(widget.klass.name)?.call(interpreter, widget.arguments, {});
+    find(widget.klass.name)?.call(interpreter, widget.arguments, {});
     updateUI();
     return;
   }
 
-  LoxFunction? _find(String functionName) {
+  LoxFunction? find(String functionName) {
     return widget.klass.findMethod(functionName)?.bind(instance);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _find('dispose')?.call(interpreter, [], {});
+    find('dispose')?.call(interpreter, [], {});
   }
 
   @override
@@ -126,31 +129,8 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
     buildMethod = method.bind(instance);
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
-    interpreter.globals = widget.interpreter.globals;
-    _find(widget.klass.name)?.call(interpreter, widget.arguments, {});
-    interpreter.registerLocal("context", context);
-    interpreter.registerLocal('Navigator', {
-      "pop": (Object? context) {
-        Navigator.pop(context as BuildContext);
-      },
-      "canPop": (Object? context) {
-        return Navigator.canPop(context as BuildContext);
-      },
-      "push": (Object? context, Object? route) async {
-        await Navigator.push(context as BuildContext, route as Route);
-        interpreter.registerLocal("context", context);
-      },
-      "pushNamed": (Object? context, Object? routeName,
-          {Object? arguments}) async {
-        await Navigator.pushNamed(context as BuildContext, routeName as String,
-            arguments: arguments);
-        interpreter.registerLocal("context", context);
-      },
-      "pushReplacement": (Object? context, Object? route) async {
-        Navigator.pushReplacement(context as BuildContext, route as Route);
-        interpreter.registerLocal("context", context);
-      },
-    });
+    interpreter.globals = Environment(widget.interpreter.globals);
+    find(widget.klass.name)?.call(interpreter, widget.arguments, {});
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
@@ -158,7 +138,7 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
           (arguments.first as LoxFunction).call(interpreter, [], {});
           updateUI();
         }));
-    _find('initState')?.call(interpreter, [], {});
+    find('initState')?.call(interpreter, [], {});
     renderedWidget = buildMethod!.call(interpreter, [], {}) as Widget;
   }
 
@@ -176,6 +156,7 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
   }
 }
 
+
 class DaxPage extends StatefulWidget {
   const DaxPage({Key? key, required this.args}) : super(key: key);
   final Map<String, dynamic> args;
@@ -190,21 +171,30 @@ class _DaxPageState extends State<DaxPage> {
   Interpreter interpreter = Interpreter();
 
   void run() async {
-    String code = '';
+    // String code = '';
+    // if (widget.args.containsKey('url')) {
+    //   code = await Api.get(widget.args['url']) as String;
+    //   setState(() {
+    //     loaded = true;
+    //   });
+    // } else if (widget.args.containsKey('snap')) {
+    //   code = widget.args['snap'] as String;
+    //   loaded = true;
+    // } else {
+    //   return;
+    // }
+    LoxReader? reader;
+    var prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt") ?? '';
     if (widget.args.containsKey('url')) {
-      code = await Api.get(widget.args['url']) as String;
+      reader = LoxReader(widget.args['url'], jwt: jwt);
+    }
+    Scanner scanner = Scanner(widget.args['snap'] ?? '', reader: reader);
+    try {
+      List<Token> tokens = await scanner.scanTokens();
       setState(() {
         loaded = true;
       });
-    } else if (widget.args.containsKey('snap')) {
-      code = widget.args['snap'] as String;
-      loaded = true;
-    } else {
-      return;
-    }
-    Scanner scanner = Scanner(code);
-    try {
-      List<Token> tokens = scanner.scanTokens();
       Parser parser = Parser(tokens);
       List<Stmt> statements = parser.parse();
       Resolver resolver = Resolver(interpreter);
@@ -223,16 +213,20 @@ class _DaxPageState extends State<DaxPage> {
   }
 
   @override
-  void didUpdateWidget(DaxPage old) {
-    super.didUpdateWidget(old);
-    updateUI();
-    return;
-  }
-
-  @override
   void dispose() {
     super.dispose();
     interpreter.invokeFunction('dispose');
+  }
+
+  void registerContext() {
+    interpreter.registerLocal("context", context);
+    interpreter.registerLocal(
+        "setState",
+        GenericLoxCallable(() => 1, (Interpreter interpreter,
+            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+          (arguments.first as LoxFunction).call(interpreter, [], {});
+          updateUI();
+        }));
   }
 
   @override
@@ -242,7 +236,7 @@ class _DaxPageState extends State<DaxPage> {
       _registerGlobalFunctions();
       _isApiRegistered = true;
     }
-    interpreter.registerLocal("context", context);
+    registerContext();
     interpreter.registerLocal('Navigator', {
       "canPop": (Object? context) {
         return Navigator.canPop(context as BuildContext);
@@ -261,17 +255,11 @@ class _DaxPageState extends State<DaxPage> {
         interpreter.registerLocal("context", context);
       },
       "pushReplacement": (Object? context, Object? route) async {
-        await Navigator.pushReplacement(context as BuildContext, route as Route);
+        await Navigator.pushReplacement(
+            context as BuildContext, route as Route);
         interpreter.registerLocal("context", context);
       },
     });
-    interpreter.registerLocal(
-        "setState",
-        GenericLoxCallable(() => 1, (Interpreter interpreter,
-            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-          (arguments.first as LoxFunction).call(interpreter, [], {});
-          updateUI();
-        }));
     run();
   }
 
