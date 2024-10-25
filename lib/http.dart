@@ -17,7 +17,7 @@ class Api {
   static Future<String?> getJwt() async {
     if (jwt.isEmpty) {
       var prefs = await SharedPreferences.getInstance();
-      jwt = prefs.getString("jwt") ?? '';
+      jwt = prefs.getString("jwt") ?? prefs.getString("idtoken") ?? '';
     }
     return jwt;
   }
@@ -43,28 +43,14 @@ class Api {
   }
 
   static Future<dynamic> handleResponse(http.Response response) async {
-    // String reqUrl = response.request!.url.toString();
-    // var prefs = await SharedPreferences.getInstance();
     if (response.statusCode == 200) {
-      // check if contain Last-Modified
-      // if (response.headers['last-modified'] != null) {
-      //   // save Last-Modified to sharedPreference
-      //   prefs.setString(reqUrl, response.body);
-      //   prefs.setString(
-      //       reqUrl + '_Last-Modified', response.headers['last-modified']!);
-      // }
-      // check Content-Type of response
       if (response.headers['content-type'] == 'application/json') {
         String utf8Body = utf8.decode(response.bodyBytes);
         return json.decode(utf8Body);
       } else {
         return response.body;
       }
-    } 
-    // else if (response.statusCode == 304) {
-    //  return  prefs.getString(reqUrl) ?? '';
-    // } 
-    else {
+    } else {
       throw Exception('Failed to load data because: ${response.body}');
     }
   }
@@ -74,11 +60,6 @@ class Api {
       bool debug = false,
       bool sendLastModified = false}) async {
     var reqHeaders = await getHeaders(customHeaders: headers);
-    // var prefs = await SharedPreferences.getInstance();
-    // if (sendLastModified && prefs.containsKey(url)) {
-    //   reqHeaders['If-Modified-Since'] =
-    //       prefs.getString(url + '_Last-Modified') ?? '';
-    // }
     if (debug) {
       logger.d('Request headers: $reqHeaders');
     }

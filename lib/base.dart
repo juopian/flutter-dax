@@ -739,7 +739,7 @@ class IUri implements DaxCallable, LoxGetCallable {
     Map<String, dynamic>? queryParameters;
     var queryParametersParsed = namedArguments[const Symbol('queryParameters')];
     if (queryParametersParsed != null) {
-      queryParameters = queryParametersParsed as Map<String, dynamic>;
+      queryParameters = Map<String, dynamic>.from(queryParametersParsed as Map);
     }
     return UriIns(Uri(
         scheme: scheme,

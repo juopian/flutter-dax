@@ -1,11 +1,11 @@
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:dax/runtime_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dax/dax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:collection/collection.dart';
 import 'base.dart';
 import 'icon.dart';
 import 'common.dart';
@@ -19,7 +19,6 @@ import 'popup.dart';
 import 'webview.dart';
 import 'imagepicker.dart';
 import 'shared_preference.dart';
-import 'http.dart';
 
 bool _isApiRegistered = false;
 
@@ -65,6 +64,7 @@ class DaxStatelessWidget extends StatelessWidget {
   final LoxClass klass;
   final Interpreter interpreter;
   final List<Object?> arguments;
+
   @override
   Widget build(BuildContext context) {
     LoxFunction? method = klass.findMethod('build');
@@ -94,22 +94,26 @@ class DaxStatefulWidget extends StatefulWidget {
   State<DaxStatefulWidget> createState() => _DaxStatefulWidgetState();
 }
 
-class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
+class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
+    with AutomaticKeepAliveClientMixin {
   Widget? renderedWidget;
   LoxFunction? buildMethod;
   Interpreter interpreter = Interpreter();
-  late LoxInstance instance;
+  LoxInstance? instance;
+  _DaxStatefulWidgetState();
 
   @override
   void didUpdateWidget(DaxStatefulWidget old) {
     super.didUpdateWidget(old);
-    find(widget.klass.name)?.call(interpreter, widget.arguments, {});
-    updateUI();
-    return;
+    var equals = const ListEquality();
+    if (!equals.equals(widget.arguments, old.arguments)) {
+      find(widget.klass.name)?.call(interpreter, widget.arguments, {});
+      updateUI();
+    }
   }
 
   LoxFunction? find(String functionName) {
-    return widget.klass.findMethod(functionName)?.bind(instance);
+    return widget.klass.findMethod(functionName)?.bind(instance!);
   }
 
   @override
@@ -126,7 +130,7 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
       return;
     }
     instance = LoxInstance(widget.klass);
-    buildMethod = method.bind(instance);
+    buildMethod = method.bind(instance!);
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
     interpreter.globals = Environment(widget.interpreter.globals);
@@ -152,10 +156,48 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return renderedWidget ?? Container();
   }
+
+  @override
+  bool get wantKeepAlive =>
+      widget.klass.findMethod('wantKeepAlive')?.call(interpreter, [], {})
+          as bool? ??
+      false;
 }
 
+class NewLoxReader extends LoxReader {
+  final String url;
+  NewLoxReader(this.url) : super(url);
+  @override
+  Future<String> read() async {
+    if (pathOrUrl.startsWith("http")) {
+      var prefs = await SharedPreferences.getInstance();
+      Map<String, String> headers = {
+        'If-Modified-Since': prefs.getString(pathOrUrl + '_Last-Modified') ?? ''
+      };
+      var jwt = prefs.getString("jwt") ?? prefs.getString("idtoken") ?? '';
+      headers.addAll({'Authorization': 'Bearer $jwt'});
+      var response = await http.get(Uri.parse(pathOrUrl), headers: headers);
+      String reqUrl = response.request!.url.toString();
+      if (response.statusCode > 299) {
+        if (response.statusCode == 304) {
+          return prefs.getString(reqUrl) ?? '';
+        }
+        return "fun build(){return Center(child: Text(\"${response.body}\"));}";
+      }
+      if (response.headers['last-modified'] != null) {
+        prefs.setString(reqUrl, response.body);
+        prefs.setString(
+            reqUrl + '_Last-Modified', response.headers['last-modified']!);
+      }
+      return response.body;
+    }
+    return Future.value(
+        "fun build(){return Center(child: Text(\"invalid url\"));}");
+  }
+}
 
 class DaxPage extends StatefulWidget {
   const DaxPage({Key? key, required this.args}) : super(key: key);
@@ -171,25 +213,12 @@ class _DaxPageState extends State<DaxPage> {
   Interpreter interpreter = Interpreter();
 
   void run() async {
-    // String code = '';
-    // if (widget.args.containsKey('url')) {
-    //   code = await Api.get(widget.args['url']) as String;
-    //   setState(() {
-    //     loaded = true;
-    //   });
-    // } else if (widget.args.containsKey('snap')) {
-    //   code = widget.args['snap'] as String;
-    //   loaded = true;
-    // } else {
-    //   return;
-    // }
-    LoxReader? reader;
-    var prefs = await SharedPreferences.getInstance();
-    var jwt = prefs.getString("jwt") ?? '';
+    NewLoxReader? reader;
     if (widget.args.containsKey('url')) {
-      reader = LoxReader(widget.args['url'], jwt: jwt);
+      reader = NewLoxReader(widget.args['url']);
     }
-    Scanner scanner = Scanner(widget.args['snap'] ?? '', reader: reader);
+    Scanner scanner =
+        Scanner(widget.args['snap'] ?? '', reader: reader, loadedFiles: []);
     try {
       List<Token> tokens = await scanner.scanTokens();
       setState(() {

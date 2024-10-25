@@ -11,19 +11,19 @@ class IImagePicker implements DaxCallable {
 }
 
 class ImagePickerXfile implements LoxGetCallable {
-  final XFile xfile;
+  final PickedFile xfile;
   ImagePickerXfile(this.xfile);
   @override
   Object? get(Token name) {
     switch (name.lexeme) {
       case 'path':
         return xfile.path;
-      case 'name':
-        return xfile.name;
-      case 'legnth':
-        return xfile.length;
-      case 'mimeType':
-        return xfile.mimeType;
+      // case 'name':
+      //   return xfile.name;
+      // case 'legnth':
+      //   return xfile.length;
+      // case 'mimeType':
+      //   return xfile.mimeType;
       case 'readAsBytes':
         return xfile.readAsBytes;
     }
@@ -44,7 +44,7 @@ class PickImage implements DaxCallable {
       throw "source required in ImagePicker";
     }
     return picker
-        .pickImage(
+        .getImage(
             source: source as ImageSource,
             maxHeight: maxHeight,
             maxWidth: maxWidth)

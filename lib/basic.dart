@@ -1770,8 +1770,21 @@ class ISnackBarAction implements DaxCallable {
     if (onPressed == null) {
       throw "onPressed required in SnackBarAction";
     }
+    Color? textColor;
+    var textColorParsed = namedArguments[const Symbol('textColor')];
+    if (textColorParsed != null) {
+      textColor = textColorParsed as Color;
+    }
+    Color? disabledTextColor;
+    var disabledTextColorParsed =
+        namedArguments[const Symbol('disabledTextColor')];
+    if (disabledTextColorParsed != null) {
+      disabledTextColor = disabledTextColorParsed as Color;
+    }
     return SnackBarAction(
       label: label as String,
+      textColor: textColor,
+      disabledTextColor: disabledTextColor,
       onPressed: () {
         (onPressed as LoxFunction).call(interpreter, [], {});
       },

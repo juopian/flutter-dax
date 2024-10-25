@@ -384,7 +384,6 @@ final locationPermissionMap = {
   "always": LocationPermission.always,
   "denied": LocationPermission.denied,
   "whenInUse": LocationPermission.whileInUse,
-  "unableToDetermine": LocationPermission.unableToDetermine
 };
 
 final imageSourceMap = {
