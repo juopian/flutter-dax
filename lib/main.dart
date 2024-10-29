@@ -518,6 +518,7 @@ void _registerGlobalFunctions() {
   top.define("UnderlineInputBorder", IUnderlineInputBorder());
   top.define("ValueNotifier", IValueNotifier());
   top.define("ValueListenableBuilder", IValueListenableBuilder());
+  top.define("VerticalDivider", IVerticalDivider());
   top.define("WebView", IWebView());
   top.define("Wrap", IWrap());
 }

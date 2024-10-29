@@ -1496,6 +1496,29 @@ class IDivider implements DaxCallable {
   }
 }
 
+class IVerticalDivider implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    double? width = parseDouble(namedArguments[const Symbol('width')]);
+    double? thickness = parseDouble(namedArguments[const Symbol('thickness')]);
+    double? indent = parseDouble(namedArguments[const Symbol('indent')]);
+    double? endIndent = parseDouble(namedArguments[const Symbol('endIndent')]);
+    Color? color;
+    var colorParsed = namedArguments[const Symbol('color')];
+    if (colorParsed != null) {
+      color = colorParsed as Color;
+    }
+    return VerticalDivider(
+      width: width,
+      thickness: thickness,
+      indent: indent,
+      endIndent: endIndent,
+      color: color,
+    );
+  }
+}
+
 class IBottomNavigationBarItem implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,

@@ -192,9 +192,6 @@ final platformMap = {
 };
 
 final apiMap = {
-  "jwt": Api.jwt,
-  "version": Api.version,
-  "buildNumber": Api.buildNumber,
   "get": (Object? url, {Object? debug, Object? headers}) {
     bool _debug = false;
     if (debug != null) {
