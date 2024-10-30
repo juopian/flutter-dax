@@ -59,11 +59,13 @@ class DaxStatelessWidget extends StatelessWidget {
       {Key? key,
       required this.klass,
       required this.interpreter,
-      required this.arguments})
+      required this.arguments,
+      required this.namedArguments})
       : super(key: key);
   final LoxClass klass;
   final Interpreter interpreter;
   final List<Object?> arguments;
+  final Map<Symbol, Object?> namedArguments;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class DaxStatelessWidget extends StatelessWidget {
     LoxInstance instance = LoxInstance(klass);
     LoxFunction? initializer = klass.findMethod(klass.name); // init
     if (initializer != null) {
-      initializer.bind(instance).call(interpreter, arguments, {});
+      initializer.bind(instance).call(interpreter, arguments, namedArguments);
     }
     return method.bind(instance).call(interpreter, [], {}) as Widget;
   }
@@ -85,11 +87,13 @@ class DaxStatefulWidget extends StatefulWidget {
       {Key? key,
       required this.klass,
       required this.interpreter,
-      required this.arguments})
+      required this.arguments,
+      required this.namedArguments})
       : super(key: key);
   final LoxClass klass;
   final Interpreter interpreter;
   final List<Object?> arguments;
+  final Map<Symbol, Object?> namedArguments;
   @override
   State<DaxStatefulWidget> createState() => _DaxStatefulWidgetState();
 }
@@ -134,7 +138,7 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
     interpreter.globals = Environment(widget.interpreter.globals);
-    find(widget.klass.name)?.call(interpreter, widget.arguments, {});
+    find(widget.klass.name)?.call(interpreter, widget.arguments, widget.namedArguments);
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,

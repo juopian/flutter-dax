@@ -2200,7 +2200,7 @@ class IDaxStatefulWidget implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    var klass = namedArguments[const Symbol('klass')];
+    var klass = namedArguments.remove(const Symbol('_klass_'));
     if (klass == null) {
       throw "klass required in DaxStatefulWidget";
     }
@@ -2208,6 +2208,7 @@ class IDaxStatefulWidget implements DaxCallable {
       klass: klass as LoxClass,
       interpreter: interpreter,
       arguments: arguments,
+      namedArguments: namedArguments,
     );
   }
 }
@@ -2216,13 +2217,14 @@ class IDaxStatelessWidget implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-    var klass = namedArguments[const Symbol('klass')];
+    var klass = namedArguments.remove(const Symbol('_klass_'));
     if (klass == null) {
       throw "klass required in DaxStatefulWidget";
     }
     return DaxStatelessWidget(
         klass: klass as LoxClass,
         interpreter: interpreter,
-        arguments: arguments);
+        arguments: arguments,
+        namedArguments: namedArguments);
   }
 }
