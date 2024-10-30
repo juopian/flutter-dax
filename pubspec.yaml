@@ -30,10 +30,10 @@ dependencies:
   flutter:
     sdk: flutter
   dax:  
-    # git:
-    #   url: git@i-git.gzuni.com:xiecp/dax.git
-    #   ref: master
-    path: ../
+    git:
+      url: git@i-git.gzuni.com:xiecp/dax.git
+      ref: master
+    # path: ../
 
 
   # The following adds the Cupertino Icons font to your application.
