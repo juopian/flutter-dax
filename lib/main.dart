@@ -138,7 +138,8 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
     interpreter.globals = Environment(widget.interpreter.globals);
-    find(widget.klass.name)?.call(interpreter, widget.arguments, widget.namedArguments);
+    find(widget.klass.name)
+        ?.call(interpreter, widget.arguments, widget.namedArguments);
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
@@ -182,19 +183,21 @@ class NewLoxReader extends LoxReader {
         'If-Modified-Since': prefs.getString(pathOrUrl + '_Last-Modified') ?? ''
       };
       var jwt = prefs.getString("jwt") ?? prefs.getString("idtoken") ?? '';
+      var sid = prefs.getString("sid") ?? '';
+      var q = sid.isEmpty ? '' : '?sid=$sid';
       headers.addAll({'Authorization': 'Bearer $jwt'});
-      var response = await http.get(Uri.parse(pathOrUrl), headers: headers);
-      String reqUrl = response.request!.url.toString();
+      var response =
+          await http.get(Uri.parse(pathOrUrl + q), headers: headers);
       if (response.statusCode > 299) {
         if (response.statusCode == 304) {
-          return prefs.getString(reqUrl) ?? '';
+          return prefs.getString(pathOrUrl) ?? '';
         }
         return "fun build(){return Center(child: Text(\"${response.body}\"));}";
       }
       if (response.headers['last-modified'] != null) {
-        prefs.setString(reqUrl, response.body);
+        prefs.setString(pathOrUrl, response.body);
         prefs.setString(
-            reqUrl + '_Last-Modified', response.headers['last-modified']!);
+            pathOrUrl + '_Last-Modified', response.headers['last-modified']!);
       }
       return response.body;
     }
