@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:async';
 import 'package:dax/dax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -2200,7 +2201,6 @@ class IDaxStatefulWidget implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
       Map<Symbol, Object?> namedArguments) {
-        print(namedArguments);
     var klass = namedArguments.remove(const Symbol('_klass_'));
     if (klass == null) {
       throw "klass required in DaxStatefulWidget";
@@ -2227,5 +2227,132 @@ class IDaxStatelessWidget implements DaxCallable {
         interpreter: interpreter,
         arguments: arguments,
         namedArguments: namedArguments);
+  }
+}
+
+class AsyncSnapshotIns implements LoxGetCallable {
+  final AsyncSnapshot snapshot;
+
+  AsyncSnapshotIns(this.snapshot);
+
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'data':
+        return snapshot.data;
+      case 'error':
+        return snapshot.error;
+      case 'hasError':
+        return snapshot.hasError;
+      case 'hasData':
+        return snapshot.hasData;
+      case 'connectionState':
+        return snapshot.connectionState;
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+}
+
+class StreamControllerIns implements LoxGetCallable {
+  final StreamController streamController;
+  StreamControllerIns(this.streamController);
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'stream':
+        return streamController.stream;
+      case 'add':
+        return streamController.add;
+      case 'close':
+        return streamController.close();
+      case 'isClosed':
+        return streamController.isClosed;
+      case 'isPaused':
+        return streamController.isPaused;
+      case 'hasListener':
+        return streamController.hasListener;
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+}
+
+class IStreamController extends DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return StreamControllerIns(StreamController());
+  }
+}
+
+class IStreamBuilder extends DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Stream? stream;
+    var streamParsed = namedArguments[const Symbol('stream')];
+    if (streamParsed != null) {
+      stream = streamParsed as Stream;
+    }
+    var builder = namedArguments[const Symbol('builder')];
+    if (builder == null) {
+      throw "builder required in StreamBuilder";
+    }
+    var initialData = namedArguments[const Symbol('initialData')];
+    return StreamBuilder(
+      stream: stream,
+      initialData: initialData,
+      builder: (context, snapshot) {
+        return (builder as LoxFunction).call(
+            interpreter, [context, AsyncSnapshotIns(snapshot)], {}) as Widget;
+      },
+    );
+  }
+}
+
+class IStream implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'periodic':
+        return StreamPeriodicBuilder();
+    }
+    throw "Unknown property: ${name.lexeme}";
+  }
+}
+
+class StreamPeriodicBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.length < 2) {
+      throw "2 arguments required in StreamPeriodicBuilder";
+    }
+    var period = arguments[0] as Duration;
+    return Stream.periodic(period, (i) {
+      return (arguments[1] as LoxFunction).call(interpreter, [i], {});
+    });
+  }
+}
+
+class FutureDelayedBuilder implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "1 argument required in FutureDelayedBuilder";
+    }
+    var delay = arguments[0] as Duration;
+    return Future.delayed(delay);
+  }
+}
+
+class IFuture implements LoxGetCallable {
+  @override
+  Object? get(Token name) {
+    switch (name.lexeme) {
+      case 'delayed':
+        return FutureDelayedBuilder();
+    }
+    throw "Unknown property: ${name.lexeme}";
   }
 }

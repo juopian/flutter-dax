@@ -110,8 +110,12 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
   void didUpdateWidget(DaxStatefulWidget old) {
     super.didUpdateWidget(old);
     var equals = const ListEquality();
+    // print("new args: ${widget.arguments}");
+    // print("old args: ${old.arguments}");
+    // print("klass ${widget.klass.name}, ${widget.namedArguments}");
+    // print(widget.arguments.toString() == old.arguments.toString());
     if (!equals.equals(widget.arguments, old.arguments)) {
-      find(widget.klass.name)?.call(interpreter, widget.arguments, {});
+      find(widget.klass.name)?.call(interpreter, widget.arguments, widget.namedArguments);
       updateUI();
     }
   }
@@ -140,6 +144,7 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
     interpreter.globals = Environment(widget.interpreter.globals);
     find(widget.klass.name)
         ?.call(interpreter, widget.arguments, widget.namedArguments);
+    interpreter.registerLocal("context", context);
     interpreter.registerLocal(
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
@@ -260,6 +265,7 @@ class _DaxPageState extends State<DaxPage> {
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
             List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+              print("aaaa");
           (arguments.first as LoxFunction).call(interpreter, [], {});
           updateUI();
         }));
@@ -347,6 +353,7 @@ void _registerGlobalFunctions() {
   top.define("BorderStyle", borderStyleMap);
   top.define("Clip", clipBehaviorMap);
   top.define("Clipboard", clipboardMap);
+  top.define("ConnectionState", connectionStateMap);
   top.define("CrossAxisAlignment", crossAxisAlignmentMap);
   top.define("DismissDirection", dismissDirectionMap);
   top.define("double", doubleMap);
@@ -447,6 +454,7 @@ void _registerGlobalFunctions() {
   top.define("FloatingActionButtonLocation", IFloatingActionButtonLocation());
   top.define("FocusNode", IFocusNode());
   top.define("FontWeight", IFontWeight());
+  top.define("Future", IFuture());
   top.define(
       "getApplicationDocumentsDirectory", IgetApplicationDocumentsDirectory());
   top.define("getDownloadsDirectory", IgetDownloadsDirectory());
@@ -501,6 +509,9 @@ void _registerGlobalFunctions() {
   top.define("SnackBarAction", ISnackBarAction());
   top.define("Stack", IStack());
   top.define("StadiumBorder", IStadiumBorder());
+  top.define("Stream", IStream());
+  top.define("StreamBuilder", IStreamBuilder());
+  top.define("StreamController", IStreamController());
   top.define("Switch", ISwitch());
   top.define("showDialog", IShowDialog());
   top.define("showModalBottomSheet", IShowModalBottomSheet());

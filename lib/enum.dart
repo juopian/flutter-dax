@@ -398,3 +398,10 @@ final tableCellVerticalAlignmentMap ={
   "file": TableCellVerticalAlignment.fill,
   "baseline": TableCellVerticalAlignment.baseline,
 };
+
+final connectionStateMap = {
+  "active": ConnectionState.active,
+  "waiting": ConnectionState.waiting,
+  "done": ConnectionState.done,
+  "none": ConnectionState.none,
+};
