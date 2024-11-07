@@ -110,12 +110,11 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
   void didUpdateWidget(DaxStatefulWidget old) {
     super.didUpdateWidget(old);
     var equals = const ListEquality();
-    // print("new args: ${widget.arguments}");
-    // print("old args: ${old.arguments}");
-    // print("klass ${widget.klass.name}, ${widget.namedArguments}");
-    // print(widget.arguments.toString() == old.arguments.toString());
-    if (!equals.equals(widget.arguments, old.arguments)) {
-      find(widget.klass.name)?.call(interpreter, widget.arguments, widget.namedArguments);
+    var mapEquality = const MapEquality<Symbol, Object?>();
+    if (!equals.equals(widget.arguments, old.arguments) ||
+        !mapEquality.equals(widget.namedArguments, old.namedArguments)) {
+      find(widget.klass.name)
+          ?.call(interpreter, widget.arguments, widget.namedArguments);
       updateUI();
     }
   }
@@ -138,20 +137,27 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
       return;
     }
     instance = LoxInstance(widget.klass);
+    instance!.setField(
+        'setState',
+        GenericLoxCallable(() => 1, (Interpreter interpreter,
+            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+          (arguments.first as LoxFunction).call(interpreter, [], {});
+          updateUI();
+        }));
     buildMethod = method.bind(instance!);
     interpreter.environment = buildMethod!.closure;
     interpreter.locals = widget.interpreter.locals;
     interpreter.globals = Environment(widget.interpreter.globals);
     find(widget.klass.name)
         ?.call(interpreter, widget.arguments, widget.namedArguments);
-    interpreter.registerLocal("context", context);
-    interpreter.registerLocal(
-        "setState",
-        GenericLoxCallable(() => 1, (Interpreter interpreter,
-            List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-          (arguments.first as LoxFunction).call(interpreter, [], {});
-          updateUI();
-        }));
+    // interpreter.registerLocal("context", context);
+    // interpreter.registerLocal(
+    //     "setState",
+    //     GenericLoxCallable(() => 1, (Interpreter interpreter,
+    //         List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
+    //       (arguments.first as LoxFunction).call(interpreter, [], {});
+    //       updateUI();
+    //     }));
     find('initState')?.call(interpreter, [], {});
     renderedWidget = buildMethod!.call(interpreter, [], {}) as Widget;
   }
@@ -191,8 +197,7 @@ class NewLoxReader extends LoxReader {
       var sid = prefs.getString("sid") ?? '';
       var q = sid.isEmpty ? '' : '?sid=$sid';
       headers.addAll({'Authorization': 'Bearer $jwt'});
-      var response =
-          await http.get(Uri.parse(pathOrUrl + q), headers: headers);
+      var response = await http.get(Uri.parse(pathOrUrl + q), headers: headers);
       if (response.statusCode > 299) {
         if (response.statusCode == 304) {
           return prefs.getString(pathOrUrl) ?? '';
@@ -265,7 +270,6 @@ class _DaxPageState extends State<DaxPage> {
         "setState",
         GenericLoxCallable(() => 1, (Interpreter interpreter,
             List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-              print("aaaa");
           (arguments.first as LoxFunction).call(interpreter, [], {});
           updateUI();
         }));
