@@ -109,10 +109,9 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
   @override
   void didUpdateWidget(DaxStatefulWidget old) {
     super.didUpdateWidget(old);
-    var equals = const ListEquality();
-    var mapEquality = const MapEquality<Symbol, Object?>();
-    if (!equals.equals(widget.arguments, old.arguments) ||
-        !mapEquality.equals(widget.namedArguments, old.namedArguments)) {
+    if (widget.arguments.toString() != old.arguments.toString() ||
+        widget.namedArguments.values.toString() !=
+            old.namedArguments.values.toString()) {
       find(widget.klass.name)
           ?.call(interpreter, widget.arguments, widget.namedArguments);
       updateUI();
