@@ -2056,6 +2056,25 @@ class IClipboardData implements DaxCallable {
   }
 }
 
+class IUniqueKey implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    return UniqueKey();
+  }
+}
+
+class IValueKey implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    if (arguments.isEmpty) {
+      throw "Argument must be at least 1.";
+    }
+    return ValueKey(arguments[0]);
+  }
+}
+
 class IRegExp implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,

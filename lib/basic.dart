@@ -2205,7 +2205,13 @@ class IDaxStatefulWidget implements DaxCallable {
     if (klass == null) {
       throw "klass required in DaxStatefulWidget";
     }
+    Key? key;
+    var keyParsed = namedArguments[const Symbol('key')];
+    if (keyParsed != null) {
+      key = keyParsed as Key;
+    }
     return DaxStatefulWidget(
+      key: key,
       klass: klass as LoxClass,
       interpreter: interpreter,
       arguments: arguments,

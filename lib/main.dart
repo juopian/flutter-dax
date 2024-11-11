@@ -538,7 +538,9 @@ void _registerGlobalFunctions() {
   top.define("Transform", ITransform());
   top.define("Uri", IUri());
   top.define("UnderlineInputBorder", IUnderlineInputBorder());
+  top.define("UniqueKey", IUniqueKey());
   top.define("ValueNotifier", IValueNotifier());
+  top.define("ValueKey", IValueKey());
   top.define("ValueListenableBuilder", IValueListenableBuilder());
   top.define("VerticalDivider", IVerticalDivider());
   top.define("WebView", IWebView());
