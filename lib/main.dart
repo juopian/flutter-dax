@@ -470,6 +470,7 @@ void _registerGlobalFunctions() {
   top.define("ImagePicker", IImagePicker());
   top.define("InputDecoration", IInputDecoration());
   top.define("IntrinsicColumnWidth", IIntrinsicColumnWidth());
+  top.define("IntrinsicHeight", IIntrinsicHeight());
   top.define("JavascriptChannel", IJavascriptChannel());
   top.define("launchUrl", ILaunchUrl());
   top.define("LinearGradient", ILinearGradient());

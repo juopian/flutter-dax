@@ -75,6 +75,19 @@ class IRow implements DaxCallable {
   }
 }
 
+class IIntrinsicHeight implements DaxCallable {
+  @override
+  Object? call(Interpreter interpreter, List<Object?> arguments,
+      Map<Symbol, Object?> namedArguments) {
+    Widget? child;
+    var childParsed = namedArguments[const Symbol('child')];
+    if (childParsed != null) {
+      child = childParsed as Widget;
+    }
+    return IntrinsicHeight(child: child);
+  }
+}
+
 class IColumn implements DaxCallable {
   @override
   Object? call(Interpreter interpreter, List<Object?> arguments,
