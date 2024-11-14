@@ -216,12 +216,12 @@ class NewLoxReader extends LoxReader {
 }
 
 mixin Logger<T extends StatefulWidget> on State<T> {
-  String url =
+  String logUrl =
       'https://www-as.gzuni.com/apps/locomobile/sbox/gzapp-new/fn/fn51_1';
   String? pageId;
   void saveLogWhenInitializing() {
     if (pageId == null || pageId!.isEmpty) return;
-    Api.post(url, body: {'pageId': pageId}).then((result) {
+    Api.post(logUrl, body: {'pageId': pageId}).then((result) {
       logger.d('save : $result');
     });
   }
@@ -298,7 +298,7 @@ class _DaxPageState extends State<DaxPage> with Logger {
       pageId = Uri.parse(widget.args['url']).path;
     }
     if (widget.args.containsKey('logger')) {
-      url = widget.args['logger'];
+      logUrl = widget.args['logger'];
     }
     super.initState();
     if (!_isApiRegistered) {
