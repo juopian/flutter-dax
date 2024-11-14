@@ -76,7 +76,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "2612bad383f4243c128499accec1a00c1f6309c8"
+      resolved-ref: "2b4429fe760dfd158997a06542a171793d9e141e"
       url: "git@i-git.gzuni.com:xiecp/dax.git"
     source: git
     version: "1.0.0"

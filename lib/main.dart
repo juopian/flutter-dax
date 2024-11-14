@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:dax/dax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:collection/collection.dart';
 import 'base.dart';
 import 'icon.dart';
 import 'common.dart';
@@ -17,6 +16,7 @@ import 'scroll.dart';
 import 'container.dart';
 import 'popup.dart';
 import 'webview.dart';
+import 'http.dart';
 import 'imagepicker.dart';
 import 'shared_preference.dart';
 
@@ -215,6 +215,24 @@ class NewLoxReader extends LoxReader {
   }
 }
 
+mixin Logger<T extends StatefulWidget> on State<T> {
+  String url =
+      'https://www-as.gzuni.com/apps/locomobile/sbox/gzapp-new/fn/fn51_1';
+  String? pageId;
+  void saveLogWhenInitializing() {
+    if (pageId == null || pageId!.isEmpty) return;
+    Api.post(url, body: {'pageId': pageId}).then((result) {
+      logger.d('save : $result');
+    });
+  }
+
+  @override
+  void initState() {
+    saveLogWhenInitializing();
+    super.initState();
+  }
+}
+
 class DaxPage extends StatefulWidget {
   const DaxPage({Key? key, required this.args}) : super(key: key);
   final Map<String, dynamic> args;
@@ -222,7 +240,7 @@ class DaxPage extends StatefulWidget {
   State<DaxPage> createState() => _DaxPageState();
 }
 
-class _DaxPageState extends State<DaxPage> {
+class _DaxPageState extends State<DaxPage> with Logger {
   Widget? renderedWidget;
   bool hasInitialized = false;
   bool loaded = false;
@@ -276,6 +294,12 @@ class _DaxPageState extends State<DaxPage> {
 
   @override
   void initState() {
+    if (widget.args.containsKey('url')) {
+      pageId = Uri.parse(widget.args['url']).path;
+    }
+    if (widget.args.containsKey('logger')) {
+      url = widget.args['logger'];
+    }
     super.initState();
     if (!_isApiRegistered) {
       _registerGlobalFunctions();
