@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'utils.dart';
 
@@ -23,7 +23,6 @@ class FromPlatformBuilder implements DaxCallable {
         packageName_: packageInfo.packageName,
         version_: packageInfo.version,
         buildNumber_: packageInfo.buildNumber,
-        buildSignature_: packageInfo.buildSignature,
       );
     });
   }
@@ -56,7 +55,6 @@ class PackageInfoIns extends PackageInfo implements LoxGetCallable {
           packageName: packageName_,
           version: version_,
           buildNumber: buildNumber_,
-          buildSignature: buildSignature_,
         );
 
   @override
