@@ -294,8 +294,11 @@ class _DaxPageState extends State<DaxPage> with Logger {
 
   @override
   void initState() {
+    Map<String,String> queryParameters = {};
     if (widget.args.containsKey('url')) {
-      pageId = Uri.parse(widget.args['url']).path;
+      var urlParsed = Uri.parse(widget.args['url']);
+      pageId = urlParsed.path;
+      queryParameters = urlParsed.queryParameters;
     }
     if (widget.args.containsKey('logger')) {
       logUrl = widget.args['logger'];
@@ -306,6 +309,7 @@ class _DaxPageState extends State<DaxPage> with Logger {
       _isApiRegistered = true;
     }
     registerContext();
+    interpreter.registerLocal("queryParameters", queryParameters);
     interpreter.registerLocal('Navigator', {
       "canPop": (Object? context) {
         return Navigator.canPop(context as BuildContext);
