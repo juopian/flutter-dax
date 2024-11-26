@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "1.3.1"
   charts_common:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: charts_common
       url: "https://pub.dartlang.org"
@@ -74,11 +74,9 @@ packages:
   dax:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "2b4429fe760dfd158997a06542a171793d9e141e"
-      url: "git@i-git.gzuni.com:xiecp/dax.git"
-    source: git
+      name: dax
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0"
   fake_async:
     dependency: transitive
@@ -299,7 +297,7 @@ packages:
     source: hosted
     version: "1.0.5"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.dartlang.org"
