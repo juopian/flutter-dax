@@ -21,6 +21,7 @@ import 'imagepicker.dart';
 import 'shared_preference.dart';
 
 bool _isApiRegistered = false;
+String logUrl = '';
 
 class ErrorPage extends StatelessWidget {
   final String errMsg;
@@ -33,7 +34,7 @@ class ErrorPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         foregroundColor: Colors.white,
-        title: const Text("出错啦!"),
+        title: const Text("Error happened!"),
       ),
       body: Center(
         child: Column(
@@ -149,14 +150,6 @@ class _DaxStatefulWidgetState extends State<DaxStatefulWidget>
     interpreter.globals = Environment(widget.interpreter.globals);
     find(widget.klass.name)
         ?.call(interpreter, widget.arguments, widget.namedArguments);
-    // interpreter.registerLocal("context", context);
-    // interpreter.registerLocal(
-    //     "setState",
-    //     GenericLoxCallable(() => 1, (Interpreter interpreter,
-    //         List<Object?> arguments, Map<Symbol, Object?> namedArguments) {
-    //       (arguments.first as LoxFunction).call(interpreter, [], {});
-    //       updateUI();
-    //     }));
     find('initState')?.call(interpreter, [], {});
     renderedWidget = buildMethod!.call(interpreter, [], {}) as Widget;
   }
@@ -216,11 +209,9 @@ class NewLoxReader extends LoxReader {
 }
 
 mixin Logger<T extends StatefulWidget> on State<T> {
-  String logUrl =
-      'https://www-as.gzuni.com/apps/locomobile/sbox/gzapp-new/fn/fn51_1';
-  String? pageId;
+  String pageId = '';
   void saveLogWhenInitializing() {
-    if (pageId == null || pageId!.isEmpty) return;
+    if (pageId.isEmpty || logUrl.isEmpty) return;
     Api.post(logUrl, body: {'pageId': pageId}).then((result) {
       logger.d('save : $result');
     });
@@ -252,7 +243,7 @@ class _DaxPageState extends State<DaxPage> with Logger {
       reader = NewLoxReader(widget.args['url']);
     }
     Scanner scanner =
-        Scanner(widget.args['snap'] ?? '', reader: reader, loadedFiles: []);
+        Scanner(widget.args['code'] ?? '', reader: reader, loadedFiles: []);
     try {
       List<Token> tokens = await scanner.scanTokens();
       setState(() {
@@ -294,14 +285,11 @@ class _DaxPageState extends State<DaxPage> with Logger {
 
   @override
   void initState() {
-    Map<String,String> queryParameters = {};
+    Map<String, String> queryParameters = {};
     if (widget.args.containsKey('url')) {
       var urlParsed = Uri.parse(widget.args['url']);
       pageId = urlParsed.path;
       queryParameters = urlParsed.queryParameters;
-    }
-    if (widget.args.containsKey('logger')) {
-      logUrl = widget.args['logger'];
     }
     super.initState();
     if (!_isApiRegistered) {
@@ -346,7 +334,9 @@ class _DaxPageState extends State<DaxPage> with Logger {
 
   @override
   Widget build(BuildContext context) {
-    if (!loaded) return const Scaffold();
+    if (!loaded) {
+      return const Scaffold(body: Center(child: CupertinoActivityIndicator()));
+    }
     if (!hasInitialized) {
       hasInitialized = true;
       if (renderedWidget != null) return renderedWidget!;
@@ -547,7 +537,7 @@ void _registerGlobalFunctions() {
   top.define("Switch", ISwitch());
   top.define("showDialog", IShowDialog());
   top.define("showModalBottomSheet", IShowModalBottomSheet());
-  top.define("showSnackBar", ISnackBarShow()); // deprecated
+  top.define("showSnackBar", ISnackBarShow());
   top.define("Tab", ITab());
   top.define("TabBar", ITabBar());
   top.define("TabBarView", ITabBarView());

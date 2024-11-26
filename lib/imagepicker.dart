@@ -18,12 +18,6 @@ class ImagePickerXfile implements LoxGetCallable {
     switch (name.lexeme) {
       case 'path':
         return xfile.path;
-      // case 'name':
-      //   return xfile.name;
-      // case 'legnth':
-      //   return xfile.length;
-      // case 'mimeType':
-      //   return xfile.mimeType;
       case 'readAsBytes':
         return xfile.readAsBytes;
     }

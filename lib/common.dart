@@ -3,7 +3,6 @@ import 'package:open_file/open_file.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
-import 'package:open_file/open_file.dart';
 import 'package:http/http.dart';
 import 'dart:math';
 import 'dart:convert';
@@ -117,26 +116,6 @@ final borderRadiusMap = {
     );
   }
 };
-
-// final navigatorMap = {
-//   "pop": (Object? context) {
-//     Navigator.pop(context as BuildContext);
-//   },
-//   "push": (Object? context, Object? route) async {
-//     var _ = await Navigator.push(context as BuildContext, route as Route);
-//     interpreter.registerLocal("context", context);
-//   },
-//   "pushNamed": (Object? context, Object? routeName, {Object? arguments}) async {
-//     var _ = await Navigator.pushNamed(
-//         context as BuildContext, routeName as String,
-//         arguments: arguments);
-//     interpreter.registerLocal("context", context);
-//   },
-//   "pushReplacement": (Object? context, Object? route) async {
-//     var _ = Navigator.pushReplacement(context as BuildContext, route as Route);
-//     interpreter.registerLocal("context", context);
-//   },
-// };
 
 final openFileMap = {
   "open": (Object? file) {

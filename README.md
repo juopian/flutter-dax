@@ -1,57 +1,83 @@
 # flutter_dax
 
-这是一个基于[dax](https://i-git.gzuni.com/xiecp/dax) 解析器的flutter组件。
+This is a flutter component library based on [dax](https://github.com/juopian/dax) Interpreter。
 
 
-## 安装
+## Install
 
-在pubspec.yaml文件添加
+add the following to your pubspec.yaml
 ```
 dax_flutter:  
     git:
-      url: git@i-git.gzuni.com:xiecp/dax_flutter.git
+      url: git@github.com:juopian/dax.git
       ref: master
 ```
 
-## 使用
+## Usage example
 
 ```
-import 'package:dax_flutter/main.dart';
-var codeSnap = ```
-var i = 1;
-fun build() {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text("title")
-    ),
-    body: Column(
-      children: [
-        Text("count : ${i}"),
-        TextButton(
-         child: Text("click"),
-           onPressed: (){
-             setState((){
-              i = i+1;
-             });
-          }
-        )
-      ]
-    )
-  );
-} ```;
+import 'package:flutter/material.dart';
+import 'package:dax_flutter/dax_flutter.dart';
 
-Navigator.push(context, MaterialPageRoute( builder: (context) => DaxPage(codeSnap)));
+var codeSnap = '''
+  var i = 1;
+  fun build() {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("title")
+      ),
+      body: Column(
+        children: [
+          Text("count : ${i}"),
+          TextButton(
+           child: Text("click"),
+             onPressed: (){
+               setState((){
+                i = i+1;
+               });
+            }
+          )
+        ]
+      )
+    );
+  } ''';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Dax Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: DaxPage(args: {"code": codeSnap}),
+    );
+  }
+}
+
 ```
 
-# 基本组件库
-目前组件库基于flutter2.5开发，覆盖大部分常用组件和配置，使用方法完全兼容flutter
+You can also use url to load code from remote server
 
-## 1. 全局对象
+```
+Daxpage(args: {"url": "https://example.com/code.dart"})
+```
+
+
+# Basic Components && Class
+The component library is based on flutter2.5, and covers most commonly used components and configurations. The usage method is completely compatible with flutter.
 
 * Api
+
+It is a wrapper of http.get and http.post, and adds some additional fields to the request header: Authorization, version-number, build-number, platform. If the response header content-type is application/json, it will automatically convert the response value to a json object.
 ```
 Api.get(String url, {params})
 Api.post(String url, {params})
+
 ```
 * AxisDirection
 * base64
@@ -72,8 +98,13 @@ BorderRadius.only({
   Radius bottomLeft = Radius.zero,
   Radius bottomRight = Radius.zero,
 })
-BorderRadius.vertical({Radius top = Radius.zero, Radius bottom = Radius.zero})
-BorderRadius.horizontal({Radius left = Radius.zero, Radius right = Radius.zero})
+BorderRadius.vertical({
+  Radius top = Radius.zero, 
+  Radius bottom = Radius.zero})
+
+BorderRadius.horizontal({
+  Radius left = Radius.zero, 
+  Radius right = Radius.zero})
 ```
 * BorderStyle
 * Colors
@@ -104,9 +135,9 @@ json.decode(String source)
 ```
 math.max(num a, num b)
 math.min(num a, num b)
-math.randInt(int max) // [0, max)
-math.randDouble() // [0.0, 1.0)
-math.randBool() // true or false
+math.randInt(int max) 
+math.randDouble()
+math.randBool() 
 math.sin(num x)
 math.asin(num x)
 math.cos(num x)
@@ -174,8 +205,6 @@ Radius.zero
 * TextInputType
 * TextDirection
 * WrapAlignment
-
-## 2. 组件及其用法
 
 ###  AlertDialog
 ```
@@ -273,7 +302,6 @@ Border({
   BorderSide bottom = BorderSide.none,
   BorderSide left = BorderSide.none,
 })
-或
 Border.all({
   Color color = const Color(0xFF000000),
   double width = 1.0,
@@ -343,7 +371,6 @@ BoxConstraints({
   double minHeight = 0.0,
   double maxHeight = double.infinity,
 })
-或
 BoxConstraints.loose(Size size)
 BoxConstraints.tight(Size size)
 BoxConstraints.expand({double? width, double? height})
@@ -593,7 +620,6 @@ ElevatedButton({
   required Widget? child,
 })
 
-定义按钮样式，如：
 ElevatedButton.styleFrom({
   Color? primary,
   Color? onPrimary,
@@ -740,7 +766,7 @@ Image({
   bool isAntiAlias = false,
   FilterQuality filterQuality = FilterQuality.low,
 })
-或
+
 Image.network(...)
 Image.asset(...)
 Image.memory(...)
@@ -847,7 +873,6 @@ ListView({
   double? cacheExtent,
   List<Widget> children = const <Widget>[],
 })
-也可以支持按需加载
 ListView.builder({
   Axis scrollDirection = Axis.vertical,
   bool reverse = false,
@@ -860,7 +885,6 @@ ListView.builder({
   int? itemCount,
   double? cacheExtent,
 })
-或
 ListView.separated({
   Axis scrollDirection = Axis.vertical,
   bool reverse = false,
@@ -893,7 +917,6 @@ Matrix4(
   double arg14,
   double arg15,
 )
-或
 Matrix4.skew(double alpha, double beta);
 Matrix4.skewX(double alpha);
 Matrix4.skewY(double beta);
@@ -930,7 +953,6 @@ OutlinedButton({
   required Widget child,
 })
 
-定义按钮样式
 OutlinedButton.styleFrom({
   Color? primary,
   Color? backgroundColor,
@@ -1052,10 +1074,12 @@ RegExp(
   bool caseSensitive = true,
   bool dotAll = false,
 })
-例如:
+```
+examples:
+```
 var d = RegExp('(\\w+)');
-print d.hasMatch('aaa');
-var e = d.firstMatch('aaa');
+print d.hasMatch('Hello regexp');
+var e = d.firstMatch('reg');
 print e[0];
 var str = 'Parse my string';
 var f = d.allMatches(str);
@@ -1063,6 +1087,7 @@ f.forEach((i){
 	print i[0];
 });
 ```
+
 ###   Row
 ```
 Row({
@@ -1141,7 +1166,6 @@ SingleChildScrollView({
 ### Size
 ```
 Size(double width, double height)
-或
 Size.fromHeight(double height);
 Size.fromWidth(double width);
 Size.fromRadius(double radius);
@@ -1220,7 +1244,6 @@ Switch({
   bool autofocus = false,
 })
 
-也可以采用iOS风格
 Switch.adaptive({
   required bool value,
   required void Function(bool)? onChanged,
@@ -1284,7 +1307,6 @@ Text(String data, {
 ###  TextAlignVertical
 ```
 TextAlignVertical({required double y})
-或
 TextAlignVertical.bottom
 TextAlignVertical.center
 TextAlignVertical.top
@@ -1298,7 +1320,6 @@ TextButton({
   required Widget child,
 })
 
-定义按钮样式：
 TextButton.styleFrom({
   Color? primary,
   Color? backgroundColor,
@@ -1320,15 +1341,18 @@ TextButton.styleFrom({
 ###  TextEditingController
 ```
 TextEditingController(String? initText)
-例子：
+```
+examples:
+```
 var textEditingController = TextEditingController();
 textEditingController.text = "text";
-也可以创建时指定初始值
+
+// init
 var textEditingController = TextEditingController("text");
 
-清除内容
+// clear
 textEditingController.clear();
-或
+// or
 textEditingController.text = "";
 ```
 ###  TextField
@@ -1397,7 +1421,6 @@ Transform({
   FilterQuality? filterQuality,
   Widget? child,
 })
-或
 Transform.rotate({
   required double angle,
   Offset? origin,
@@ -1449,15 +1472,6 @@ Wrap({
 })
 ```
  
-## 3. 全局函数
-### getViewSize
-```
-getViewSize(BuildContext context)
-例如:
-var size = getViewSize(context);
-print size.width;
-print size.height;
-```
 ###  launchUrl 
 ```
 launchUrl(
@@ -1468,7 +1482,6 @@ launchUrl(
 ### setState
 ```
 setState(() {...});
-这个无需多说，刷新页面用
 ```
 ### showSnackBar
 ```
