@@ -3,16 +3,6 @@
 This is a flutter component library based on [dax](https://github.com/juopian/dax) Interpreter。
 
 
-## Install
-
-add the following to your pubspec.yaml
-```
-dax_flutter:  
-    git:
-      url: git@github.com:juopian/dax.git
-      ref: master
-```
-
 ## Usage example
 
 ```
